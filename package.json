@@ -1,0 +1,23 @@
+{
+    "name": "portfolio",
+    "version": "1.0.0",
+    "description": "Personal Portfolio of Akin Sowemimo",
+    "main": "index.js",
+    "author": "Akin Sowemimo",
+    "license": "MIT",
+    "private": false,
+    "scripts": {
+        "start": "parcel index.html"
+    },
+    "dependencies": {
+        "bs-css": "^6.5.0",
+        "bs-platform": "^2.2.2",
+        "react": "^16.2.0",
+        "react-dom": "^16.2.0",
+        "reason-react": "^0.3.4"
+    },
+    "devDependencies": {
+        "bsb-js": "^1.0.2",
+        "parcel-bundler": "^1.6.2"
+    }
+}
