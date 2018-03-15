@@ -33,7 +33,7 @@ let make = _children => {
   ...component,
   render: _self =>
     <nav className=Styles.navContainer>
-      <ul className=Styles.links>
+      <ul className=Styles.links style=(reStyle(~listStyleType="none", ()))>
         <li className=Styles.listItem> (text("Stuff I've done")) </li>
         <li className=Styles.listItem> (text("More about me")) </li>
         <li className=Styles.listItem>
