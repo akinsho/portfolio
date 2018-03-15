@@ -4,7 +4,7 @@
 var Css = require("bs-css/src/Css.js");
 var React = require("react");
 var ReasonReact = require("reason-react/src/ReasonReact.js");
-var Utils$Whatever = require("../Utils.bs.js");
+var Utils$Portfolio = require("../Utils.bs.js");
 
 var navContainer = Css.style(/* :: */[
       Css.position(/* absolute */-1013592457),
@@ -74,11 +74,11 @@ function make() {
                       className: links
                     }, React.createElement("li", {
                           className: listItem
-                        }, Utils$Whatever.text("Stuff I've done")), React.createElement("li", {
+                        }, Utils$Portfolio.text("Stuff I've done")), React.createElement("li", {
                           className: listItem
-                        }, Utils$Whatever.text("More about me")), React.createElement("li", {
+                        }, Utils$Portfolio.text("More about me")), React.createElement("li", {
                           className: listItem
-                        }, Utils$Whatever.text("Interests and Experience"))), React.createElement("div", undefined, React.createElement("i", {
+                        }, Utils$Portfolio.text("Interests and Experience"))), React.createElement("div", undefined, React.createElement("i", {
                           className: "fas fa-camera-retro"
                         })));
     });

@@ -3,8 +3,8 @@
 
 var ReactDOMRe = require("reason-react/src/ReactDOMRe.js");
 var ReasonReact = require("reason-react/src/ReasonReact.js");
-var Home$Whatever = require("./components/Home.bs.js");
+var Home$Portfolio = require("./components/Home.bs.js");
 
-ReactDOMRe.renderToElementWithId(ReasonReact.element(/* None */0, /* None */0, Home$Whatever.make(/* array */[])), "app");
+ReactDOMRe.renderToElementWithId(ReasonReact.element(/* None */0, /* None */0, Home$Portfolio.make(/* array */[])), "app");
 
 /*  Not a pure module */

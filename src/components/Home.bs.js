@@ -4,15 +4,15 @@
 var Css = require("bs-css/src/Css.js");
 var React = require("react");
 var ReasonReact = require("reason-react/src/ReasonReact.js");
-var Nav$Whatever = require("./Nav.bs.js");
-var Utils$Whatever = require("../Utils.bs.js");
+var Nav$Portfolio = require("./Nav.bs.js");
+var Utils$Portfolio = require("../Utils.bs.js");
 
 Css.$$global("body, html", /* :: */[
       Css.padding(Css.px(0)),
       /* :: */[
         Css.margin(Css.px(0)),
         /* :: */[
-          Css.fontFamily(Utils$Whatever.defaultFont),
+          Css.fontFamily(Utils$Portfolio.defaultFont),
           /* :: */[
             Css.fontSize(Css.px(16)),
             /* [] */0
@@ -91,19 +91,19 @@ function make() {
   newrecord[/* render */9] = (function () {
       return React.createElement("div", {
                   className: homeContainer
-                }, ReasonReact.element(/* None */0, /* None */0, Nav$Whatever.make(/* array */[])), React.createElement("section", undefined, React.createElement("header", undefined, React.createElement("h1", {
+                }, ReasonReact.element(/* None */0, /* None */0, Nav$Portfolio.make(/* array */[])), React.createElement("section", undefined, React.createElement("header", undefined, React.createElement("h1", {
                               className: firstName
-                            }, Utils$Whatever.text("Akin")), React.createElement("h2", {
+                            }, Utils$Portfolio.text("Akin")), React.createElement("h2", {
                               className: lastName
-                            }, Utils$Whatever.text("Sowemimo"))), React.createElement("article", undefined, React.createElement("p", {
+                            }, Utils$Portfolio.text("Sowemimo"))), React.createElement("article", undefined, React.createElement("p", {
                               className: bio
-                            }, Utils$Whatever.text("Software Developer,")), React.createElement("p", {
+                            }, Utils$Portfolio.text("Software Developer,")), React.createElement("p", {
                               className: bio
-                            }, Utils$Whatever.text("One time doctor,")), React.createElement("p", {
+                            }, Utils$Portfolio.text("One time doctor,")), React.createElement("p", {
                               className: bio
-                            }, Utils$Whatever.text("often times problem solver,")), React.createElement("p", {
+                            }, Utils$Portfolio.text("often times problem solver,")), React.createElement("p", {
                               className: bio
-                            }, Utils$Whatever.text("occasionaly weeps with frustration")))));
+                            }, Utils$Portfolio.text("occasionaly weeps with frustration")))));
     });
   return newrecord;
 }
