@@ -9,11 +9,11 @@ var Utils$Portfolio = require("../Utils.bs.js");
 var navContainer = Css.style(/* :: */[
       Css.position(/* absolute */-1013592457),
       /* :: */[
-        Css.height(Css.em(3.0)),
+        Css.height(Css.em(3)),
         /* :: */[
-          Css.width(Css.vw(100.0)),
+          Css.width(Css.vw(100)),
           /* :: */[
-            Css.top(Css.px(0)),
+            Css.top(Css.zero),
             /* :: */[
               Css.fontSize(Css.rem(0.8)),
               /* :: */[
@@ -33,7 +33,10 @@ var links = Css.style(/* :: */[
         /* :: */[
           Css.alignSelf(/* flexEnd */924268066),
           /* :: */[
-            Css.width(Css.vw(40.0)),
+            Css.width(/* `percent */[
+                  -119887163,
+                  100
+                ]),
             /* [] */0
           ]
         ]
@@ -43,15 +46,27 @@ var links = Css.style(/* :: */[
 var listItem = Css.style(/* :: */[
       Css.flex(1),
       /* :: */[
-        Css.fontSize(Css.em(1.2)),
+        Css.marginLeft(Css.em(1)),
         /* :: */[
-          Css.hover(/* :: */[
-                Css.textDecoration(/* underline */131142924),
-                /* [] */0
-              ]),
+          Css.marginRight(Css.em(1)),
           /* :: */[
-            Css.whiteSpace(/* nowrap */867913355),
-            /* [] */0
+            Css.fontSize(Css.em(1.2)),
+            /* :: */[
+              Css.whiteSpace(/* nowrap */867913355),
+              /* :: */[
+                Css.hover(/* :: */[
+                      Css.textDecoration(/* underline */131142924),
+                      /* [] */0
+                    ]),
+                /* :: */[
+                  Css.firstChild(/* :: */[
+                        Css.marginLeft(Css.zero),
+                        /* [] */0
+                      ]),
+                  /* [] */0
+                ]
+              ]
+            ]
           ]
         ]
       ]
@@ -68,20 +83,36 @@ var component = ReasonReact.statelessComponent("NavigationBar");
 function make() {
   var newrecord = component.slice();
   newrecord[/* render */9] = (function () {
+      var navigate = function ($$event) {
+        var element = Utils$Portfolio.getElement($$event.target);
+        var id = element.getAttribute("id");
+        if (id == null) {
+          return ReasonReact.Router[/* push */0]("/");
+        } else {
+          return ReasonReact.Router[/* push */0](id);
+        }
+      };
       return React.createElement("nav", {
                   className: navContainer
                 }, React.createElement("ul", {
                       className: links,
                       style: Utils$Portfolio.reStyle(/* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* Some */["none"], /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* () */0)
                     }, React.createElement("li", {
-                          className: listItem
+                          className: listItem,
+                          onClick: navigate
+                        }, Utils$Portfolio.text("Home")), React.createElement("li", {
+                          className: listItem,
+                          id: "projects",
+                          onClick: navigate
                         }, Utils$Portfolio.text("Stuff I've done")), React.createElement("li", {
-                          className: listItem
+                          className: listItem,
+                          id: "bio",
+                          onClick: navigate
                         }, Utils$Portfolio.text("More about me")), React.createElement("li", {
-                          className: listItem
-                        }, Utils$Portfolio.text("Interests and Experience"))), React.createElement("div", undefined, React.createElement("i", {
-                          className: "fas fa-camera-retro"
-                        })));
+                          className: listItem,
+                          id: "interests",
+                          onClick: navigate
+                        }, Utils$Portfolio.text("Interests and Experience"))));
     });
   return newrecord;
 }

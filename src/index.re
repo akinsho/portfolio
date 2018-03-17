@@ -1,5 +1,5 @@
 /* App Entry point */
 
-ReactDOMRe.renderToElementWithId(<Home  />, "app");
+ReactDOMRe.renderToElementWithId(<Router />, "app");
 
 

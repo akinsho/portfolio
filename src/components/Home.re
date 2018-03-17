@@ -2,29 +2,17 @@ open Utils;
 
 module Styles = {
   open Css;
-  global(
-    "body, html",
-    [
-      padding(px(0)),
-      margin(px(0)),
-      fontFamily(defaultFont),
-      fontSize(px(16)),
-    ],
-  );
   let homeContainer =
     style([
       display(flexBox),
       flexDirection(column),
       alignItems(center),
       justifyContent(center),
-      height(vh(100.0)),
-      fontSize(rem(1.5)),
-      backgroundColor(hex("232529")),
-      color(white),
+      flex(1),
     ]);
   let firstName =
     style([
-      fontSize(em(5.0)),
+      fontSize(em(5.)),
       color(white),
       marginBottom(em(0.1)),
       textAlign(`left),
@@ -50,12 +38,37 @@ let component = ReasonReact.statelessComponent("Home");
 let appearIn = (delay: int, ~base=500, ()) =>
   string_of_int(delay + base) ++ "ms";
 
-/* Add subtle varying positioning */
+let renderBio = () => {
+  let bio = [
+    "Software developer,",
+    "One time doctor,",
+    "often times problem solver,",
+    "occasionaly weeps with frustration",
+  ];
+  List.mapi(
+    (index, item) =>
+      <Transition
+        key=(item ++ string_of_int(index))
+        before=(reStyle(~opacity="0", ()))
+        after=(
+          reStyle(
+            ~opacity="1",
+            ~transition="opacity " ++ appearIn(1000 * index, ()) ++ " 2s",
+            (),
+          )
+        )>
+        <p key="1" className=Styles.bio> (text(item)) </p>
+      </Transition>,
+    bio,
+  )
+  |> Array.of_list
+  |> ReasonReact.arrayToElement;
+};
+
 let make = _children => {
   ...component,
   render: _self =>
     <div className=Styles.homeContainer>
-      <Nav />
       <section>
         <header className=(Styles.drifting(~reverseDirection=true))>
           <Transition
@@ -67,7 +80,7 @@ let make = _children => {
                 (),
               )
             )>
-            <h1 className=Styles.firstName> (text("Akin")) </h1>
+            <h1 key="1" className=Styles.firstName> (text("Akin")) </h1>
           </Transition>
           <Transition
             before=(reStyle(~opacity="0", ()))
@@ -78,16 +91,11 @@ let make = _children => {
                 (),
               )
             )>
-            <h2 className=Styles.lastName> (text("Sowemimo")) </h2>
+            <h2 key="1" className=Styles.lastName> (text("Sowemimo")) </h2>
           </Transition>
         </header>
         <article className=(Styles.drifting(~reverseDirection=false))>
-          <p className=Styles.bio> (text("Software Developer,")) </p>
-          <p className=Styles.bio> (text("One time doctor,")) </p>
-          <p className=Styles.bio> (text("often times problem solver,")) </p>
-          <p className=Styles.bio>
-            (text("occasionaly weeps with frustration"))
-          </p>
+          (renderBio())
         </article>
       </section>
     </div>,
