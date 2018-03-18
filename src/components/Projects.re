@@ -4,5 +4,5 @@ let component = ReasonReact.statelessComponent("Projects");
 
 let make = _children => {
   ...component,
-  render: _self => <div> (text("Projects")) </div>,
+  render: _self => <div> (str("Projects")) </div>,
 };

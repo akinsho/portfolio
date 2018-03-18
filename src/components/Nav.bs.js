@@ -44,39 +44,30 @@ var links = Css.style(/* :: */[
     ]);
 
 var listItem = Css.style(/* :: */[
-      Css.flex(1),
+      Css.marginLeft(Css.em(1)),
       /* :: */[
-        Css.marginLeft(Css.em(1)),
+        Css.marginRight(Css.em(1)),
         /* :: */[
-          Css.marginRight(Css.em(1)),
+          Css.fontSize(Css.em(1.2)),
           /* :: */[
-            Css.fontSize(Css.em(1.2)),
+            Css.whiteSpace(/* nowrap */867913355),
             /* :: */[
-              Css.whiteSpace(/* nowrap */867913355),
+              Css.hover(/* :: */[
+                    Css.textDecoration(/* underline */131142924),
+                    /* [] */0
+                  ]),
               /* :: */[
-                Css.hover(/* :: */[
-                      Css.textDecoration(/* underline */131142924),
+                Css.firstChild(/* :: */[
+                      Css.marginLeft(Css.zero),
                       /* [] */0
                     ]),
-                /* :: */[
-                  Css.firstChild(/* :: */[
-                        Css.marginLeft(Css.zero),
-                        /* [] */0
-                      ]),
-                  /* [] */0
-                ]
+                /* [] */0
               ]
             ]
           ]
         ]
       ]
     ]);
-
-var Styles = /* module */[
-  /* navContainer */navContainer,
-  /* links */links,
-  /* listItem */listItem
-];
 
 var component = ReasonReact.statelessComponent("NavigationBar");
 
@@ -100,24 +91,26 @@ function make() {
                     }, React.createElement("li", {
                           className: listItem,
                           onClick: navigate
-                        }, Utils$Portfolio.text("Home")), React.createElement("li", {
+                        }, Utils$Portfolio.str("Home")), React.createElement("li", {
                           className: listItem,
                           id: "projects",
                           onClick: navigate
-                        }, Utils$Portfolio.text("Stuff I've done")), React.createElement("li", {
+                        }, Utils$Portfolio.str("Stuff I've done")), React.createElement("li", {
                           className: listItem,
                           id: "bio",
                           onClick: navigate
-                        }, Utils$Portfolio.text("More about me")), React.createElement("li", {
+                        }, Utils$Portfolio.str("More about me")), React.createElement("li", {
                           className: listItem,
                           id: "interests",
                           onClick: navigate
-                        }, Utils$Portfolio.text("Interests and Experience"))));
+                        }, Utils$Portfolio.str("Interests and Experience"))));
     });
   return newrecord;
 }
 
-exports.Styles = Styles;
+exports.navContainer = navContainer;
+exports.links = links;
+exports.listItem = listItem;
 exports.component = component;
 exports.make = make;
 /* navContainer Not a pure module */

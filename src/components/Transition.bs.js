@@ -10,11 +10,13 @@ var component = ReasonReact.reducerComponent("Transition");
 
 function make(before, after, children) {
   var newrecord = component.slice();
-  newrecord[/* didMount */4] = (function (self) {
-      setTimeout(Curry._1(self[/* reduce */1], (function () {
-                  return /* Style */[after];
-                })), 0);
-      return /* NoUpdate */0;
+  newrecord[/* didMount */4] = (function () {
+      return /* SideEffects */Block.__(2, [(function (self) {
+                    setTimeout((function () {
+                            return Curry._1(self[/* send */4], /* Style */[after]);
+                          }), 0);
+                    return /* () */0;
+                  })]);
     });
   newrecord[/* render */9] = (function (param) {
       return React.createElement("div", {

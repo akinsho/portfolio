@@ -10,6 +10,9 @@
         "start": "parcel index.html"
     },
     "dependencies": {
+        "@fortawesome/fontawesome": "^1.1.4",
+        "@fortawesome/fontawesome-free-brands": "^5.0.8",
+        "@fortawesome/react-fontawesome": "^0.0.17",
         "bs-css": "^6.5.0",
         "bs-platform": "^2.2.2",
         "react": "^16.2.0",

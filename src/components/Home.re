@@ -14,10 +14,11 @@ module Styles = {
     style([
       fontSize(em(5.)),
       color(white),
+      marginTop(zero),
       marginBottom(em(0.1)),
       textAlign(`left),
     ]);
-  let lastName = style([fontSize(em(1.0)), textAlign(`left)]);
+  let lastName = style([fontSize(em(1.)), textAlign(`left)]);
   let bio = style([fontSize(em(0.8)), margin(em(0.2))]);
   let drift = (reverse: int) =>
     keyframes([
@@ -25,12 +26,44 @@ module Styles = {
       (50, [transform(translateX(px(reverse * 5)))]),
       (100, [transform(translateX(px(reverse * 0)))]),
     ]);
+  let icons = style([margin(rem(0.5))]);
   let drifting = (~reverseDirection: bool) =>
     style([
       animationName(drift(reverseDirection ? (-1) : 1)),
       animationDuration(50000),
       animationIterationCount(`infinite),
     ]);
+};
+
+module Icons = {
+  let component = ReasonReact.statelessComponent("Icons");
+  let make = _children => {
+    ...component,
+    render: _self =>
+      <div>
+        <a href="github.com/Akin909">
+          <FontAwesomeIcon
+            icon={prefix: "fab", iconName: "github"}
+            size="lg"
+            className=Styles.icons
+          />
+        </a>
+        <a href="linkedin.com">
+          <FontAwesomeIcon
+            icon={prefix: "fab", iconName: "linkedin"}
+            size="lg"
+            className=Styles.icons
+          />
+        </a>
+        <a href="twitter.com">
+          <FontAwesomeIcon
+            icon={prefix: "fab", iconName: "twitter"}
+            size="lg"
+            className=Styles.icons
+          />
+        </a>
+      </div>,
+  };
 };
 
 let component = ReasonReact.statelessComponent("Home");
@@ -57,7 +90,7 @@ let renderBio = () => {
             (),
           )
         )>
-        <p key="1" className=Styles.bio> (text(item)) </p>
+        <p key="1" className=Styles.bio> (str(item)) </p>
       </Transition>,
     bio,
   )
@@ -71,6 +104,7 @@ let make = _children => {
     <div className=Styles.homeContainer>
       <section>
         <header className=(Styles.drifting(~reverseDirection=true))>
+          <Icons />
           <Transition
             before=(reStyle(~opacity="0", ()))
             after=(
@@ -80,7 +114,7 @@ let make = _children => {
                 (),
               )
             )>
-            <h1 key="1" className=Styles.firstName> (text("Akin")) </h1>
+            <h1 key="1" className=Styles.firstName> (str("Akin")) </h1>
           </Transition>
           <Transition
             before=(reStyle(~opacity="0", ()))
@@ -91,7 +125,7 @@ let make = _children => {
                 (),
               )
             )>
-            <h2 key="1" className=Styles.lastName> (text("Sowemimo")) </h2>
+            <h2 key="1" className=Styles.lastName> (str("Sowemimo")) </h2>
           </Transition>
         </header>
         <article className=(Styles.drifting(~reverseDirection=false))>

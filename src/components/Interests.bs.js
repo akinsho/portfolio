@@ -10,7 +10,7 @@ var component = ReasonReact.statelessComponent("Interests");
 function make() {
   var newrecord = component.slice();
   newrecord[/* render */9] = (function () {
-      return React.createElement("div", undefined, Utils$Portfolio.text("Interests"));
+      return React.createElement("div", undefined, Utils$Portfolio.str("Interests"));
     });
   return newrecord;
 }
