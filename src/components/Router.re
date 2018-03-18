@@ -38,6 +38,18 @@ type state =
 
 let component = ReasonReact.reducerComponent("Router");
 
+let route =
+    (
+      url: ReasonReact.Router.url,
+      self: ReasonReact.self(state, ReasonReact.noRetainedProps, action),
+    ) =>
+  switch (url.path) {
+  | ["bio"] => self.send(ShowBio)
+  | ["projects"] => self.send(ShowProjects)
+  | ["interests"] => self.send(ShowInterests)
+  | _ => self.send(ShowHome)
+  };
+
 let make = _children => {
   ...component,
   initialState: () => HomePage,
@@ -50,18 +62,14 @@ let make = _children => {
     },
   subscriptions: self => [
     Sub(
-      () =>
-        ReasonReact.Router.watchUrl(url =>
-          switch (url.path) {
-          | ["bio"] => self.send(ShowBio)
-          | ["projects"] => self.send(ShowProjects)
-          | ["interests"] => self.send(ShowInterests)
-          | _ => self.send(ShowHome)
-          }
-        ),
+      () => ReasonReact.Router.watchUrl(url => route(url, self)),
       ReasonReact.Router.unwatchUrl,
     ),
   ],
+  didMount: (_) => {
+    let url = ReasonReact.Router.dangerouslyGetInitialUrl();
+    ReasonReact.SideEffects(self => route(url, self));
+  },
   render: ({state}) =>
     <div className=Styles.container>
       <Nav />

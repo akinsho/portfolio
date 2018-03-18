@@ -7,7 +7,7 @@ var ReasonReact = require("reason-react/src/ReasonReact.js");
 var Utils$Portfolio = require("../Utils.bs.js");
 
 var navContainer = Css.style(/* :: */[
-      Css.position(/* absolute */-1013592457),
+      Css.position(Css.absolute),
       /* :: */[
         Css.height(Css.em(3)),
         /* :: */[
@@ -29,9 +29,9 @@ var navContainer = Css.style(/* :: */[
 var links = Css.style(/* :: */[
       Css.display(/* flex */-1010954439),
       /* :: */[
-        Css.flexDirection(/* row */5693978),
+        Css.flexDirection(Css.row),
         /* :: */[
-          Css.alignSelf(/* flexEnd */924268066),
+          Css.alignSelf(Css.flexEnd),
           /* :: */[
             Css.width(/* `percent */[
                   -119887163,
@@ -50,10 +50,10 @@ var listItem = Css.style(/* :: */[
         /* :: */[
           Css.fontSize(Css.em(1.2)),
           /* :: */[
-            Css.whiteSpace(/* nowrap */867913355),
+            Css.whiteSpace(Css.nowrap),
             /* :: */[
               Css.hover(/* :: */[
-                    Css.textDecoration(/* underline */131142924),
+                    Css.textDecoration(Css.underline),
                     /* [] */0
                   ]),
               /* :: */[

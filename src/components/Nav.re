@@ -4,7 +4,7 @@ open Css;
 
 let navContainer =
   style([
-    position(`absolute),
+    position(absolute),
     height(em(3.)),
     width(vw(100.)),
     top(zero),
@@ -15,8 +15,8 @@ let navContainer =
 let links =
   style([
     display(`flex),
-    flexDirection(`row),
-    alignSelf(`flexEnd),
+    flexDirection(row),
+    alignSelf(flexEnd),
     width(`percent(100.)),
   ]);
 
@@ -25,8 +25,8 @@ let listItem =
     marginLeft(em(1.)),
     marginRight(em(1.)),
     fontSize(em(1.2)),
-    whiteSpace(`nowrap),
-    hover([textDecoration(`underline)]),
+    whiteSpace(nowrap),
+    hover([textDecoration(underline)]),
     firstChild([marginLeft(zero)]),
   ]);
 

@@ -57,8 +57,44 @@ var Styles = /* module */[/* container */container];
 
 var component = ReasonReact.reducerComponent("Router");
 
+function route(url, self) {
+  var match = url[/* path */0];
+  if (match) {
+    switch (match[0]) {
+      case "bio" : 
+          if (match[1]) {
+            return Curry._1(self[/* send */4], /* ShowHome */1);
+          } else {
+            return Curry._1(self[/* send */4], /* ShowBio */2);
+          }
+      case "interests" : 
+          if (match[1]) {
+            return Curry._1(self[/* send */4], /* ShowHome */1);
+          } else {
+            return Curry._1(self[/* send */4], /* ShowInterests */3);
+          }
+      case "projects" : 
+          if (match[1]) {
+            return Curry._1(self[/* send */4], /* ShowHome */1);
+          } else {
+            return Curry._1(self[/* send */4], /* ShowProjects */0);
+          }
+      default:
+        return Curry._1(self[/* send */4], /* ShowHome */1);
+    }
+  } else {
+    return Curry._1(self[/* send */4], /* ShowHome */1);
+  }
+}
+
 function make() {
   var newrecord = component.slice();
+  newrecord[/* didMount */4] = (function () {
+      var url = ReasonReact.Router[/* dangerouslyGetInitialUrl */3](/* () */0);
+      return /* SideEffects */Block.__(2, [(function (self) {
+                    return route(url, self);
+                  })]);
+    });
   newrecord[/* render */9] = (function (param) {
       var tmp;
       switch (param[/* state */2]) {
@@ -101,33 +137,7 @@ function make() {
               /* Sub */[
                 (function () {
                     return ReasonReact.Router[/* watchUrl */1]((function (url) {
-                                  var match = url[/* path */0];
-                                  if (match) {
-                                    switch (match[0]) {
-                                      case "bio" : 
-                                          if (match[1]) {
-                                            return Curry._1(self[/* send */4], /* ShowHome */1);
-                                          } else {
-                                            return Curry._1(self[/* send */4], /* ShowBio */2);
-                                          }
-                                      case "interests" : 
-                                          if (match[1]) {
-                                            return Curry._1(self[/* send */4], /* ShowHome */1);
-                                          } else {
-                                            return Curry._1(self[/* send */4], /* ShowInterests */3);
-                                          }
-                                      case "projects" : 
-                                          if (match[1]) {
-                                            return Curry._1(self[/* send */4], /* ShowHome */1);
-                                          } else {
-                                            return Curry._1(self[/* send */4], /* ShowProjects */0);
-                                          }
-                                      default:
-                                        return Curry._1(self[/* send */4], /* ShowHome */1);
-                                    }
-                                  } else {
-                                    return Curry._1(self[/* send */4], /* ShowHome */1);
-                                  }
+                                  return route(url, self);
                                 }));
                   }),
                 ReasonReact.Router[/* unwatchUrl */2]
@@ -140,5 +150,6 @@ function make() {
 
 exports.Styles = Styles;
 exports.component = component;
+exports.route = route;
 exports.make = make;
 /*  Not a pure module */

@@ -26,44 +26,13 @@ module Styles = {
       (50, [transform(translateX(px(reverse * 5)))]),
       (100, [transform(translateX(px(reverse * 0)))]),
     ]);
-  let icons = style([margin(rem(0.5))]);
   let drifting = (~reverseDirection: bool) =>
     style([
+      position(relative),
       animationName(drift(reverseDirection ? (-1) : 1)),
       animationDuration(50000),
-      animationIterationCount(`infinite),
+      animationIterationCount(infinite),
     ]);
-};
-
-module Icons = {
-  let component = ReasonReact.statelessComponent("Icons");
-  let make = _children => {
-    ...component,
-    render: _self =>
-      <div>
-        <a href="github.com/Akin909">
-          <FontAwesomeIcon
-            icon={prefix: "fab", iconName: "github"}
-            size="lg"
-            className=Styles.icons
-          />
-        </a>
-        <a href="linkedin.com">
-          <FontAwesomeIcon
-            icon={prefix: "fab", iconName: "linkedin"}
-            size="lg"
-            className=Styles.icons
-          />
-        </a>
-        <a href="twitter.com">
-          <FontAwesomeIcon
-            icon={prefix: "fab", iconName: "twitter"}
-            size="lg"
-            className=Styles.icons
-          />
-        </a>
-      </div>,
-  };
 };
 
 let component = ReasonReact.statelessComponent("Home");

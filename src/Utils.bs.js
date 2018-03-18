@@ -1072,11 +1072,20 @@ function make(icon, size, className, children) {
 
 var FontAwesomeIcon = /* module */[/* make */make];
 
+var linkedinLink = "https://www.linkedin.com/in/akin-sowemimo-831383131/";
+
+var githubLink = "https://www.github.com/Akin909";
+
+var twitterLink = "https://www.twitter.com/Akin_So";
+
 var defaultFont = " -apple-system, BlinkMacSystemFont,\n\\\"Segoe UI\\\",Roboto, Helvetica, Arial, sans-serif,\n  \\\"Apple Color Emoji\\\",\\\"Segoe UI Emoji\\\", \\\"Segoe UI Symbol\\\"\n  ";
 
 exports.str = str;
 exports.getElement = getElement;
 exports.reStyle = reStyle;
 exports.FontAwesomeIcon = FontAwesomeIcon;
+exports.linkedinLink = linkedinLink;
+exports.githubLink = githubLink;
+exports.twitterLink = twitterLink;
 exports.defaultFont = defaultFont;
 /*  Not a pure module */

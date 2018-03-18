@@ -40,6 +40,12 @@ module FontAwesomeIcon = {
     );
 };
 
+let linkedinLink = "https://www.linkedin.com/in/akin-sowemimo-831383131/";
+
+let githubLink = "https://www.github.com/Akin909";
+
+let twitterLink = "https://www.twitter.com/Akin_So";
+
 let defaultFont = {| -apple-system, BlinkMacSystemFont,
 \"Segoe UI\",Roboto, Helvetica, Arial, sans-serif,
   \"Apple Color Emoji\",\"Segoe UI Emoji\", \"Segoe UI Symbol\"
