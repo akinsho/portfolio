@@ -1,5 +1,7 @@
 open Utils;
 
+let onivim = requireAssetUri("./../assets/oni-logo.png");
+
 let component = ReasonReact.statelessComponent("Projects");
 
 module Styles = {
@@ -13,7 +15,14 @@ module Styles = {
       width(`percent(100.)),
       minHeight(`percent(100.)),
     ]);
-  let pageTitle = style([fontSize(em(1.2)), marginBottom(em(0.5))]);
+  let image =
+    style([
+      width(em(10.)),
+      height(auto),
+      margin(em(1.)),
+      Css.float(`left),
+    ]);
+  let projectDetails = style([padding(em(1.))]);
 };
 
 module Card = {
@@ -22,10 +31,11 @@ module Card = {
     style([
       width(`percent(50.)),
       backgroundColor(whitesmoke),
-      height(`percent(50.)),
+      height(auto),
       borderRadius(px(8)),
       color(black),
       padding(em(1.)),
+      fontSize(rem(1.2)),
     ]);
   let component = ReasonReact.statelessComponent("Card");
   let make = (~title: string, children) => {
@@ -38,11 +48,32 @@ module Card = {
   };
 };
 
+let oniDetails = {
+  let details = [|
+    "I collaborate on the Onivim project on github",
+    "Oni is an attempt to modernise modal editing using vim",
+    "whilst taking inspiration from more modern editors like vscode",
+    "It uses React, Redux, RxJs, TypeScript, Electron",
+  |];
+  Array.mapi(
+    (index, line) =>
+      <span key=(string_of_int(index))> (str(line)) <br /> </span>,
+    details,
+  )
+  |> ReasonReact.arrayToElement;
+};
+
 let make = _children => {
   ...component,
   render: _self =>
     <div className=Styles.projectContainer>
-      <h1 className=Styles.pageTitle> (str("Projects")) </h1>
-      <Card title="Onivim"> (str("A modal editor for the modern age")) </Card>
+      <h1 className=CommonStyles.pageTitle> (str("Projects")) </h1>
+      <Card title="Onivim">
+        <img className=Styles.image src=onivim alt="onivim logo" />
+        <article className=Styles.projectDetails>
+          (str("A modal editor for the modern age"))
+          oniDetails
+        </article>
+      </Card>
     </div>,
 };

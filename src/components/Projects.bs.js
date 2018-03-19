@@ -2,9 +2,14 @@
 'use strict';
 
 var Css = require("bs-css/src/Css.js");
+var $$Array = require("bs-platform/lib/js/array.js");
 var React = require("react");
+var Pervasives = require("bs-platform/lib/js/pervasives.js");
 var ReasonReact = require("reason-react/src/ReasonReact.js");
 var Utils$Portfolio = require("../Utils.bs.js");
+var CommonStyles$Portfolio = require("./CommonStyles.bs.js");
+
+var onivim = require("./../assets/oni-logo.png");
 
 var component = ReasonReact.statelessComponent("Projects");
 
@@ -34,17 +39,29 @@ var projectContainer = Css.style(/* :: */[
       ]
     ]);
 
-var pageTitle = Css.style(/* :: */[
-      Css.fontSize(Css.em(1.2)),
+var image = Css.style(/* :: */[
+      Css.width(Css.em(10)),
       /* :: */[
-        Css.marginBottom(Css.em(0.5)),
-        /* [] */0
+        Css.height(Css.auto),
+        /* :: */[
+          Css.margin(Css.em(1)),
+          /* :: */[
+            Css.$$float(/* left */-944764921),
+            /* [] */0
+          ]
+        ]
       ]
+    ]);
+
+var projectDetails = Css.style(/* :: */[
+      Css.padding(Css.em(1)),
+      /* [] */0
     ]);
 
 var Styles = /* module */[
   /* projectContainer */projectContainer,
-  /* pageTitle */pageTitle
+  /* image */image,
+  /* projectDetails */projectDetails
 ];
 
 var card = Css.style(/* :: */[
@@ -55,17 +72,17 @@ var card = Css.style(/* :: */[
       /* :: */[
         Css.backgroundColor(Css.whitesmoke),
         /* :: */[
-          Css.height(/* `percent */[
-                -119887163,
-                50
-              ]),
+          Css.height(Css.auto),
           /* :: */[
             Css.borderRadius(Css.px(8)),
             /* :: */[
               Css.color(Css.black),
               /* :: */[
                 Css.padding(Css.em(1)),
-                /* [] */0
+                /* :: */[
+                  Css.fontSize(Css.rem(1.2)),
+                  /* [] */0
+                ]
               ]
             ]
           ]
@@ -91,20 +108,44 @@ var Card = /* module */[
   /* make */make
 ];
 
+var details = /* array */[
+  "I collaborate on the Onivim project on github",
+  "Oni is an attempt to modernise modal editing using vim",
+  "whilst taking inspiration from more modern editors like vscode",
+  "It uses React, Redux, RxJs, TypeScript, Electron"
+];
+
+var oniDetails = $$Array.mapi((function (index, line) {
+        return React.createElement("span", {
+                    key: Pervasives.string_of_int(index)
+                  }, Utils$Portfolio.str(line), React.createElement("br", undefined));
+      }), details);
+
 function make$1() {
   var newrecord = component.slice();
   newrecord[/* render */9] = (function () {
       return React.createElement("div", {
                   className: projectContainer
                 }, React.createElement("h1", {
-                      className: pageTitle
-                    }, Utils$Portfolio.str("Projects")), ReasonReact.element(/* None */0, /* None */0, make("Onivim", /* array */[Utils$Portfolio.str("A modal editor for the modern age")])));
+                      className: CommonStyles$Portfolio.pageTitle
+                    }, Utils$Portfolio.str("Projects")), ReasonReact.element(/* None */0, /* None */0, make("Onivim", /* array */[
+                          React.createElement("img", {
+                                className: image,
+                                alt: "onivim logo",
+                                src: onivim
+                              }),
+                          React.createElement("article", {
+                                className: projectDetails
+                              }, Utils$Portfolio.str("A modal editor for the modern age"), oniDetails)
+                        ])));
     });
   return newrecord;
 }
 
+exports.onivim = onivim;
 exports.component = component;
 exports.Styles = Styles;
 exports.Card = Card;
+exports.oniDetails = oniDetails;
 exports.make = make$1;
-/* component Not a pure module */
+/* onivim Not a pure module */

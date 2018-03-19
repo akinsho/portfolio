@@ -45,7 +45,7 @@ let make = _children => {
       };
     };
     <nav className=navContainer>
-      <ul className=links style=(reStyle(~listStyleType="none", ()))>
+      <ul className=links style=(restyle(~listStyleType="none", ()))>
         <li onClick=navigate className=listItem> (str("Home")) </li>
         <li id="projects" onClick=navigate className=listItem>
           (str("Stuff I've done"))

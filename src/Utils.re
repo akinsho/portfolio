@@ -1,9 +1,13 @@
+/* Aliases for long function names */
 let str = ReasonReact.stringToElement;
 
 let getElement = ReactDOMRe.domElementToObj;
 
-let reStyle = ReactDOMRe.Style.make;
+let restyle = ReactDOMRe.Style.make;
 
+[@bs.val] external requireAssetUri : string => string = "require";
+
+/* Abstract types for font awesome methods - no official bindings */
 type lib;
 
 type listOfIcons;
@@ -13,11 +17,11 @@ type icon = {
   iconName: string,
 };
 
-/* FONTAWESOME SETUP */
 [@bs.send] [@bs.return nullable]
 external getAttribute : (Js.t('a), string) => option(string) =
   "getAttribute";
 
+/* FONTAWESOME SETUP */
 [@bs.module]
 external fontAwesome : ReasonReact.reactClass =
   "@fortawesome/react-fontawesome";
@@ -47,6 +51,6 @@ let githubLink = "https://www.github.com/Akin909";
 let twitterLink = "https://www.twitter.com/Akin_So";
 
 let defaultFont = {| -apple-system, BlinkMacSystemFont,
-\"Segoe UI\",Roboto, Helvetica, Arial, sans-serif,
-  \"Apple Color Emoji\",\"Segoe UI Emoji\", \"Segoe UI Symbol\"
-  |};
+                    "Segoe UI",Roboto, Helvetica, Arial, sans-serif,
+                    "Apple Color Emoji","Segoe UI Emoji", "Segoe UI Symbol"
+                  |};

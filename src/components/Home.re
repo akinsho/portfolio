@@ -45,15 +45,15 @@ let renderBio = () => {
     "Software developer,",
     "One time doctor,",
     "often times problem solver,",
-    "occasionaly weeps with frustration",
+    "occasionally weeps with frustration",
   ];
   List.mapi(
     (index, item) =>
       <Transition
         key=(item ++ string_of_int(index))
-        before=(reStyle(~opacity="0", ()))
+        before=(restyle(~opacity="0", ()))
         after=(
-          reStyle(
+          restyle(
             ~opacity="1",
             ~transition="opacity " ++ appearIn(1000 * index, ()) ++ " 2s",
             (),
@@ -75,9 +75,9 @@ let make = _children => {
         <header className=(Styles.drifting(~reverseDirection=true))>
           <Icons />
           <Transition
-            before=(reStyle(~opacity="0", ()))
+            before=(restyle(~opacity="0", ()))
             after=(
-              reStyle(
+              restyle(
                 ~opacity="1",
                 ~transition="opacity " ++ appearIn(1000, ()),
                 (),
@@ -86,9 +86,9 @@ let make = _children => {
             <h1 key="1" className=Styles.firstName> (str("Akin")) </h1>
           </Transition>
           <Transition
-            before=(reStyle(~opacity="0", ()))
+            before=(restyle(~opacity="0", ()))
             after=(
-              reStyle(
+              restyle(
                 ~opacity="1",
                 ~transition="opacity " ++ appearIn(5000, ()),
                 (),
