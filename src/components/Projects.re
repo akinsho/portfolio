@@ -22,7 +22,8 @@ module Styles = {
       margin(em(1.)),
       Css.float(`left),
     ]);
-  let projectDetails = style([padding(em(1.))]);
+  let projectDetails = style([lineHeight(1.5)]);
+  let projectLine = style([margin(em(0.5))]);
 };
 
 module Card = {
@@ -34,15 +35,16 @@ module Card = {
       height(auto),
       borderRadius(px(8)),
       color(black),
-      padding(em(1.)),
+      padding(em(1.5)),
       fontSize(rem(1.2)),
     ]);
+  let cardTitle = style([paddingLeft(em(2.)), margin(em(0.2))]);
   let component = ReasonReact.statelessComponent("Card");
   let make = (~title: string, children) => {
     ...component,
     render: _self =>
       <article className=card>
-        <h1> (str(title)) </h1>
+        <h1 className=cardTitle> (str(title)) </h1>
         (ReasonReact.arrayToElement(children))
       </article>,
   };
@@ -57,7 +59,9 @@ let oniDetails = {
   |];
   Array.mapi(
     (index, line) =>
-      <span key=(string_of_int(index))> (str(line)) <br /> </span>,
+      <p className=Styles.projectLine key=(string_of_int(index))>
+        (str(line))
+      </p>,
     details,
   )
   |> ReasonReact.arrayToElement;
@@ -71,7 +75,7 @@ let make = _children => {
       <Card title="Onivim">
         <img className=Styles.image src=onivim alt="onivim logo" />
         <article className=Styles.projectDetails>
-          (str("A modal editor for the modern age"))
+          <p> (str("A modal editor for the modern age")) </p>
           oniDetails
         </article>
       </Card>

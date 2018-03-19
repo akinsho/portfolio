@@ -54,14 +54,20 @@ var image = Css.style(/* :: */[
     ]);
 
 var projectDetails = Css.style(/* :: */[
-      Css.padding(Css.em(1)),
+      Css.lineHeight(1.5),
+      /* [] */0
+    ]);
+
+var projectLine = Css.style(/* :: */[
+      Css.margin(Css.em(0.5)),
       /* [] */0
     ]);
 
 var Styles = /* module */[
   /* projectContainer */projectContainer,
   /* image */image,
-  /* projectDetails */projectDetails
+  /* projectDetails */projectDetails,
+  /* projectLine */projectLine
 ];
 
 var card = Css.style(/* :: */[
@@ -78,7 +84,7 @@ var card = Css.style(/* :: */[
             /* :: */[
               Css.color(Css.black),
               /* :: */[
-                Css.padding(Css.em(1)),
+                Css.padding(Css.em(1.5)),
                 /* :: */[
                   Css.fontSize(Css.rem(1.2)),
                   /* [] */0
@@ -90,6 +96,14 @@ var card = Css.style(/* :: */[
       ]
     ]);
 
+var cardTitle = Css.style(/* :: */[
+      Css.paddingLeft(Css.em(2)),
+      /* :: */[
+        Css.margin(Css.em(0.2)),
+        /* [] */0
+      ]
+    ]);
+
 var component$1 = ReasonReact.statelessComponent("Card");
 
 function make(title, children) {
@@ -97,13 +111,16 @@ function make(title, children) {
   newrecord[/* render */9] = (function () {
       return React.createElement("article", {
                   className: card
-                }, React.createElement("h1", undefined, Utils$Portfolio.str(title)), children);
+                }, React.createElement("h1", {
+                      className: cardTitle
+                    }, Utils$Portfolio.str(title)), children);
     });
   return newrecord;
 }
 
 var Card = /* module */[
   /* card */card,
+  /* cardTitle */cardTitle,
   /* component */component$1,
   /* make */make
 ];
@@ -116,9 +133,10 @@ var details = /* array */[
 ];
 
 var oniDetails = $$Array.mapi((function (index, line) {
-        return React.createElement("span", {
-                    key: Pervasives.string_of_int(index)
-                  }, Utils$Portfolio.str(line), React.createElement("br", undefined));
+        return React.createElement("p", {
+                    key: Pervasives.string_of_int(index),
+                    className: projectLine
+                  }, Utils$Portfolio.str(line));
       }), details);
 
 function make$1() {
@@ -136,7 +154,7 @@ function make$1() {
                               }),
                           React.createElement("article", {
                                 className: projectDetails
-                              }, Utils$Portfolio.str("A modal editor for the modern age"), oniDetails)
+                              }, React.createElement("p", undefined, Utils$Portfolio.str("A modal editor for the modern age")), oniDetails)
                         ])));
     });
   return newrecord;
