@@ -5,7 +5,10 @@ let getElement = ReactDOMRe.domElementToObj;
 
 let restyle = ReactDOMRe.Style.make;
 
+/* Helper functions */
 [@bs.val] external requireAssetUri : string => string = "require";
+
+[@bs.val] external importCss : string => unit = "import";
 
 /* Abstract types for font awesome methods - no official bindings */
 type lib;

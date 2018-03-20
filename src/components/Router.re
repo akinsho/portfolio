@@ -1,6 +1,7 @@
 open Utils;
 
 module Styles = {
+  open CommonStyles;
   open Css;
   global(
     "body, html",
@@ -19,7 +20,7 @@ module Styles = {
       justifyContent(center),
       height(vh(100.0)),
       fontSize(rem(1.5)),
-      backgroundColor(hex("232529")),
+      backgroundColor(hex(theme.bgColor)),
       color(white),
     ]);
 };

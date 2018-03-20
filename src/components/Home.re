@@ -5,10 +5,13 @@ module Styles = {
   let homeContainer =
     style([
       display(flexBox),
+      marginTop(em(3.)),
       flexDirection(column),
       alignItems(center),
       justifyContent(center),
       flex(1),
+      height(auto),
+      overflow(scroll),
     ]);
   let firstName =
     style([
@@ -33,6 +36,7 @@ module Styles = {
       animationDuration(50000),
       animationIterationCount(infinite),
     ]);
+  let homeSection = style([padding(em(2.))]);
 };
 
 let component = ReasonReact.statelessComponent("Home");
@@ -40,7 +44,7 @@ let component = ReasonReact.statelessComponent("Home");
 let appearIn = (delay: int, ~base=500, ()) =>
   string_of_int(delay + base) ++ "ms";
 
-let renderBio = () => {
+let renderBio = {
   let bio = [
     "Software developer,",
     "One time doctor,",
@@ -71,7 +75,7 @@ let make = _children => {
   ...component,
   render: _self =>
     <div className=Styles.homeContainer>
-      <section>
+      <section className=Styles.homeSection>
         <header className=(Styles.drifting(~reverseDirection=true))>
           <Icons />
           <Transition
@@ -98,7 +102,7 @@ let make = _children => {
           </Transition>
         </header>
         <article className=(Styles.drifting(~reverseDirection=false))>
-          (renderBio())
+          renderBio
         </article>
       </section>
     </div>,
