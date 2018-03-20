@@ -14,7 +14,7 @@
         "@fortawesome/fontawesome-free-brands": "^5.0.8",
         "@fortawesome/react-fontawesome": "^0.0.17",
         "bs-css": "^6.5.0",
-        "bs-platform": "^2.2.2",
+        "bs-platform": "^2.2.3",
         "node-sass": "^4.7.2",
         "react": "^16.2.0",
         "react-dom": "^16.2.0",
