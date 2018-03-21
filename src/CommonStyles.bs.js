@@ -34,7 +34,10 @@ function combineClasses(classes) {
               }), "", classes);
 }
 
+var theme = /* record */[/* background */Css.hex("232529")];
+
 exports.pageTitle = pageTitle;
 exports.flexCenter = flexCenter;
 exports.combineClasses = combineClasses;
+exports.theme = theme;
 /* pageTitle Not a pure module */

@@ -12,6 +12,7 @@ var Home$Portfolio = require("./Home.bs.js");
 var Utils$Portfolio = require("./Utils.bs.js");
 var Projects$Portfolio = require("./Projects.bs.js");
 var Interests$Portfolio = require("./Interests.bs.js");
+var CommonStyles$Portfolio = require("./CommonStyles.bs.js");
 
 Css.$$global("body, html", /* :: */[
       Css.padding(Css.zero),
@@ -43,10 +44,13 @@ var container = Css.style(/* :: */[
               /* :: */[
                 Css.fontSize(Css.rem(1.5)),
                 /* :: */[
-                  Css.backgroundColor(Css.hex("232529")),
+                  Css.color(Css.white),
                   /* :: */[
-                    Css.color(Css.white),
-                    /* [] */0
+                    Css.marginTop(Css.em(1)),
+                    /* :: */[
+                      Css.backgroundColor(CommonStyles$Portfolio.theme[/* background */0]),
+                      /* [] */0
+                    ]
                   ]
                 ]
               ]

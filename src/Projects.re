@@ -29,7 +29,6 @@ module Styles = {
       width(em(10.)),
       height(auto),
       margin(em(1.)),
-      /* Css.float(`left), */
     ]);
   let cards =
     style([

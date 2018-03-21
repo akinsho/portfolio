@@ -20,8 +20,9 @@ module Styles = {
       justifyContent(center),
       height(vh(100.0)),
       fontSize(rem(1.5)),
-      backgroundColor(hex("232529")),
       color(white),
+      marginTop(em(1.)),
+      backgroundColor(CommonStyles.theme.background),
     ]);
 };
 

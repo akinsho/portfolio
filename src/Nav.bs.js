@@ -5,20 +5,27 @@ var Css = require("bs-css/src/Css.js");
 var React = require("react");
 var ReasonReact = require("reason-react/src/ReasonReact.js");
 var Utils$Portfolio = require("./Utils.bs.js");
+var CommonStyles$Portfolio = require("./CommonStyles.bs.js");
 
 var navContainer = Css.style(/* :: */[
-      Css.position(Css.absolute),
+      Css.zIndex(2),
       /* :: */[
-        Css.height(Css.em(3)),
+        Css.position(Css.absolute),
         /* :: */[
-          Css.width(Css.vw(100)),
+          Css.height(Css.em(3)),
           /* :: */[
-            Css.top(Css.zero),
+            Css.width(Css.vw(100)),
             /* :: */[
-              Css.fontSize(Css.rem(0.8)),
+              Css.top(Css.zero),
               /* :: */[
-                Css.display(/* flex */-1010954439),
-                /* [] */0
+                Css.fontSize(Css.rem(0.8)),
+                /* :: */[
+                  Css.display(/* flex */-1010954439),
+                  /* :: */[
+                    Css.backgroundColor(CommonStyles$Portfolio.theme[/* background */0]),
+                    /* [] */0
+                  ]
+                ]
               ]
             ]
           ]

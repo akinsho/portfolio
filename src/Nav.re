@@ -4,12 +4,14 @@ open Css;
 
 let navContainer =
   style([
+    zIndex(2),
     position(absolute),
     height(em(3.)),
     width(vw(100.)),
     top(zero),
     fontSize(rem(0.8)),
     display(`flex),
+    backgroundColor(CommonStyles.theme.background),
   ]);
 
 let links =

@@ -13,3 +13,11 @@ let flexCenter = (~columnStyle: bool) =>
 /* Use a fold/reduce to take in a list of classes and concatenate them.. probs overkill */
 let combineClasses = (classes: list(string)) =>
   ListLabels.fold_left(~f=(r, elem) => r ++ " " ++ elem, ~init="", classes);
+
+type themeProps = {
+  background: Css.color,
+};
+
+let theme = {
+  background: hex("232529"),
+}
