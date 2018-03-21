@@ -21,7 +21,10 @@ Css.$$global("body, html", /* :: */[
           Css.fontFamily(Utils$Portfolio.defaultFont),
           /* :: */[
             Css.fontSize(Css.px(16)),
-            /* [] */0
+            /* :: */[
+              Css.boxSizing(Css.borderBox),
+              /* [] */0
+            ]
           ]
         ]
       ]

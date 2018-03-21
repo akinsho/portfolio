@@ -12,6 +12,22 @@ var pageTitle = Css.style(/* :: */[
       ]
     ]);
 
+function flexCenter(columnStyle) {
+  return /* :: */[
+          Css.display(Css.flexBox),
+          /* :: */[
+            Css.alignItems(Css.center),
+            /* :: */[
+              Css.justifyContent(Css.center),
+              /* :: */[
+                Css.flexDirection(columnStyle !== 0 ? Css.column : Css.row),
+                /* [] */0
+              ]
+            ]
+          ]
+        ];
+}
+
 function combineClasses(classes) {
   return ListLabels.fold_left((function (r, elem) {
                 return r + (" " + elem);
@@ -19,5 +35,6 @@ function combineClasses(classes) {
 }
 
 exports.pageTitle = pageTitle;
+exports.flexCenter = flexCenter;
 exports.combineClasses = combineClasses;
 /* pageTitle Not a pure module */

@@ -12,9 +12,11 @@ var hpo = require("./assets/hpo.png");
 
 var onivim = require("./assets/oni-logo.png");
 
+import("./css/projects.css");
+
 var component = ReasonReact.statelessComponent("Projects");
 
-var projectContainer = Css.style(/* :: */[
+var container = Css.style(/* :: */[
       Css.display(Css.flexBox),
       /* :: */[
         Css.flexDirection(Css.column),
@@ -46,25 +48,40 @@ var image = Css.style(/* :: */[
         Css.height(Css.auto),
         /* :: */[
           Css.margin(Css.em(1)),
+          /* [] */0
+        ]
+      ]
+    ]);
+
+var cards = Css.style(/* :: */[
+      Css.display(Css.flexBox),
+      /* :: */[
+        Css.flexDirection(Css.row),
+        /* :: */[
+          Css.flexWrap(Css.wrap),
           /* :: */[
-            Css.$$float(/* left */-944764921),
+            Css.children(/* :: */[
+                  Css.margin(Css.em(2)),
+                  /* :: */[
+                    Css.flexBasis(/* `percent */[
+                          -119887163,
+                          35
+                        ]),
+                    /* [] */0
+                  ]
+                ]),
             /* [] */0
           ]
         ]
       ]
     ]);
 
-var projectDetails = Css.style(/* :: */[
-      Css.lineHeight(1.5),
-      /* [] */0
-    ]);
-
-var projectLine = Css.style(/* :: */[
+var line = Css.style(/* :: */[
       Css.display(Css.block),
       /* [] */0
     ]);
 
-var projectIntro = Css.style(/* :: */[
+var intro = Css.style(/* :: */[
       Css.fontStyle(Css.italic),
       /* :: */[
         Css.fontWeight(800),
@@ -72,35 +89,44 @@ var projectIntro = Css.style(/* :: */[
       ]
     ]);
 
+var title = Css.style(/* :: */[
+      Css.height(Css.em(5)),
+      /* :: */[
+        Css.verticalAlign(Css.middle),
+        /* :: */[
+          Css.textAlign(Css.center),
+          /* [] */0
+        ]
+      ]
+    ]);
+
 var Styles = /* module */[
-  /* projectContainer */projectContainer,
+  /* container */container,
   /* image */image,
-  /* projectDetails */projectDetails,
-  /* projectLine */projectLine,
-  /* projectIntro */projectIntro
+  /* cards */cards,
+  /* line */line,
+  /* intro */intro,
+  /* title */title
 ];
 
 var card = Css.style(/* :: */[
-      Css.width(/* `percent */[
-            -119887163,
-            50
-          ]),
+      Css.flex(1),
       /* :: */[
-        Css.backgroundColor(Css.whitesmoke),
+        Css.height(Css.auto),
         /* :: */[
-          Css.height(Css.auto),
+          Css.backgroundColor(Css.whitesmoke),
           /* :: */[
             Css.marginTop(Css.em(1)),
             /* :: */[
               Css.marginBottom(Css.em(1)),
               /* :: */[
-                Css.borderRadius(Css.px(8)),
+                Css.borderRadius(Css.px(5)),
                 /* :: */[
                   Css.color(Css.black),
                   /* :: */[
-                    Css.padding(Css.em(1.5)),
+                    Css.fontSize(Css.rem(1.2)),
                     /* :: */[
-                      Css.fontSize(Css.rem(1.2)),
+                      Css.overflow(Css.hidden),
                       /* [] */0
                     ]
                   ]
@@ -108,6 +134,47 @@ var card = Css.style(/* :: */[
               ]
             ]
           ]
+        ]
+      ]
+    ]);
+
+var content = Css.style(/* :: */[
+      Css.margin(Css.zero),
+      CommonStyles$Portfolio.flexCenter(/* true */1)
+    ]);
+
+var contentBody = Css.style(/* [] */0);
+
+var details = Css.style(/* :: */[
+      Css.lineHeight(1.5),
+      /* :: */[
+        Css.width(/* `percent */[
+              -119887163,
+              100
+            ]),
+        /* :: */[
+          Css.padding(Css.em(1)),
+          /* :: */[
+            Css.boxSizing(Css.borderBox),
+            /* [] */0
+          ]
+        ]
+      ]
+    ]);
+
+var imageContainer = Css.style(/* :: */[
+      Css.width(/* `percent */[
+            -119887163,
+            100
+          ]),
+      /* :: */[
+        Css.backgroundColor(Css.hex("EFEFEF")),
+        /* :: */[
+          Css.minHeight(/* `percent */[
+                -119887163,
+                40
+              ]),
+          CommonStyles$Portfolio.flexCenter(/* true */1)
         ]
       ]
     ]);
@@ -133,17 +200,21 @@ function make(title, children) {
 
 var Card = /* module */[
   /* card */card,
+  /* content */content,
+  /* contentBody */contentBody,
+  /* details */details,
+  /* imageContainer */imageContainer,
   /* cardTitle */cardTitle,
   /* component */component$1,
   /* make */make
 ];
 
 function renderText(details) {
-  return $$Array.mapi((function (index, line) {
+  return $$Array.mapi((function (index, line$1) {
                 return React.createElement("span", {
                             key: String(index),
-                            className: projectLine
-                          }, Utils$Portfolio.str(line));
+                            className: line
+                          }, Utils$Portfolio.str(line$1));
               }), details);
 }
 
@@ -165,32 +236,60 @@ function make$1() {
   var newrecord = component.slice();
   newrecord[/* render */9] = (function () {
       return React.createElement("div", {
-                  className: projectContainer
+                  className: container
                 }, React.createElement("h1", {
-                      className: CommonStyles$Portfolio.pageTitle
-                    }, Utils$Portfolio.str("Projects")), ReasonReact.element(/* None */0, /* None */0, make("Onivim", /* array */[
-                          React.createElement("img", {
-                                className: image,
-                                alt: "onivim logo",
-                                src: onivim
-                              }),
-                          React.createElement("article", {
-                                className: projectDetails
-                              }, React.createElement("p", {
-                                    className: projectIntro
-                                  }, Utils$Portfolio.str("A Modal Editor for the Modern age")), renderText(oniDetails))
-                        ])), ReasonReact.element(/* None */0, /* None */0, make("Human Phenotype Ontology", /* array */[
-                          React.createElement("img", {
-                                className: image,
-                                alt: "onivim logo",
-                                src: hpo
-                              }),
-                          React.createElement("article", {
-                                className: projectDetails
-                              }, React.createElement("p", {
-                                    className: projectIntro
-                                  }, Utils$Portfolio.str("A data visualization of the human phenotype ontology")), renderText(phenotypeDetails))
-                        ])));
+                      className: CommonStyles$Portfolio.combineClasses(/* :: */[
+                            CommonStyles$Portfolio.pageTitle,
+                            /* :: */[
+                              title,
+                              /* [] */0
+                            ]
+                          ])
+                    }, Utils$Portfolio.str("Projects")), React.createElement("section", {
+                      className: cards
+                    }, ReasonReact.element(/* None */0, /* None */0, make("Onivim", /* array */[React.createElement("div", {
+                                    className: content
+                                  }, React.createElement("div", {
+                                        className: imageContainer
+                                      }, React.createElement("img", {
+                                            className: image,
+                                            alt: "onivim logo",
+                                            src: onivim
+                                          })), React.createElement("div", {
+                                        className: details
+                                      }, React.createElement("p", {
+                                            className: intro
+                                          }, Utils$Portfolio.str("A Modal Editor for the Modern age")), React.createElement("p", {
+                                            className: contentBody
+                                          }, renderText(oniDetails))))])), ReasonReact.element(/* None */0, /* None */0, make("Human Phenotype Ontology", /* array */[React.createElement("div", {
+                                    className: content
+                                  }, React.createElement("div", {
+                                        className: imageContainer
+                                      }, React.createElement("img", {
+                                            className: image,
+                                            alt: "onivim logo",
+                                            src: hpo
+                                          })), React.createElement("div", {
+                                        className: details
+                                      }, React.createElement("p", {
+                                            className: intro
+                                          }, Utils$Portfolio.str("A data visualization of the human phenotype ontology")), React.createElement("p", {
+                                            className: contentBody
+                                          }, renderText(phenotypeDetails))))])), ReasonReact.element(/* None */0, /* None */0, make("Human Phenotype Ontology", /* array */[React.createElement("div", {
+                                    className: content
+                                  }, React.createElement("div", {
+                                        className: imageContainer
+                                      }, React.createElement("img", {
+                                            className: image,
+                                            alt: "onivim logo",
+                                            src: hpo
+                                          })), React.createElement("div", {
+                                        className: details
+                                      }, React.createElement("p", {
+                                            className: intro
+                                          }, Utils$Portfolio.str("A data visualization of the human phenotype ontology")), React.createElement("p", {
+                                            className: contentBody
+                                          }, renderText(phenotypeDetails))))]))));
     });
   return newrecord;
 }

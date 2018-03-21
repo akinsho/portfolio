@@ -9,6 +9,7 @@ module Styles = {
       margin(zero),
       fontFamily(defaultFont),
       fontSize(px(16)),
+      boxSizing(borderBox),
     ],
   );
   let container =
