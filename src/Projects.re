@@ -4,6 +4,8 @@ open CommonStyles;
 
 let hpo = requireAssetUri("./assets/hpo.png");
 
+let medspace = requireAssetUri("./assets/medspace.gif");
+
 let onivim = requireAssetUri("./assets/oni-logo.png");
 
 importCss("./css/projects.css");
@@ -34,7 +36,8 @@ module Styles = {
       display(flexBox),
       flexDirection(row),
       flexWrap(wrap),
-      children([margin(em(2.)), flexBasis(`percent(35.))]),
+      justifyContent(center),
+      children([margin(em(2.)), flexGrow(0), flexBasis(`percent(42.))]),
     ]);
   let line = style([display(block)]);
   let intro = style([fontStyle(italic), fontWeight(800)]);
@@ -55,6 +58,7 @@ module Card = {
       color(black),
       fontSize(rem(1.2)),
       overflow(hidden),
+      paddingBottom(em(1.)),
     ]);
   let content =
     style([margin(zero), ...CommonStyles.flexCenter(~columnStyle=true)]);
@@ -68,32 +72,49 @@ module Card = {
     ]);
   let imageContainer =
     style([
+      margin(zero),
       width(`percent(100.)),
       backgroundColor(hex("EFEFEF")),
       minHeight(`percent(40.)),
       ...CommonStyles.flexCenter(~columnStyle=true),
     ]);
   let cardTitle = style([margin(em(0.2))]);
+  let renderText = (details: array(string)) =>
+    Array.mapi(
+      (index, line) =>
+        <span className=Styles.line key=(string_of_int(index))>
+          (str(line))
+        </span>,
+      details,
+    )
+    |> ReasonReact.arrayToElement;
   let component = ReasonReact.statelessComponent("Card");
-  let make = (~title: string, children) => {
+  let make =
+      (
+        ~title: string,
+        ~img: string,
+        ~body: array(string),
+        ~header: string,
+        ~alt: string,
+        children,
+      ) => {
     ...component,
     render: _self =>
       <article className=card>
-        <h1 className=cardTitle> (str(title)) </h1>
+        <div className=content>
+          <figure className=imageContainer>
+            <img className=Styles.image src=img alt />
+            <caption className=cardTitle> (str(title)) </caption>
+          </figure>
+          <div className=details>
+            <p className=Styles.intro> (str(header)) </p>
+            <p className=contentBody> (renderText(body)) </p>
+          </div>
+        </div>
         (ReasonReact.arrayToElement(children))
       </article>,
   };
 };
-
-let renderText = (details: array(string)) =>
-  Array.mapi(
-    (index, line) =>
-      <span className=Styles.line key=(string_of_int(index))>
-        (str(line))
-      </span>,
-    details,
-  )
-  |> ReasonReact.arrayToElement;
 
 let oniDetails = [|
   "I collaborate on the Onivim project on github.",
@@ -114,6 +135,14 @@ let phenotypeDetails = [|
     |j},
 |];
 
+let medspaceDetails = [|
+  {j| I worked with two other developers to create a prototype of a react app aimed at trying to increase
+the understanding of children and young adults undergoing psychiatric treatment of the medication they were prescribed|j},
+  {j|We worked closely with a psychiatrist and a therapist to collate a list of common medications and explain what these
+  were and how they worked in an approachable fashion
+  |j},
+|];
+
 let make = _children => {
   ...component,
   render: _self =>
@@ -122,49 +151,27 @@ let make = _children => {
         (str("Projects"))
       </h1>
       <section className=Styles.cards>
-        <Card title="Onivim">
-          <div className=Card.content>
-            <div className=Card.imageContainer>
-              <img className=Styles.image src=onivim alt="onivim logo" />
-            </div>
-            <div className=Card.details>
-              <p className=Styles.intro>
-                (str("A Modal Editor for the Modern age"))
-              </p>
-              <p className=Card.contentBody> (renderText(oniDetails)) </p>
-            </div>
-          </div>
-        </Card>
-        <Card title="Human Phenotype Ontology">
-          <div className=Card.content>
-            <div className=Card.imageContainer>
-              <img className=Styles.image src=hpo alt="onivim logo" />
-            </div>
-            <div className=Card.details>
-              <p className=Styles.intro>
-                (str("A data visualization of the human phenotype ontology"))
-              </p>
-              <p className=Card.contentBody>
-                (renderText(phenotypeDetails))
-              </p>
-            </div>
-          </div>
-        </Card>
-        <Card title="Human Phenotype Ontology">
-          <div className=Card.content>
-            <div className=Card.imageContainer>
-              <img className=Styles.image src=hpo alt="onivim logo" />
-            </div>
-            <div className=Card.details>
-              <p className=Styles.intro>
-                (str("A data visualization of the human phenotype ontology"))
-              </p>
-              <p className=Card.contentBody>
-                (renderText(phenotypeDetails))
-              </p>
-            </div>
-          </div>
-        </Card>
+        <Card
+          title="Onivim"
+          header="A Modal Editor for the Modern age"
+          body=oniDetails
+          img=onivim
+          alt="onivim editor logo"
+        />
+        <Card
+          title="Human Phenotype Ontology"
+          body=phenotypeDetails
+          header="A data visualization of the human phenotype ontology"
+          img=hpo
+          alt="HPO logo"
+        />
+        <Card
+          title="Medspace"
+          img=medspace
+          body=medspaceDetails
+          header="A web app aimed at helping children understand their medication"
+          alt="GIF demoing medspace"
+        />
       </section>
     </div>,
 };

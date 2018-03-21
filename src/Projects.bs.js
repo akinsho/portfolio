@@ -10,6 +10,8 @@ var CommonStyles$Portfolio = require("./CommonStyles.bs.js");
 
 var hpo = require("./assets/hpo.png");
 
+var medspace = require("./assets/medspace.gif");
+
 var onivim = require("./assets/oni-logo.png");
 
 import("./css/projects.css");
@@ -60,17 +62,23 @@ var cards = Css.style(/* :: */[
         /* :: */[
           Css.flexWrap(Css.wrap),
           /* :: */[
-            Css.children(/* :: */[
-                  Css.margin(Css.em(2)),
-                  /* :: */[
-                    Css.flexBasis(/* `percent */[
-                          -119887163,
-                          35
-                        ]),
-                    /* [] */0
-                  ]
-                ]),
-            /* [] */0
+            Css.justifyContent(Css.center),
+            /* :: */[
+              Css.children(/* :: */[
+                    Css.margin(Css.em(2)),
+                    /* :: */[
+                      Css.flexGrow(0),
+                      /* :: */[
+                        Css.flexBasis(/* `percent */[
+                              -119887163,
+                              42
+                            ]),
+                        /* [] */0
+                      ]
+                    ]
+                  ]),
+              /* [] */0
+            ]
           ]
         ]
       ]
@@ -127,7 +135,10 @@ var card = Css.style(/* :: */[
                     Css.fontSize(Css.rem(1.2)),
                     /* :: */[
                       Css.overflow(Css.hidden),
-                      /* [] */0
+                      /* :: */[
+                        Css.paddingBottom(Css.em(1)),
+                        /* [] */0
+                      ]
                     ]
                   ]
                 ]
@@ -163,18 +174,21 @@ var details = Css.style(/* :: */[
     ]);
 
 var imageContainer = Css.style(/* :: */[
-      Css.width(/* `percent */[
-            -119887163,
-            100
-          ]),
+      Css.margin(Css.zero),
       /* :: */[
-        Css.backgroundColor(Css.hex("EFEFEF")),
+        Css.width(/* `percent */[
+              -119887163,
+              100
+            ]),
         /* :: */[
-          Css.minHeight(/* `percent */[
-                -119887163,
-                40
-              ]),
-          CommonStyles$Portfolio.flexCenter(/* true */1)
+          Css.backgroundColor(Css.hex("EFEFEF")),
+          /* :: */[
+            Css.minHeight(/* `percent */[
+                  -119887163,
+                  40
+                ]),
+            CommonStyles$Portfolio.flexCenter(/* true */1)
+          ]
         ]
       ]
     ]);
@@ -184,16 +198,39 @@ var cardTitle = Css.style(/* :: */[
       /* [] */0
     ]);
 
+function renderText(details) {
+  return $$Array.mapi((function (index, line$1) {
+                return React.createElement("span", {
+                            key: String(index),
+                            className: line
+                          }, Utils$Portfolio.str(line$1));
+              }), details);
+}
+
 var component$1 = ReasonReact.statelessComponent("Card");
 
-function make(title, children) {
+function make(title, img, body, header, alt, children) {
   var newrecord = component$1.slice();
   newrecord[/* render */9] = (function () {
       return React.createElement("article", {
                   className: card
-                }, React.createElement("h1", {
-                      className: cardTitle
-                    }, Utils$Portfolio.str(title)), children);
+                }, React.createElement("div", {
+                      className: content
+                    }, React.createElement("figure", {
+                          className: imageContainer
+                        }, React.createElement("img", {
+                              className: image,
+                              alt: alt,
+                              src: img
+                            }), React.createElement("caption", {
+                              className: cardTitle
+                            }, Utils$Portfolio.str(title))), React.createElement("div", {
+                          className: details
+                        }, React.createElement("p", {
+                              className: intro
+                            }, Utils$Portfolio.str(header)), React.createElement("p", {
+                              className: contentBody
+                            }, renderText(body)))), children);
     });
   return newrecord;
 }
@@ -205,18 +242,10 @@ var Card = /* module */[
   /* details */details,
   /* imageContainer */imageContainer,
   /* cardTitle */cardTitle,
+  /* renderText */renderText,
   /* component */component$1,
   /* make */make
 ];
-
-function renderText(details) {
-  return $$Array.mapi((function (index, line$1) {
-                return React.createElement("span", {
-                            key: String(index),
-                            className: line
-                          }, Utils$Portfolio.str(line$1));
-              }), details);
-}
 
 var oniDetails = /* array */[
   "I collaborate on the Onivim project on github.",
@@ -230,6 +259,11 @@ var phenotypeDetails = /* array */[
   " The object of this project was to create a data visualization of a section of the\n  human phenotype ontology (HPO)",
   " The HPO is fancy term for the classification of human disease, aka the main classification\n    of lungs diseases would be pulmonary pathology and this would then have loads of subclasses\n  ",
   " This involved parsing an enormous OBO file (an obscure academic format for phenotypic data) into\n  json and then rendering this data with a data visualisation library\n    "
+];
+
+var medspaceDetails = /* array */[
+  " I worked with two other developers to create a prototype of a react app aimed at trying to increase\nthe understanding of children and young adults undergoing psychiatric treatment of the medication they were prescribed",
+  "We worked closely with a psychiatrist and a therapist to collate a list of common medications and explain what these\n  were and how they worked in an approachable fashion\n  "
 ];
 
 function make$1() {
@@ -247,60 +281,19 @@ function make$1() {
                           ])
                     }, Utils$Portfolio.str("Projects")), React.createElement("section", {
                       className: cards
-                    }, ReasonReact.element(/* None */0, /* None */0, make("Onivim", /* array */[React.createElement("div", {
-                                    className: content
-                                  }, React.createElement("div", {
-                                        className: imageContainer
-                                      }, React.createElement("img", {
-                                            className: image,
-                                            alt: "onivim logo",
-                                            src: onivim
-                                          })), React.createElement("div", {
-                                        className: details
-                                      }, React.createElement("p", {
-                                            className: intro
-                                          }, Utils$Portfolio.str("A Modal Editor for the Modern age")), React.createElement("p", {
-                                            className: contentBody
-                                          }, renderText(oniDetails))))])), ReasonReact.element(/* None */0, /* None */0, make("Human Phenotype Ontology", /* array */[React.createElement("div", {
-                                    className: content
-                                  }, React.createElement("div", {
-                                        className: imageContainer
-                                      }, React.createElement("img", {
-                                            className: image,
-                                            alt: "onivim logo",
-                                            src: hpo
-                                          })), React.createElement("div", {
-                                        className: details
-                                      }, React.createElement("p", {
-                                            className: intro
-                                          }, Utils$Portfolio.str("A data visualization of the human phenotype ontology")), React.createElement("p", {
-                                            className: contentBody
-                                          }, renderText(phenotypeDetails))))])), ReasonReact.element(/* None */0, /* None */0, make("Human Phenotype Ontology", /* array */[React.createElement("div", {
-                                    className: content
-                                  }, React.createElement("div", {
-                                        className: imageContainer
-                                      }, React.createElement("img", {
-                                            className: image,
-                                            alt: "onivim logo",
-                                            src: hpo
-                                          })), React.createElement("div", {
-                                        className: details
-                                      }, React.createElement("p", {
-                                            className: intro
-                                          }, Utils$Portfolio.str("A data visualization of the human phenotype ontology")), React.createElement("p", {
-                                            className: contentBody
-                                          }, renderText(phenotypeDetails))))]))));
+                    }, ReasonReact.element(/* None */0, /* None */0, make("Onivim", onivim, oniDetails, "A Modal Editor for the Modern age", "onivim editor logo", /* array */[])), ReasonReact.element(/* None */0, /* None */0, make("Human Phenotype Ontology", hpo, phenotypeDetails, "A data visualization of the human phenotype ontology", "HPO logo", /* array */[])), ReasonReact.element(/* None */0, /* None */0, make("Medspace", medspace, medspaceDetails, "A web app aimed at helping children understand their medication", "GIF demoing medspace", /* array */[]))));
     });
   return newrecord;
 }
 
 exports.hpo = hpo;
+exports.medspace = medspace;
 exports.onivim = onivim;
 exports.component = component;
 exports.Styles = Styles;
 exports.Card = Card;
-exports.renderText = renderText;
 exports.oniDetails = oniDetails;
 exports.phenotypeDetails = phenotypeDetails;
+exports.medspaceDetails = medspaceDetails;
 exports.make = make$1;
 /* hpo Not a pure module */
