@@ -37,27 +37,25 @@ var Styles = /* module */[
 
 var component = ReasonReact.statelessComponent("Bio");
 
-function aboutMe() {
-  return React.createElement("article", {
-              className: bio
-            }, $$Array.of_list(List.mapi((function (index, item) {
-                        return React.createElement("p", {
-                                    key: String(index)
-                                  }, Utils$Portfolio.str(item));
-                      }), /* :: */[
-                      "I trained as a Medical Doctor at King's college london.",
-                      /* :: */[
-                        "Unfortunately after 8 years of studying, training, many an up and down\n    I realised that it wasn\'t for me and parted ways with that time of my life.\n      ",
-                        /* :: */[
-                          " As understandeably unusual a choice as it might seem I much preferred tinkering with computers\n    I\'d spent much of my youth messing around with hardware but it wasn\'t really till the fateful summer having just\n    decided to leave my job that I discovered github and the rest is history...\n    ",
-                          /* :: */[
-                            "Actually the rest is me meeting a bunch of other aspiring developers, our forming a group to teach each other\n    then my finding out about founders and coders in London",
-                            /* [] */0
-                          ]
-                        ]
-                      ]
-                    ])));
-}
+var aboutMe = React.createElement("article", {
+      className: bio
+    }, $$Array.of_list(List.mapi((function (index, item) {
+                return React.createElement("p", {
+                            key: String(index)
+                          }, Utils$Portfolio.str(item));
+              }), /* :: */[
+              "I trained as a Medical Doctor at King's college london.",
+              /* :: */[
+                "Unfortunately after 8 years of studying, training, many an up and down\n    I realised that it wasn\'t for me and parted ways with that time of my life.\n      ",
+                /* :: */[
+                  " As understandeably unusual a choice as it might seem I much preferred tinkering with computers\n    I\'d spent much of my youth messing around with hardware but it wasn\'t really till the fateful summer having just\n    decided to leave my job that I discovered github and the rest is history...\n    ",
+                  /* :: */[
+                    "Actually the rest is me meeting a bunch of other aspiring developers, our forming a group to teach each other\n    then my finding out about founders and coders in London",
+                    /* [] */0
+                  ]
+                ]
+              ]
+            ])));
 
 function make() {
   var newrecord = component.slice();
@@ -66,7 +64,7 @@ function make() {
                       className: bioSection
                     }, React.createElement("h1", {
                           className: title
-                        }, Utils$Portfolio.str("Bio")), aboutMe(/* () */0)));
+                        }, Utils$Portfolio.str("Bio")), aboutMe));
     });
   return newrecord;
 }

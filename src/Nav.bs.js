@@ -102,7 +102,7 @@ function make() {
                           className: listItem,
                           id: "projects",
                           onClick: navigate
-                        }, Utils$Portfolio.str("Stuff I've done")), React.createElement("li", {
+                        }, Utils$Portfolio.str("Projects")), React.createElement("li", {
                           className: listItem,
                           id: "bio",
                           onClick: navigate

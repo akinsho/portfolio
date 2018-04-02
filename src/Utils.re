@@ -47,6 +47,30 @@ module FontAwesomeIcon = {
     );
 };
 
+module Slick = {
+  /* React Slick Interop */
+  [@bs.module "react-slick"] external reactSlick : ReasonReact.reactClass = "";
+  type settings = {
+    dots: bool,
+    infinite: bool,
+    speed: int,
+    slidesToShow: int,
+    slidesToScroll: int,
+  };
+  let make = (~settings: settings, children) =>
+    ReasonReact.wrapJsForReason(
+      ~reactClass=reactSlick,
+      ~props={
+        "dots": settings.dots,
+        "infinite": settings.infinite,
+        "speed": settings.speed,
+        "slidesToShow": settings.slidesToShow,
+        "slidesToScroll": settings.slidesToScroll,
+      },
+      children
+    );
+};
+
 let linkedinLink = "https://www.linkedin.com/in/akin-sowemimo-831383131/";
 
 let githubLink = "https://www.github.com/Akin909";
@@ -57,3 +81,11 @@ let defaultFont = {| -apple-system, BlinkMacSystemFont,
                     "Segoe UI",Roboto, Helvetica, Arial, sans-serif,
                     "Apple Color Emoji","Segoe UI Emoji", "Segoe UI Symbol"
                   |};
+
+let renderText = (details: array(string), className: string) =>
+  Array.mapi(
+    (index, line) =>
+      <span className key=(string_of_int(index))> (str(line)) </span>,
+    details,
+  )
+  |> ReasonReact.arrayToElement;

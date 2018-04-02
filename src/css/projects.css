@@ -1,3 +1,29 @@
 .grid {
   display: grid;
 }
+
+.ellipsis {
+  color: blanchedalmond;
+}
+
+.ellipsis:before {
+  content: "";
+  float: left;
+  width: 5px;
+  height: 100%;
+}
+
+.ellipsis:after {
+  content: "\02026";
+  box-sizing: content-box;
+  -webkit-box-sizing: content-box;
+  -moz-box-sizing: content-box;
+  float: right;
+  position: relative;
+  top: -25px;
+  left: 100%;
+  width: 3em;
+  margin-left: -3em;
+  padding-right: 5px;
+  text-align: right;
+}

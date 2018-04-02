@@ -9,7 +9,7 @@ module Styles = {
 
 let component = ReasonReact.statelessComponent("Bio");
 
-let aboutMe = () => {
+let aboutMe = {
   let details = [
     "I trained as a Medical Doctor at King's college london.",
     {j|Unfortunately after 8 years of studying, training, many an up and down
@@ -40,7 +40,7 @@ let make = _children => {
     <div>
       <section className=Styles.bioSection>
         <h1 className=Styles.title> (str("Bio")) </h1>
-        (aboutMe())
+        (aboutMe)
       </section>
     </div>,
 };

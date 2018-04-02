@@ -8,13 +8,13 @@ var ReasonReact = require("reason-react/src/ReasonReact.js");
 var Utils$Portfolio = require("./Utils.bs.js");
 var CommonStyles$Portfolio = require("./CommonStyles.bs.js");
 
-var hpo = require("./assets/hpo.png");
+var hpo = require("./assets/hpo.gif");
 
 var medspace = require("./assets/medspace.gif");
 
 var onivim = require("./assets/oni-logo.png");
 
-import("./css/projects.css");
+require("./css/projects.css");
 
 var component = ReasonReact.statelessComponent("Projects");
 
@@ -62,22 +62,28 @@ var cards = Css.style(/* :: */[
         /* :: */[
           Css.flexWrap(Css.wrap),
           /* :: */[
-            Css.justifyContent(Css.center),
+            Css.width(/* `percent */[
+                  -119887163,
+                  100
+                ]),
             /* :: */[
-              Css.children(/* :: */[
-                    Css.margin(Css.em(2)),
-                    /* :: */[
-                      Css.flexGrow(0),
+              Css.justifyContent(Css.center),
+              /* :: */[
+                Css.children(/* :: */[
+                      Css.margin(Css.em(2)),
                       /* :: */[
-                        Css.flexBasis(/* `percent */[
-                              -119887163,
-                              42
-                            ]),
-                        /* [] */0
+                        Css.flexGrow(0),
+                        /* :: */[
+                          Css.flexBasis(/* `percent */[
+                                -119887163,
+                                42
+                              ]),
+                          /* [] */0
+                        ]
                       ]
-                    ]
-                  ]),
-              /* [] */0
+                    ]),
+                /* [] */0
+              ]
             ]
           ]
         ]
@@ -90,11 +96,8 @@ var line = Css.style(/* :: */[
     ]);
 
 var intro = Css.style(/* :: */[
-      Css.fontStyle(Css.italic),
-      /* :: */[
-        Css.fontWeight(800),
-        /* [] */0
-      ]
+      Css.fontWeight(800),
+      /* [] */0
     ]);
 
 var title = Css.style(/* :: */[
@@ -120,24 +123,30 @@ var Styles = /* module */[
 var card = Css.style(/* :: */[
       Css.flex(1),
       /* :: */[
-        Css.height(Css.auto),
+        Css.flexBasis(/* `percent */[
+              -119887163,
+              30
+            ]),
         /* :: */[
-          Css.backgroundColor(Css.whitesmoke),
+          Css.height(Css.auto),
           /* :: */[
-            Css.marginTop(Css.em(1)),
+            Css.backgroundColor(Css.whitesmoke),
             /* :: */[
-              Css.marginBottom(Css.em(1)),
+              Css.marginTop(Css.em(1)),
               /* :: */[
-                Css.borderRadius(Css.px(5)),
+                Css.marginBottom(Css.em(1)),
                 /* :: */[
-                  Css.color(Css.black),
+                  Css.borderRadius(Css.px(5)),
                   /* :: */[
-                    Css.fontSize(Css.rem(1.2)),
+                    Css.color(Css.black),
                     /* :: */[
-                      Css.overflow(Css.hidden),
+                      Css.fontSize(Css.rem(1.2)),
                       /* :: */[
-                        Css.paddingBottom(Css.em(1)),
-                        /* [] */0
+                        Css.overflow(Css.hidden),
+                        /* :: */[
+                          Css.paddingBottom(Css.em(1)),
+                          /* [] */0
+                        ]
                       ]
                     ]
                   ]
@@ -159,15 +168,21 @@ var contentBody = Css.style(/* [] */0);
 var details = Css.style(/* :: */[
       Css.lineHeight(1.5),
       /* :: */[
-        Css.width(/* `percent */[
-              -119887163,
-              100
-            ]),
+        Css.padding(Css.em(1)),
         /* :: */[
-          Css.padding(Css.em(1)),
+          Css.height(/* `percent */[
+                -119887163,
+                100
+              ]),
           /* :: */[
-            Css.boxSizing(Css.borderBox),
-            /* [] */0
+            Css.width(/* `percent */[
+                  -119887163,
+                  100
+                ]),
+            /* :: */[
+              Css.boxSizing(Css.borderBox),
+              /* [] */0
+            ]
           ]
         ]
       ]
@@ -193,19 +208,16 @@ var imageContainer = Css.style(/* :: */[
       ]
     ]);
 
+function joinText(text) {
+  return Utils$Portfolio.str($$Array.fold_left((function (acc, line) {
+                    return acc + ("\n" + line);
+                  }), "", text));
+}
+
 var cardTitle = Css.style(/* :: */[
       Css.margin(Css.em(0.2)),
       /* [] */0
     ]);
-
-function renderText(details) {
-  return $$Array.mapi((function (index, line$1) {
-                return React.createElement("span", {
-                            key: String(index),
-                            className: line
-                          }, Utils$Portfolio.str(line$1));
-              }), details);
-}
 
 var component$1 = ReasonReact.statelessComponent("Card");
 
@@ -217,7 +229,8 @@ function make(title, img, body, header, alt, children) {
                 }, React.createElement("div", {
                       className: content
                     }, React.createElement("figure", {
-                          className: imageContainer
+                          className: imageContainer,
+                          style: Utils$Portfolio.restyle(/* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* Some */["cover"], /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* () */0)
                         }, React.createElement("img", {
                               className: image,
                               alt: alt,
@@ -225,12 +238,18 @@ function make(title, img, body, header, alt, children) {
                             }), React.createElement("caption", {
                               className: cardTitle
                             }, Utils$Portfolio.str(title))), React.createElement("div", {
-                          className: details
+                          className: CommonStyles$Portfolio.combineClasses(/* :: */[
+                                details,
+                                /* :: */[
+                                  "ellipsis",
+                                  /* [] */0
+                                ]
+                              ])
                         }, React.createElement("p", {
                               className: intro
-                            }, Utils$Portfolio.str(header)), React.createElement("p", {
+                            }, React.createElement("i", undefined, Utils$Portfolio.str(header))), React.createElement("p", {
                               className: contentBody
-                            }, renderText(body)))), children);
+                            }, joinText(body)))), children);
     });
   return newrecord;
 }
@@ -241,8 +260,8 @@ var Card = /* module */[
   /* contentBody */contentBody,
   /* details */details,
   /* imageContainer */imageContainer,
+  /* joinText */joinText,
   /* cardTitle */cardTitle,
-  /* renderText */renderText,
   /* component */component$1,
   /* make */make
 ];
@@ -266,6 +285,14 @@ var medspaceDetails = /* array */[
   "We worked closely with a psychiatrist and a therapist to collate a list of common medications and explain what these\n  were and how they worked in an approachable fashion\n  "
 ];
 
+var settings = /* record */[
+  /* dots : true */1,
+  /* infinite : true */1,
+  /* speed */500,
+  /* slidesToShow */1,
+  /* slidesToScroll */1
+];
+
 function make$1() {
   var newrecord = component.slice();
   newrecord[/* render */9] = (function () {
@@ -279,9 +306,9 @@ function make$1() {
                               /* [] */0
                             ]
                           ])
-                    }, Utils$Portfolio.str("Projects")), React.createElement("section", {
-                      className: cards
-                    }, ReasonReact.element(/* None */0, /* None */0, make("Onivim", onivim, oniDetails, "A Modal Editor for the Modern age", "onivim editor logo", /* array */[])), ReasonReact.element(/* None */0, /* None */0, make("Human Phenotype Ontology", hpo, phenotypeDetails, "A data visualization of the human phenotype ontology", "HPO logo", /* array */[])), ReasonReact.element(/* None */0, /* None */0, make("Medspace", medspace, medspaceDetails, "A web app aimed at helping children understand their medication", "GIF demoing medspace", /* array */[]))));
+                    }, Utils$Portfolio.str("Projects")), ReasonReact.element(/* None */0, /* None */0, Utils$Portfolio.Slick[/* make */0](settings, /* array */[React.createElement("section", {
+                                className: cards
+                              }, ReasonReact.element(/* None */0, /* None */0, make("Onivim", onivim, oniDetails, "A Modal Editor for the Modern age", "onivim editor logo", /* array */[])), ReasonReact.element(/* None */0, /* None */0, make("Human Phenotype Ontology", hpo, phenotypeDetails, "A data visualization of the human phenotype ontology", "HPO logo", /* array */[])), ReasonReact.element(/* None */0, /* None */0, make("Medspace", medspace, medspaceDetails, "A web app aimed at helping children understand their medication", "GIF demoing medspace", /* array */[])))])));
     });
   return newrecord;
 }
@@ -295,5 +322,6 @@ exports.Card = Card;
 exports.oniDetails = oniDetails;
 exports.phenotypeDetails = phenotypeDetails;
 exports.medspaceDetails = medspaceDetails;
+exports.settings = settings;
 exports.make = make$1;
 /* hpo Not a pure module */

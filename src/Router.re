@@ -73,7 +73,7 @@ let make = _children => {
     ReasonReact.SideEffects(self => route(url, self));
   },
   render: ({state}) =>
-    <div className=Styles.container>
+    <div className=Styles.container style=(restyle(~textRendering="optimizeLegibility", ()))>
       <Nav />
       (
         switch (state) {
