@@ -1076,7 +1076,7 @@ function make(icon, size, className, children) {
 var FontAwesomeIcon = /* module */[/* make */make];
 
 function make$1(settings, children) {
-  return ReasonReact.wrapJsForReason(ReactSlick.reactSlick, {
+  return ReasonReact.wrapJsForReason(ReactSlick.default, {
               dots: settings[/* dots */0],
               infinite: settings[/* infinite */1],
               speed: settings[/* speed */2],

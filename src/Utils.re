@@ -49,7 +49,7 @@ module FontAwesomeIcon = {
 
 module Slick = {
   /* React Slick Interop */
-  [@bs.module "react-slick"] external reactSlick : ReasonReact.reactClass = "";
+  [@bs.module "react-slick"] external reactSlick : ReasonReact.reactClass = "default";
   type settings = {
     dots: bool,
     infinite: bool,

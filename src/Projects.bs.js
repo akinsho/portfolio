@@ -235,7 +235,7 @@ function make(title, img, body, header, alt, children) {
                               className: image,
                               alt: alt,
                               src: img
-                            }), React.createElement("caption", {
+                            }), React.createElement("figcaption", {
                               className: cardTitle
                             }, Utils$Portfolio.str(title))), React.createElement("div", {
                           className: CommonStyles$Portfolio.combineClasses(/* :: */[

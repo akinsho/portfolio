@@ -99,7 +99,7 @@ module Card = {
         <div className=content>
           <figure className=imageContainer style=(restyle(~objectFit="cover",()))>
             <img className=Styles.image src=img alt />
-            <caption className=cardTitle> (str(title)) </caption>
+            <figcaption className=cardTitle> (str(title)) </figcaption>
           </figure>
           <div className=combineClasses([details, "ellipsis"])>
             <p className=Styles.intro> <i> (str(header)) </i> </p>
