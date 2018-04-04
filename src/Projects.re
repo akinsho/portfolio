@@ -59,11 +59,12 @@ module Card = {
   let content =
     style([margin(zero), ...CommonStyles.flexCenter(~columnStyle=true)]);
   let contentBody =
-    style([
-      /* textOverflow(ellipsis),
-      whiteSpace(nowrap),
-      overflow(hidden), */
-    ]);
+    style(
+      [],
+        /* textOverflow(ellipsis),
+           whiteSpace(nowrap),
+           overflow(hidden), */
+    );
   let details =
     style([
       lineHeight(1.5),
@@ -97,11 +98,12 @@ module Card = {
     render: _self =>
       <article className=card>
         <div className=content>
-          <figure className=imageContainer style=(restyle(~objectFit="cover",()))>
+          <figure
+            className=imageContainer style=(restyle(~objectFit="cover", ()))>
             <img className=Styles.image src=img alt />
             <figcaption className=cardTitle> (str(title)) </figcaption>
           </figure>
-          <div className=combineClasses([details, "ellipsis"])>
+          <div className=(combineClasses([details, "ellipsis"]))>
             <p className=Styles.intro> <i> (str(header)) </i> </p>
             <p className=contentBody> (joinText(body)) </p>
           </div>
@@ -143,40 +145,40 @@ let settings: Slick.settings = {
   infinite: true,
   speed: 500,
   slidesToShow: 1,
-  slidesToScroll: 1
+  slidesToScroll: 1,
 };
 
 let make = _children => {
   ...component,
   render: _self =>
     <div className=Styles.container>
-    <h1 className=(combineClasses([pageTitle, Styles.title]))>
-    (str("Projects"))
-    </h1>
-    <Slick settings={settings}>
-      <section className=Styles.cards>
-        <Card
-          title="Onivim"
-          header="A Modal Editor for the Modern age"
-          body=oniDetails
-          img=onivim
-          alt="onivim editor logo"
-        />
-        <Card
-          title="Human Phenotype Ontology"
-          body=phenotypeDetails
-          header="A data visualization of the human phenotype ontology"
-          img=hpo
-          alt="HPO logo"
-        />
-        <Card
-          title="Medspace"
-          img=medspace
-          body=medspaceDetails
-          header="A web app aimed at helping children understand their medication"
-          alt="GIF demoing medspace"
-        />
-      </section>
+      <h1 className=(combineClasses([pageTitle, Styles.title]))>
+        (str("Projects"))
+      </h1>
+      <Slick settings>
+        <section className=Styles.cards>
+          <Card
+            title="Onivim"
+            header="A Modal Editor for the Modern age"
+            body=oniDetails
+            img=onivim
+            alt="onivim editor logo"
+          />
+          <Card
+            title="Human Phenotype Ontology"
+            body=phenotypeDetails
+            header="A data visualization of the human phenotype ontology"
+            img=hpo
+            alt="HPO logo"
+          />
+          <Card
+            title="Medspace"
+            img=medspace
+            body=medspaceDetails
+            header="A web app aimed at helping children understand their medication"
+            alt="GIF demoing medspace"
+          />
+        </section>
       </Slick>
     </div>,
 };

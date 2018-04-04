@@ -7,6 +7,8 @@ var $$Array = require("bs-platform/lib/js/array.js");
 var React = require("react");
 var ReasonReact = require("reason-react/src/ReasonReact.js");
 var Utils$Portfolio = require("./Utils.bs.js");
+var Terminal$Portfolio = require("./Terminal.bs.js");
+var CommonStyles$Portfolio = require("./CommonStyles.bs.js");
 
 var bio = Css.style(/* :: */[
       Css.width(/* `percent */[
@@ -29,10 +31,13 @@ var title = Css.style(/* :: */[
       /* [] */0
     ]);
 
+var container = Css.style(CommonStyles$Portfolio.flexCenter(/* true */1));
+
 var Styles = /* module */[
   /* bio */bio,
   /* bioSection */bioSection,
-  /* title */title
+  /* title */title,
+  /* container */container
 ];
 
 var component = ReasonReact.statelessComponent("Bio");
@@ -60,11 +65,13 @@ var aboutMe = React.createElement("article", {
 function make() {
   var newrecord = component.slice();
   newrecord[/* render */9] = (function () {
-      return React.createElement("div", undefined, React.createElement("section", {
+      return React.createElement("div", {
+                  className: container
+                }, React.createElement("section", {
                       className: bioSection
                     }, React.createElement("h1", {
                           className: title
-                        }, Utils$Portfolio.str("Bio")), aboutMe));
+                        }, Utils$Portfolio.str("Bio")), aboutMe), ReasonReact.element(/* None */0, /* None */0, Terminal$Portfolio.make(/* array */[])));
     });
   return newrecord;
 }

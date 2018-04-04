@@ -5,6 +5,7 @@ module Styles = {
   let bio = style([width(`percent(80.)), padding(em(1.))]);
   let bioSection = style([padding(em(1.))]);
   let title = style([paddingLeft(em(1.))]);
+  let container = style(CommonStyles.flexCenter(~columnStyle=true));
 };
 
 let component = ReasonReact.statelessComponent("Bio");
@@ -37,10 +38,11 @@ let aboutMe = {
 let make = _children => {
   ...component,
   render: _self =>
-    <div>
+    <div className=Styles.container>
       <section className=Styles.bioSection>
         <h1 className=Styles.title> (str("Bio")) </h1>
-        (aboutMe)
+        aboutMe
       </section>
+      <Terminal />
     </div>,
 };

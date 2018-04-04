@@ -49,7 +49,7 @@ let make = (_) => {
     <Transition
       before=(restyle(~opacity="0", ()))
       after=(restyle(~opacity="1", ~transition="opacity 8s", ()))>
-      <div className=Styles.carousel>
+      <div key="1" className=Styles.carousel>
         <a
           href=githubLink
           rel="external"
