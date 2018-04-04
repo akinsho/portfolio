@@ -5,6 +5,7 @@ var Css = require("bs-css/src/Css.js");
 var React = require("react");
 var ReasonReact = require("reason-react/src/ReasonReact.js");
 var Utils$Portfolio = require("./Utils.bs.js");
+var CommonStyles$Portfolio = require("./CommonStyles.bs.js");
 
 var container = Css.style(/* :: */[
       Css.height(/* `percent */[
@@ -31,12 +32,33 @@ var header = Css.style(/* :: */[
       /* :: */[
         Css.height(Css.em(1)),
         /* :: */[
-          Css.backgroundColor(Css.whitesmoke),
+          Css.textAlign(Css.center),
           /* :: */[
-            Css.borderTopLeftRadius(Css.px(50)),
+            Css.paddingTop(Css.em(0.5)),
             /* :: */[
-              Css.borderTopRightRadius(Css.px(50)),
-              /* [] */0
+              Css.paddingBottom(Css.em(0.5)),
+              /* :: */[
+                Css.color(Css.black),
+                /* :: */[
+                  Css.backgroundColor(Css.whitesmoke),
+                  /* :: */[
+                    Css.borderTopLeftRadius(Css.px(5)),
+                    /* :: */[
+                      Css.borderTopRightRadius(Css.px(5)),
+                      /* :: */[
+                        Css.display(Css.flexBox),
+                        /* :: */[
+                          Css.alignItems(Css.center),
+                          /* :: */[
+                            Css.justifyContent(Css.center),
+                            /* [] */0
+                          ]
+                        ]
+                      ]
+                    ]
+                  ]
+                ]
+              ]
             ]
           ]
         ]
@@ -55,6 +77,74 @@ var content = Css.style(/* :: */[
                 -119887163,
                 100
               ]),
+          /* :: */[
+            Css.borderBottomLeftRadius(Css.px(5)),
+            /* :: */[
+              Css.borderBottomRightRadius(Css.px(5)),
+              /* [] */0
+            ]
+          ]
+        ]
+      ]
+    ]);
+
+var buttonContainer = Css.style(/* :: */[
+      Css.alignSelf(Css.flexStart),
+      /* [] */0
+    ]);
+
+var buttons = Css.style(/* :: */[
+      Css.height(Css.em(1.5)),
+      /* :: */[
+        Css.width(Css.em(1.5)),
+        /* :: */[
+          Css.borderRadius(/* `percent */[
+                -119887163,
+                50
+              ]),
+          /* :: */[
+            Css.border(Css.px(1), Css.solid, Css.hex("000")),
+            /* :: */[
+              Css.position(Css.relative),
+              /* :: */[
+                Css.top(Css.px(6)),
+                /* :: */[
+                  Css.left(Css.px(6)),
+                  /* :: */[
+                    Css.backgroundColor(Css.hex("ff3b47")),
+                    /* :: */[
+                      Css.borderColor(Css.hex("9d252b")),
+                      /* :: */[
+                        Css.display(Css.inlineBlock),
+                        /* [] */0
+                      ]
+                    ]
+                  ]
+                ]
+              ]
+            ]
+          ]
+        ]
+      ]
+    ]);
+
+var minimize = Css.style(/* :: */[
+      Css.left(Css.px(11)),
+      /* :: */[
+        Css.backgroundColor(Css.hex("ffc100")),
+        /* :: */[
+          Css.borderColor(Css.hex("9d802c")),
+          /* [] */0
+        ]
+      ]
+    ]);
+
+var zoom = Css.style(/* :: */[
+      Css.left(Css.px(16)),
+      /* :: */[
+        Css.backgroundColor(Css.hex("00d742")),
+        /* :: */[
+          Css.borderColor(Css.hex("049931")),
           /* [] */0
         ]
       ]
@@ -63,7 +153,11 @@ var content = Css.style(/* :: */[
 var Styles = /* module */[
   /* container */container,
   /* header */header,
-  /* content */content
+  /* content */content,
+  /* buttonContainer */buttonContainer,
+  /* buttons */buttons,
+  /* minimize */minimize,
+  /* zoom */zoom
 ];
 
 var component = ReasonReact.statelessComponent("Terminal");
@@ -75,7 +169,33 @@ function make() {
                   className: container
                 }, React.createElement("header", {
                       className: header
-                    }, Utils$Portfolio.str("title")), React.createElement("div", {
+                    }, React.createElement("div", {
+                          className: buttonContainer
+                        }, React.createElement("button", {
+                              className: CommonStyles$Portfolio.combineClasses(/* :: */[
+                                    zoom,
+                                    /* :: */[
+                                      buttons,
+                                      /* [] */0
+                                    ]
+                                  ])
+                            }), React.createElement("button", {
+                              className: CommonStyles$Portfolio.combineClasses(/* :: */[
+                                    minimize,
+                                    /* :: */[
+                                      buttons,
+                                      /* [] */0
+                                    ]
+                                  ])
+                            }), React.createElement("button", {
+                              className: CommonStyles$Portfolio.combineClasses(/* :: */[
+                                    minimize,
+                                    /* :: */[
+                                      buttons,
+                                      /* [] */0
+                                    ]
+                                  ])
+                            })), Utils$Portfolio.str("Bash")), React.createElement("div", {
                       className: content
                     }, Utils$Portfolio.str("text")));
     });
