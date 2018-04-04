@@ -19,9 +19,7 @@ module Styles = {
       backgroundColor(whitesmoke),
       borderTopLeftRadius(px(5)),
       borderTopRightRadius(px(5)),
-      display(flexBox),
-      alignItems(center),
-      justifyContent(center),
+      position(relative),
     ]);
   let content =
     style([
@@ -31,7 +29,7 @@ module Styles = {
       borderBottomLeftRadius(px(5)),
       borderBottomRightRadius(px(5)),
     ]);
-  let buttonContainer = style([alignSelf(flexStart)]);
+  let buttonContainer = style([left(zero), position(absolute)]);
   let buttons =
     style([
       height(em(1.5)),
@@ -39,22 +37,29 @@ module Styles = {
       borderRadius(`percent(50.)),
       border(px(1), solid, hex("000")),
       position(relative),
-      top(px(6)),
-      left(px(6)),
+      top(em(0.5)),
+      left(em(1.)),
+      marginRight(em(0.5)),
       backgroundColor(hex("ff3b47")),
       borderColor(hex("9d252b")),
       display(inlineBlock),
     ]);
   let minimize =
     style([
-      left(px(11)),
+      left(em(2.)),
       backgroundColor(hex("ffc100")),
       borderColor(hex("9d802c")),
     ]);
   let zoom =
     style([
-      left(px(16)),
+      left(em(2.)),
       backgroundColor(hex("00d742")),
+      borderColor(hex("049931")),
+    ]);
+  let quit =
+    style([
+      left(em(2.)),
+      backgroundColor(hex("red")),
       borderColor(hex("049931")),
     ]);
 };
@@ -69,17 +74,17 @@ let make = _children => {
         <div className=Styles.buttonContainer>
           <button
             className=(
+              CommonStyles.combineClasses([Styles.quit, Styles.buttons])
+            )
+          />
+          <button
+            className=(
+              CommonStyles.combineClasses([Styles.minimize, Styles.buttons])
+            )
+          />
+          <button
+            className=(
               CommonStyles.combineClasses([Styles.zoom, Styles.buttons])
-            )
-          />
-          <button
-            className=(
-              CommonStyles.combineClasses([Styles.minimize, Styles.buttons])
-            )
-          />
-          <button
-            className=(
-              CommonStyles.combineClasses([Styles.minimize, Styles.buttons])
             )
           />
         </div>

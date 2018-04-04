@@ -46,14 +46,8 @@ var header = Css.style(/* :: */[
                     /* :: */[
                       Css.borderTopRightRadius(Css.px(5)),
                       /* :: */[
-                        Css.display(Css.flexBox),
-                        /* :: */[
-                          Css.alignItems(Css.center),
-                          /* :: */[
-                            Css.justifyContent(Css.center),
-                            /* [] */0
-                          ]
-                        ]
+                        Css.position(Css.relative),
+                        /* [] */0
                       ]
                     ]
                   ]
@@ -89,8 +83,11 @@ var content = Css.style(/* :: */[
     ]);
 
 var buttonContainer = Css.style(/* :: */[
-      Css.alignSelf(Css.flexStart),
-      /* [] */0
+      Css.left(Css.zero),
+      /* :: */[
+        Css.position(Css.absolute),
+        /* [] */0
+      ]
     ]);
 
 var buttons = Css.style(/* :: */[
@@ -107,16 +104,19 @@ var buttons = Css.style(/* :: */[
             /* :: */[
               Css.position(Css.relative),
               /* :: */[
-                Css.top(Css.px(6)),
+                Css.top(Css.em(0.5)),
                 /* :: */[
-                  Css.left(Css.px(6)),
+                  Css.left(Css.em(1)),
                   /* :: */[
-                    Css.backgroundColor(Css.hex("ff3b47")),
+                    Css.marginRight(Css.em(0.5)),
                     /* :: */[
-                      Css.borderColor(Css.hex("9d252b")),
+                      Css.backgroundColor(Css.hex("ff3b47")),
                       /* :: */[
-                        Css.display(Css.inlineBlock),
-                        /* [] */0
+                        Css.borderColor(Css.hex("9d252b")),
+                        /* :: */[
+                          Css.display(Css.inlineBlock),
+                          /* [] */0
+                        ]
                       ]
                     ]
                   ]
@@ -129,7 +129,7 @@ var buttons = Css.style(/* :: */[
     ]);
 
 var minimize = Css.style(/* :: */[
-      Css.left(Css.px(11)),
+      Css.left(Css.em(2)),
       /* :: */[
         Css.backgroundColor(Css.hex("ffc100")),
         /* :: */[
@@ -140,9 +140,20 @@ var minimize = Css.style(/* :: */[
     ]);
 
 var zoom = Css.style(/* :: */[
-      Css.left(Css.px(16)),
+      Css.left(Css.em(2)),
       /* :: */[
         Css.backgroundColor(Css.hex("00d742")),
+        /* :: */[
+          Css.borderColor(Css.hex("049931")),
+          /* [] */0
+        ]
+      ]
+    ]);
+
+var quit = Css.style(/* :: */[
+      Css.left(Css.em(2)),
+      /* :: */[
+        Css.backgroundColor(Css.hex("red")),
         /* :: */[
           Css.borderColor(Css.hex("049931")),
           /* [] */0
@@ -157,7 +168,8 @@ var Styles = /* module */[
   /* buttonContainer */buttonContainer,
   /* buttons */buttons,
   /* minimize */minimize,
-  /* zoom */zoom
+  /* zoom */zoom,
+  /* quit */quit
 ];
 
 var component = ReasonReact.statelessComponent("Terminal");
@@ -173,23 +185,23 @@ function make() {
                           className: buttonContainer
                         }, React.createElement("button", {
                               className: CommonStyles$Portfolio.combineClasses(/* :: */[
+                                    quit,
+                                    /* :: */[
+                                      buttons,
+                                      /* [] */0
+                                    ]
+                                  ])
+                            }), React.createElement("button", {
+                              className: CommonStyles$Portfolio.combineClasses(/* :: */[
+                                    minimize,
+                                    /* :: */[
+                                      buttons,
+                                      /* [] */0
+                                    ]
+                                  ])
+                            }), React.createElement("button", {
+                              className: CommonStyles$Portfolio.combineClasses(/* :: */[
                                     zoom,
-                                    /* :: */[
-                                      buttons,
-                                      /* [] */0
-                                    ]
-                                  ])
-                            }), React.createElement("button", {
-                              className: CommonStyles$Portfolio.combineClasses(/* :: */[
-                                    minimize,
-                                    /* :: */[
-                                      buttons,
-                                      /* [] */0
-                                    ]
-                                  ])
-                            }), React.createElement("button", {
-                              className: CommonStyles$Portfolio.combineClasses(/* :: */[
-                                    minimize,
                                     /* :: */[
                                       buttons,
                                       /* [] */0
