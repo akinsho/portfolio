@@ -3,6 +3,12 @@ let str = ReasonReact.stringToElement;
 
 let getElement = ReactDOMRe.domElementToObj;
 
+let getText = (event: ReactEventRe.Form.t) => getElement(
+                                                 ReactEventRe.Form.target(
+                                                   event,
+                                                 ),
+                                               )##value;
+
 let restyle = ReactDOMRe.Style.make;
 
 /* Helper functions */
@@ -49,7 +55,8 @@ module FontAwesomeIcon = {
 
 module Slick = {
   /* React Slick Interop */
-  [@bs.module "react-slick"] external reactSlick : ReasonReact.reactClass = "default";
+  [@bs.module "react-slick"]
+  external reactSlick : ReasonReact.reactClass = "default";
   type settings = {
     dots: bool,
     infinite: bool,
@@ -67,7 +74,7 @@ module Slick = {
         "slidesToShow": settings.slidesToShow,
         "slidesToScroll": settings.slidesToScroll,
       },
-      children
+      children,
     );
 };
 

@@ -28,6 +28,8 @@ module Styles = {
       height(`percent(100.)),
       borderBottomLeftRadius(px(5)),
       borderBottomRightRadius(px(5)),
+      padding(em(1.0)),
+      boxSizing(borderBox),
     ]);
   let buttonContainer = style([left(zero), position(absolute)]);
   let buttons =
@@ -62,34 +64,67 @@ module Styles = {
       backgroundColor(hex("red")),
       borderColor(hex("049931")),
     ]);
+  let input =
+    style([
+      borderWidth(zero),
+      fontSize(em(1.)),
+      backgroundColor(`transparent),
+      color(white),
+      outlineStyle(none),
+    ]);
 };
 
-let component = ReasonReact.statelessComponent("Terminal");
+type action =
+  | Change(string)
+  | Default;
+
+type state = {text: string};
+
+let component = ReasonReact.reducerComponent("Terminal");
+
+type selfType = ReasonReact.self(state, ReasonReact.noRetainedProps, action);
 
 let make = _children => {
-  ...component,
-  render: _self =>
-    <div className=Styles.container>
-      <header className=Styles.header>
-        <div className=Styles.buttonContainer>
-          <button
-            className=(
-              CommonStyles.combineClasses([Styles.quit, Styles.buttons])
-            )
-          />
-          <button
-            className=(
-              CommonStyles.combineClasses([Styles.minimize, Styles.buttons])
-            )
-          />
-          <button
-            className=(
-              CommonStyles.combineClasses([Styles.zoom, Styles.buttons])
-            )
+  let handleChange = (event, self: selfType) =>
+    event |> getText |> (text => self.send(Change(text)));
+  {
+    ...component,
+    initialState: () => {text: ""},
+    reducer: (action, _state) =>
+      switch (action) {
+      | Default => ReasonReact.Update({text: Shell.showPrompt()})
+      | Change(text) => ReasonReact.Update({text: text})
+      },
+    render: self =>
+      <div className=Styles.container>
+        <header className=Styles.header>
+          <div className=Styles.buttonContainer>
+            <button
+              className=(
+                CommonStyles.combineClasses([Styles.quit, Styles.buttons])
+              )
+            />
+            <button
+              className=(
+                CommonStyles.combineClasses([Styles.minimize, Styles.buttons])
+              )
+            />
+            <button
+              className=(
+                CommonStyles.combineClasses([Styles.zoom, Styles.buttons])
+              )
+            />
+          </div>
+          (str("Bash"))
+        </header>
+        <div className=Styles.content>
+          <div> (str(Shell.showPrompt())) </div>
+          <input
+            className=Styles.input
+            value=self.state.text
+            onChange=(evt => handleChange(evt, self))
           />
         </div>
-        (str("Bash"))
-      </header>
-      <div className=Styles.content> (str("text")) </div>
-    </div>,
+      </div>,
+  };
 };

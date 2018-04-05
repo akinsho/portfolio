@@ -2,8 +2,11 @@
 'use strict';
 
 var Css = require("bs-css/src/Css.js");
+var Block = require("bs-platform/lib/js/block.js");
+var Curry = require("bs-platform/lib/js/curry.js");
 var React = require("react");
 var ReasonReact = require("reason-react/src/ReasonReact.js");
+var Shell$Portfolio = require("./Shell.bs.js");
 var Utils$Portfolio = require("./Utils.bs.js");
 var CommonStyles$Portfolio = require("./CommonStyles.bs.js");
 
@@ -75,7 +78,13 @@ var content = Css.style(/* :: */[
             Css.borderBottomLeftRadius(Css.px(5)),
             /* :: */[
               Css.borderBottomRightRadius(Css.px(5)),
-              /* [] */0
+              /* :: */[
+                Css.padding(Css.em(1.0)),
+                /* :: */[
+                  Css.boxSizing(Css.borderBox),
+                  /* [] */0
+                ]
+              ]
             ]
           ]
         ]
@@ -161,6 +170,23 @@ var quit = Css.style(/* :: */[
       ]
     ]);
 
+var input = Css.style(/* :: */[
+      Css.borderWidth(Css.zero),
+      /* :: */[
+        Css.fontSize(Css.em(1)),
+        /* :: */[
+          Css.backgroundColor(/* transparent */582626130),
+          /* :: */[
+            Css.color(Css.white),
+            /* :: */[
+              Css.outlineStyle(Css.none),
+              /* [] */0
+            ]
+          ]
+        ]
+      ]
+    ]);
+
 var Styles = /* module */[
   /* container */container,
   /* header */header,
@@ -169,14 +195,15 @@ var Styles = /* module */[
   /* buttons */buttons,
   /* minimize */minimize,
   /* zoom */zoom,
-  /* quit */quit
+  /* quit */quit,
+  /* input */input
 ];
 
-var component = ReasonReact.statelessComponent("Terminal");
+var component = ReasonReact.reducerComponent("Terminal");
 
 function make() {
   var newrecord = component.slice();
-  newrecord[/* render */9] = (function () {
+  newrecord[/* render */9] = (function (self) {
       return React.createElement("div", {
                   className: container
                 }, React.createElement("header", {
@@ -209,7 +236,26 @@ function make() {
                                   ])
                             })), Utils$Portfolio.str("Bash")), React.createElement("div", {
                       className: content
-                    }, Utils$Portfolio.str("text")));
+                    }, React.createElement("div", undefined, Utils$Portfolio.str(Shell$Portfolio.showPrompt(/* () */0))), React.createElement("input", {
+                          className: input,
+                          value: self[/* state */2][/* text */0],
+                          onChange: (function (evt) {
+                              var $$event = evt;
+                              var self$1 = self;
+                              var text = Utils$Portfolio.getText($$event);
+                              return Curry._1(self$1[/* send */4], /* Change */[text]);
+                            })
+                        })));
+    });
+  newrecord[/* initialState */10] = (function () {
+      return /* record */[/* text */""];
+    });
+  newrecord[/* reducer */12] = (function (action, _) {
+      if (action) {
+        return /* Update */Block.__(0, [/* record */[/* text */action[0]]]);
+      } else {
+        return /* Update */Block.__(0, [/* record */[/* text */Shell$Portfolio.showPrompt(/* () */0)]]);
+      }
     });
   return newrecord;
 }
