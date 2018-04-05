@@ -3,9 +3,21 @@ open Utils;
 module Styles = {
   open Css;
   let bio = style([width(`percent(80.)), padding(em(1.))]);
-  let bioSection = style([padding(em(1.))]);
+  let bioSection =
+    style([
+      padding(em(1.)),
+      width(`percent(100.)),
+      display(flexBox),
+      flexDirection(column),
+      justifyContent(center),
+      alignItems(center),
+    ]);
   let title = style([paddingLeft(em(1.))]);
-  let container = style(CommonStyles.flexCenter(~columnStyle=true));
+  let container =
+    style([
+      width(`percent(100.)),
+      ...CommonStyles.flexCenter(~columnStyle=true),
+    ]);
 };
 
 let component = ReasonReact.statelessComponent("Bio");
@@ -39,10 +51,9 @@ let make = _children => {
   ...component,
   render: _self =>
     <div className=Styles.container>
-      <section className=Styles.bioSection>
+      <div className=Styles.bioSection>
         <h1 className=Styles.title> (str("Bio")) </h1>
-        aboutMe
-      </section>
-      <Terminal />
+        <Terminal />
+      </div>
     </div>,
 };

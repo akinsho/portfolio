@@ -27,9 +27,12 @@ var errorsMessages = /* record */[
   /* invalid_file */"Sorry that file is invalid"
 ];
 
+var history = /* [] */0;
+
 exports.errorsMessages = errorsMessages;
 exports.prompt = prompt;
 exports.about = about;
+exports.history = history;
 exports.showPrompt = showPrompt;
 exports.files = files;
 exports.ls = ls;

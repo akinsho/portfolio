@@ -2,6 +2,8 @@
 'use strict';
 
 var Css = require("bs-css/src/Css.js");
+var List = require("bs-platform/lib/js/list.js");
+var $$Array = require("bs-platform/lib/js/array.js");
 var Block = require("bs-platform/lib/js/block.js");
 var Curry = require("bs-platform/lib/js/curry.js");
 var React = require("react");
@@ -143,7 +145,16 @@ var minimize = Css.style(/* :: */[
         Css.backgroundColor(Css.hex("ffc100")),
         /* :: */[
           Css.borderColor(Css.hex("9d802c")),
-          /* [] */0
+          /* :: */[
+            Css.color(Css.transparent),
+            /* :: */[
+              Css.hover(/* :: */[
+                    Css.color(Css.black),
+                    /* [] */0
+                  ]),
+              /* [] */0
+            ]
+          ]
         ]
       ]
     ]);
@@ -154,7 +165,16 @@ var zoom = Css.style(/* :: */[
         Css.backgroundColor(Css.hex("00d742")),
         /* :: */[
           Css.borderColor(Css.hex("049931")),
-          /* [] */0
+          /* :: */[
+            Css.color(Css.transparent),
+            /* :: */[
+              Css.hover(/* :: */[
+                    Css.color(Css.black),
+                    /* [] */0
+                  ]),
+              /* [] */0
+            ]
+          ]
         ]
       ]
     ]);
@@ -165,7 +185,16 @@ var quit = Css.style(/* :: */[
         Css.backgroundColor(Css.hex("red")),
         /* :: */[
           Css.borderColor(Css.hex("049931")),
-          /* [] */0
+          /* :: */[
+            Css.color(Css.transparent),
+            /* :: */[
+              Css.hover(/* :: */[
+                    Css.color(Css.black),
+                    /* [] */0
+                  ]),
+              /* [] */0
+            ]
+          ]
         ]
       ]
     ]);
@@ -202,10 +231,26 @@ var Styles = /* module */[
 var component = ReasonReact.reducerComponent("Terminal");
 
 function make() {
+  var updateHistory = function (id, history, text) {
+    return List.map((function (prompt) {
+                  var match = +(prompt[/* id */1] === id);
+                  if (match !== 0) {
+                    return /* record */[
+                            /* text */text,
+                            /* id */prompt[/* id */1]
+                          ];
+                  } else {
+                    return prompt;
+                  }
+                }), history);
+  };
   var newrecord = component.slice();
   newrecord[/* render */9] = (function (self) {
       return React.createElement("div", {
-                  className: container
+                  className: container,
+                  onKeyDown: (function ($$event) {
+                      return Curry._1(self[/* send */4], /* KeyDown */Block.__(1, [$$event.which]));
+                    })
                 }, React.createElement("header", {
                       className: header
                     }, React.createElement("div", {
@@ -218,7 +263,7 @@ function make() {
                                       /* [] */0
                                     ]
                                   ])
-                            }), React.createElement("button", {
+                            }, Utils$Portfolio.str("x")), React.createElement("button", {
                               className: CommonStyles$Portfolio.combineClasses(/* :: */[
                                     minimize,
                                     /* :: */[
@@ -226,7 +271,7 @@ function make() {
                                       /* [] */0
                                     ]
                                   ])
-                            }), React.createElement("button", {
+                            }, Utils$Portfolio.str("-")), React.createElement("button", {
                               className: CommonStyles$Portfolio.combineClasses(/* :: */[
                                     zoom,
                                     /* :: */[
@@ -234,27 +279,56 @@ function make() {
                                       /* [] */0
                                     ]
                                   ])
-                            })), Utils$Portfolio.str("Bash")), React.createElement("div", {
+                            }, Utils$Portfolio.str("+"))), Utils$Portfolio.str("Bash")), React.createElement("div", {
                       className: content
-                    }, React.createElement("div", undefined, Utils$Portfolio.str(Shell$Portfolio.showPrompt(/* () */0))), React.createElement("input", {
-                          className: input,
-                          value: self[/* state */2][/* text */0],
-                          onChange: (function (evt) {
-                              var $$event = evt;
-                              var self$1 = self;
-                              var text = Utils$Portfolio.getText($$event);
-                              return Curry._1(self$1[/* send */4], /* Change */[text]);
-                            })
-                        })));
+                    }, $$Array.of_list(List.rev(List.map((function (prompt) {
+                                    return React.createElement("div", undefined, Utils$Portfolio.str(Shell$Portfolio.showPrompt(/* () */0)), React.createElement("input", {
+                                                    className: input,
+                                                    id: String(prompt[/* id */1]),
+                                                    value: prompt[/* text */0],
+                                                    onChange: (function (evt) {
+                                                        var $$event = evt;
+                                                        var self$1 = self;
+                                                        var text = Utils$Portfolio.getText($$event);
+                                                        return Curry._1(self$1[/* send */4], /* Change */Block.__(0, [text]));
+                                                      })
+                                                  }));
+                                  }), self[/* state */2][/* history */0])))));
     });
   newrecord[/* initialState */10] = (function () {
-      return /* record */[/* text */""];
+      return /* record */[
+              /* history : :: */[
+                /* record */[
+                  /* text */"",
+                  /* id */1
+                ],
+                /* [] */0
+              ],
+              /* currentId */1
+            ];
     });
-  newrecord[/* reducer */12] = (function (action, _) {
-      if (action) {
-        return /* Update */Block.__(0, [/* record */[/* text */action[0]]]);
+  newrecord[/* reducer */12] = (function (action, state) {
+      if (action.tag) {
+        var match = +(action[0] === 13);
+        if (match !== 0) {
+          return /* Update */Block.__(0, [/* record */[
+                      /* history : :: */[
+                        /* record */[
+                          /* text */"",
+                          /* id */state[/* currentId */1] + 1 | 0
+                        ],
+                        state[/* history */0]
+                      ],
+                      /* currentId */state[/* currentId */1]
+                    ]]);
+        } else {
+          return /* NoUpdate */0;
+        }
       } else {
-        return /* Update */Block.__(0, [/* record */[/* text */Shell$Portfolio.showPrompt(/* () */0)]]);
+        return /* Update */Block.__(0, [/* record */[
+                    /* history */updateHistory(state[/* currentId */1], state[/* history */0], action[0]),
+                    /* currentId */state[/* currentId */1]
+                  ]]);
       }
     });
   return newrecord;

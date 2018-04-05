@@ -1,5 +1,6 @@
 type errors = {
-  invalid_dir: string, invalid_cmd: string,
+  invalid_dir: string,
+  invalid_cmd: string,
   invalid_file: string,
 };
 
@@ -23,6 +24,13 @@ let about = [|
   {j|Actually the rest is me meeting a bunch of other aspiring developers, our forming a group to teach each other
       then my finding out about founders and coders in London|j},
 |];
+
+type prompts = {
+  text: string,
+  id: int,
+};
+
+let history = [];
 
 let showPrompt = () => prompt ++ ":";
 

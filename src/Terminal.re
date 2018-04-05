@@ -1,5 +1,7 @@
 open Utils;
 
+open Shell;
+
 module Styles = {
   open Css;
   let container =
@@ -51,18 +53,24 @@ module Styles = {
       left(em(2.)),
       backgroundColor(hex("ffc100")),
       borderColor(hex("9d802c")),
+      color(transparent),
+      hover([color(black)]),
     ]);
   let zoom =
     style([
       left(em(2.)),
       backgroundColor(hex("00d742")),
       borderColor(hex("049931")),
+      color(transparent),
+      hover([color(black)]),
     ]);
   let quit =
     style([
       left(em(2.)),
       backgroundColor(hex("red")),
       borderColor(hex("049931")),
+      color(transparent),
+      hover([color(black)]),
     ]);
   let input =
     style([
@@ -76,54 +84,91 @@ module Styles = {
 
 type action =
   | Change(string)
-  | Default;
+  | KeyDown(int);
 
-type state = {text: string};
-
-let component = ReasonReact.reducerComponent("Terminal");
+type state = {
+  history: list(prompts),
+  currentId: int,
+};
 
 type selfType = ReasonReact.self(state, ReasonReact.noRetainedProps, action);
+
+let component = ReasonReact.reducerComponent("Terminal");
 
 let make = _children => {
   let handleChange = (event, self: selfType) =>
     event |> getText |> (text => self.send(Change(text)));
+  let updateHistory = (id: int, history: list(prompts), text: string) =>
+    List.map(
+      prompt => prompt.id === id ? {...prompt, text} : prompt,
+      history,
+    );
   {
     ...component,
-    initialState: () => {text: ""},
-    reducer: (action, _state) =>
+    initialState: () => {history: [{text: "", id: 1}], currentId: 1},
+    reducer: (action, state) =>
       switch (action) {
-      | Default => ReasonReact.Update({text: Shell.showPrompt()})
-      | Change(text) => ReasonReact.Update({text: text})
+      | Change(text) =>
+        ReasonReact.Update({
+          ...state,
+          history: updateHistory(state.currentId, state.history, text),
+        })
+      | KeyDown(key) =>
+        key === 13 ?
+          ReasonReact.Update({
+            ...state,
+            history: [{text: "", id: state.currentId + 1}, ...state.history],
+          }) :
+          ReasonReact.NoUpdate
       },
     render: self =>
-      <div className=Styles.container>
+      <div
+        className=Styles.container
+        onKeyDown=(
+          event => self.send(KeyDown(ReactEventRe.Keyboard.which(event)))
+        )>
         <header className=Styles.header>
           <div className=Styles.buttonContainer>
             <button
               className=(
                 CommonStyles.combineClasses([Styles.quit, Styles.buttons])
-              )
-            />
+              )>
+              (str("x"))
+            </button>
             <button
               className=(
                 CommonStyles.combineClasses([Styles.minimize, Styles.buttons])
-              )
-            />
+              )>
+              (str("-"))
+            </button>
             <button
               className=(
                 CommonStyles.combineClasses([Styles.zoom, Styles.buttons])
-              )
-            />
+              )>
+              (str("+"))
+            </button>
           </div>
           (str("Bash"))
         </header>
         <div className=Styles.content>
-          <div> (str(Shell.showPrompt())) </div>
-          <input
-            className=Styles.input
-            value=self.state.text
-            onChange=(evt => handleChange(evt, self))
-          />
+          (
+            List.map(
+              prompt =>
+                <div>
+                  (str(showPrompt()))
+                  <input
+                    className=Styles.input
+                    value=prompt.text
+                    id=(string_of_int(prompt.id))
+                    onChange=(evt => handleChange(evt, self))
+                  />
+                </div>,
+              self.state.history,
+            )
+            |> List.rev
+            |> Array.of_list
+            |> ReasonReact.arrayToElement
+          )
         </div>
       </div>,
   };

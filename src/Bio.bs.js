@@ -23,7 +23,25 @@ var bio = Css.style(/* :: */[
 
 var bioSection = Css.style(/* :: */[
       Css.padding(Css.em(1)),
-      /* [] */0
+      /* :: */[
+        Css.width(/* `percent */[
+              -119887163,
+              100
+            ]),
+        /* :: */[
+          Css.display(Css.flexBox),
+          /* :: */[
+            Css.flexDirection(Css.column),
+            /* :: */[
+              Css.justifyContent(Css.center),
+              /* :: */[
+                Css.alignItems(Css.center),
+                /* [] */0
+              ]
+            ]
+          ]
+        ]
+      ]
     ]);
 
 var title = Css.style(/* :: */[
@@ -31,7 +49,13 @@ var title = Css.style(/* :: */[
       /* [] */0
     ]);
 
-var container = Css.style(CommonStyles$Portfolio.flexCenter(/* true */1));
+var container = Css.style(/* :: */[
+      Css.width(/* `percent */[
+            -119887163,
+            100
+          ]),
+      CommonStyles$Portfolio.flexCenter(/* true */1)
+    ]);
 
 var Styles = /* module */[
   /* bio */bio,
@@ -67,11 +91,11 @@ function make() {
   newrecord[/* render */9] = (function () {
       return React.createElement("div", {
                   className: container
-                }, React.createElement("section", {
+                }, React.createElement("div", {
                       className: bioSection
                     }, React.createElement("h1", {
                           className: title
-                        }, Utils$Portfolio.str("Bio")), aboutMe), ReasonReact.element(/* None */0, /* None */0, Terminal$Portfolio.make(/* array */[])));
+                        }, Utils$Portfolio.str("Bio")), ReasonReact.element(/* None */0, /* None */0, Terminal$Portfolio.make(/* array */[]))));
     });
   return newrecord;
 }
