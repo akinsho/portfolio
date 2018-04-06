@@ -3,6 +3,7 @@
 
 var $$Array = require("bs-platform/lib/js/array.js");
 var React = require("react");
+var $$String = require("bs-platform/lib/js/string.js");
 var ReasonReact = require("reason-react/src/ReasonReact.js");
 var ReactSlick = require("react-slick");
 var Fontawesome = require("@fortawesome/fontawesome");
@@ -1100,6 +1101,25 @@ function renderText(details, className) {
               }), details);
 }
 
+function split_on_char(sep, s) {
+  var r = /* [] */0;
+  var j = s.length;
+  for(var i = s.length - 1 | 0; i >= 0; --i){
+    if (s.charCodeAt(i) === sep) {
+      r = /* :: */[
+        $$String.sub(s, i + 1 | 0, (j - i | 0) - 1 | 0),
+        r
+      ];
+      j = i;
+    }
+    
+  }
+  return /* :: */[
+          $$String.sub(s, 0, j),
+          r
+        ];
+}
+
 var linkedinLink = "https://www.linkedin.com/in/akin-sowemimo-831383131/";
 
 var githubLink = "https://www.github.com/Akin909";
@@ -1119,4 +1139,5 @@ exports.githubLink = githubLink;
 exports.twitterLink = twitterLink;
 exports.defaultFont = defaultFont;
 exports.renderText = renderText;
+exports.split_on_char = split_on_char;
 /*  Not a pure module */

@@ -7,6 +7,7 @@ var $$Array = require("bs-platform/lib/js/array.js");
 var Block = require("bs-platform/lib/js/block.js");
 var Curry = require("bs-platform/lib/js/curry.js");
 var React = require("react");
+var Caml_array = require("bs-platform/lib/js/caml_array.js");
 var ReasonReact = require("reason-react/src/ReasonReact.js");
 var Shell$Portfolio = require("./Shell.bs.js");
 var Utils$Portfolio = require("./Utils.bs.js");
@@ -244,6 +245,33 @@ function make() {
                   }
                 }), history);
   };
+  var handleSubmit = function (text, arg, currentState) {
+    var result = Shell$Portfolio.parseInput(text, arg);
+    var nextId = currentState[/* currentId */1] + 1 | 0;
+    if (result.tag) {
+      return /* Update */Block.__(0, [/* record */[
+                  /* history : :: */[
+                    /* record */[
+                      /* text */result[0],
+                      /* id */nextId
+                    ],
+                    currentState[/* history */0]
+                  ],
+                  /* currentId */currentState[/* currentId */1]
+                ]]);
+    } else {
+      return /* Update */Block.__(0, [/* record */[
+                  /* history : :: */[
+                    /* record */[
+                      /* text */result[0].join(),
+                      /* id */nextId
+                    ],
+                    currentState[/* history */0]
+                  ],
+                  /* currentId */currentState[/* currentId */1]
+                ]]);
+    }
+  };
   var newrecord = component.slice();
   newrecord[/* render */9] = (function (self) {
       return React.createElement("div", {
@@ -309,18 +337,42 @@ function make() {
     });
   newrecord[/* reducer */12] = (function (action, state) {
       if (action.tag) {
-        var match = +(action[0] === 13);
-        if (match !== 0) {
-          return /* Update */Block.__(0, [/* record */[
-                      /* history : :: */[
-                        /* record */[
-                          /* text */"",
-                          /* id */state[/* currentId */1] + 1 | 0
+        var currentState = state;
+        var key = action[0];
+        console.log(currentState);
+        var currentId = currentState[/* currentId */1];
+        var history = currentState[/* history */0];
+        var arr = $$Array.of_list(history);
+        var promptText = Caml_array.caml_array_get(arr, currentId)[/* text */0];
+        var length = promptText.length;
+        if (length !== 0) {
+          var result = Utils$Portfolio.split_on_char(/* " " */32, promptText);
+          if (key !== 13) {
+            return /* NoUpdate */0;
+          } else if (result) {
+            var match = result[1];
+            var text = result[0];
+            if (match) {
+              if (match[1]) {
+                return /* NoUpdate */0;
+              } else {
+                return handleSubmit(text, match[0], currentState);
+              }
+            } else {
+              return handleSubmit(text, "", currentState);
+            }
+          } else {
+            return /* Update */Block.__(0, [/* record */[
+                        /* history : :: */[
+                          /* record */[
+                            /* text */"",
+                            /* id */currentId + 1 | 0
+                          ],
+                          history
                         ],
-                        state[/* history */0]
-                      ],
-                      /* currentId */state[/* currentId */1]
-                    ]]);
+                        /* currentId */currentState[/* currentId */1]
+                      ]]);
+          }
         } else {
           return /* NoUpdate */0;
         }

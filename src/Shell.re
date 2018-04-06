@@ -10,6 +10,13 @@ let errorsMessages = {
   invalid_file: "Sorry that file is invalid",
 };
 
+type commandTypes = {
+  ls: string,
+  cat: string,
+};
+
+let commands = {ls: "ls", cat: "cat"};
+
 let prompt = "/Users/akin_sowemimo/root";
 
 let about = [|
@@ -30,12 +37,27 @@ type prompts = {
   id: int,
 };
 
-let history = [];
-
 let showPrompt = () => prompt ++ ":";
 
 type fileType = {about: array(string)};
 
+let filenames = [|"about.txt"|];
+
 let files = {about: about};
 
-let ls = () => files;
+type exitResult =
+  | ShellSuccess(array(string))
+  | ShellFailure(string);
+
+let cat = (arg: string) =>
+  switch (arg) {
+  | "about.txt" => ShellSuccess(files.about)
+  | _ => ShellFailure(errorsMessages.invalid_file)
+  };
+
+let parseInput = (input: string, arg: string) =>
+  switch (input) {
+  | "ls" => ShellSuccess(filenames)
+  | "cat" => cat(arg)
+  | _ => ShellFailure(errorsMessages.invalid_cmd)
+  };

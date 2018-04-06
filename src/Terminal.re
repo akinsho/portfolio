@@ -103,6 +103,47 @@ let make = _children => {
       prompt => prompt.id === id ? {...prompt, text} : prompt,
       history,
     );
+  let handleSubmit = (text: string, arg: string, currentState: state) => {
+    let result = parseInput(text, arg);
+    let nextId = currentState.currentId + 1;
+    switch (result) {
+    | ShellSuccess(result) =>
+      ReasonReact.Update({
+        ...currentState,
+        history: [
+          {text: Js.Array.join(result), id: nextId},
+          ...currentState.history,
+        ],
+      })
+    | ShellFailure(result) =>
+      ReasonReact.Update({
+        ...currentState,
+        history: [{text: result, id: nextId}, ...currentState.history],
+      })
+    };
+  };
+  let handleKeyInput = (currentState: state, key: int) => {
+    Js.log(currentState);
+    let {currentId, history} = currentState;
+    let promptText = history |> Array.of_list |> (arr => arr[currentId].text);
+    let length = String.length(promptText);
+    switch (length) {
+    | 0 => ReasonReact.NoUpdate
+    | _ =>
+      /* the 0-index access is to convert a string to a "char" type */
+      let result = split_on_char(" ".[0], promptText);
+      switch (key, result) {
+      | (13, [text, arg]) => handleSubmit(text, arg, currentState)
+      | (13, [text]) => handleSubmit(text, "", currentState)
+      | (13, []) =>
+        ReasonReact.Update({
+          ...currentState,
+          history: [{text: "", id: currentId + 1}, ...history],
+        })
+      | _ => ReasonReact.NoUpdate
+      };
+    };
+  };
   {
     ...component,
     initialState: () => {history: [{text: "", id: 1}], currentId: 1},
@@ -113,13 +154,7 @@ let make = _children => {
           ...state,
           history: updateHistory(state.currentId, state.history, text),
         })
-      | KeyDown(key) =>
-        key === 13 ?
-          ReasonReact.Update({
-            ...state,
-            history: [{text: "", id: state.currentId + 1}, ...state.history],
-          }) :
-          ReasonReact.NoUpdate
+      | KeyDown(key) => handleKeyInput(state, key)
       },
     render: self =>
       <div
