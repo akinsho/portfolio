@@ -9,6 +9,7 @@ module Styles = {
       height(`percent(40.)),
       width(`percent(50.)),
       margin(em(1.)),
+      paddingBottom(em(1.))
     ]);
   let header =
     style([
@@ -32,6 +33,7 @@ module Styles = {
       borderBottomRightRadius(px(5)),
       padding(em(1.0)),
       boxSizing(borderBox),
+      overflow(scroll),
     ]);
   let buttonContainer = style([left(zero), position(absolute)]);
   let buttons =
@@ -41,12 +43,14 @@ module Styles = {
       borderRadius(`percent(50.)),
       border(px(1), solid, hex("000")),
       position(relative),
-      top(em(0.5)),
+      top(em(0.3)),
       left(em(1.)),
       marginRight(em(0.5)),
       backgroundColor(hex("ff3b47")),
       borderColor(hex("9d252b")),
       display(inlineBlock),
+      fontSize(em(0.6)),
+      textAlign(center),
     ]);
   let minimize =
     style([
@@ -87,8 +91,10 @@ type action =
   | KeyDown(int);
 
 type state = {
+  input: string,
   history: list(prompts),
   currentId: int,
+  focusedPromptRef: ref(option(ReasonReact.reactRef)),
 };
 
 type selfType = ReasonReact.self(state, ReasonReact.noRetainedProps, action);
@@ -96,64 +102,81 @@ type selfType = ReasonReact.self(state, ReasonReact.noRetainedProps, action);
 let component = ReasonReact.reducerComponent("Terminal");
 
 let make = _children => {
-  let handleChange = (event, self: selfType) =>
-    event |> getText |> (text => self.send(Change(text)));
-  let updateHistory = (id: int, history: list(prompts), text: string) =>
+  let handleChange = (element, self: selfType) =>
+    element |> getText |> (text => self.send(Change(text)));
+  /* let setFocusedRef = (theRef, self: selfType) => */
+  /*   self.state.focusedPromptRef := Js.Nullable.toOption(theRef); */
+  let updateHistory = state =>
     List.map(
-      prompt => prompt.id === id ? {...prompt, text} : prompt,
-      history,
+      prompt =>
+        prompt.id === state.currentId ?
+          {...prompt, text: state.input} : prompt,
+      state.history,
     );
-  let handleSubmit = (text: string, arg: string, currentState: state) => {
+  let handleSubmit = (text: string, arg: string, state: state) => {
     let result = parseInput(text, arg);
-    let nextId = currentState.currentId + 1;
+    let newHistory = updateHistory(state);
+    let nextId = state.currentId + 1;
     switch (result) {
     | ShellSuccess(result) =>
       ReasonReact.Update({
-        ...currentState,
+        ...state,
+        currentId: nextId + 1,
+        input: "",
         history: [
-          {text: Js.Array.join(result), id: nextId},
-          ...currentState.history,
+          {text: "", id: nextId + 1, error: None, exitCode: None},
+          {
+            text: Js.Array.join(result),
+            error: None,
+            id: nextId,
+            exitCode: Some(0),
+          },
+          ...newHistory,
         ],
       })
     | ShellFailure(result) =>
       ReasonReact.Update({
-        ...currentState,
-        history: [{text: result, id: nextId}, ...currentState.history],
+        ...state,
+        input: "",
+        currentId: nextId + 1,
+        history: [
+          {text: "", id: nextId + 1, error: None, exitCode: None},
+          {text: "", id: nextId, error: Some(result), exitCode: Some(1)},
+          ...newHistory,
+        ],
       })
     };
   };
-  let handleKeyInput = (currentState: state, key: int) => {
-    Js.log(currentState);
-    let {currentId, history} = currentState;
-    let promptText = history |> Array.of_list |> (arr => arr[currentId].text);
-    let length = String.length(promptText);
-    switch (length) {
-    | 0 => ReasonReact.NoUpdate
-    | _ =>
-      /* the 0-index access is to convert a string to a "char" type */
-      let result = split_on_char(" ".[0], promptText);
-      switch (key, result) {
-      | (13, [text, arg]) => handleSubmit(text, arg, currentState)
-      | (13, [text]) => handleSubmit(text, "", currentState)
-      | (13, []) =>
-        ReasonReact.Update({
-          ...currentState,
-          history: [{text: "", id: currentId + 1}, ...history],
-        })
-      | _ => ReasonReact.NoUpdate
-      };
+  let handleKeyInput = (state: state, key: int) => {
+    let {currentId, history} = state;
+    /* the 0-index access is to convert a string to a "char" type */
+    let result = split_on_char(" ".[0], state.input);
+    switch (key, result) {
+    | (13, [text, arg]) => handleSubmit(text, arg, state)
+    | (13, [text]) => handleSubmit(text, "", state)
+    | (13, []) =>
+      ReasonReact.Update({
+        ...state,
+        currentId: currentId + 1,
+        history: [
+          {text: "", id: currentId + 1, error: None, exitCode: None},
+          ...history,
+        ],
+      })
+    | _ => ReasonReact.NoUpdate
     };
   };
   {
     ...component,
-    initialState: () => {history: [{text: "", id: 1}], currentId: 1},
+    initialState: () => {
+      input: "",
+      history: [{text: "", id: 1, error: None, exitCode: None}],
+      currentId: 1,
+      focusedPromptRef: ref(None),
+    },
     reducer: (action, state) =>
       switch (action) {
-      | Change(text) =>
-        ReasonReact.Update({
-          ...state,
-          history: updateHistory(state.currentId, state.history, text),
-        })
+      | Change(text) => ReasonReact.Update({...state, input: text})
       | KeyDown(key) => handleKeyInput(state, key)
       },
     render: self =>
@@ -188,15 +211,21 @@ let make = _children => {
         <div className=Styles.content>
           (
             List.map(
-              prompt =>
+              ({exitCode, text, error}) =>
                 <div>
-                  (str(showPrompt()))
-                  <input
-                    className=Styles.input
-                    value=prompt.text
-                    id=(string_of_int(prompt.id))
-                    onChange=(evt => handleChange(evt, self))
-                  />
+                  (
+                    switch (exitCode) {
+                    | Some(_exitCode) => ReasonReact.nullElement
+                    | None => str(showPrompt())
+                    }
+                  )
+                  <div> (str(text)) </div>
+                  (
+                    switch (error) {
+                    | Some(error) => <p> (str(error)) </p>
+                    | None => ReasonReact.nullElement
+                    }
+                  )
                 </div>,
               self.state.history,
             )
@@ -204,6 +233,11 @@ let make = _children => {
             |> Array.of_list
             |> ReasonReact.arrayToElement
           )
+          <input
+            className=Styles.input
+            value=self.state.input
+            onChange=(evt => handleChange(evt, self))
+          />
         </div>
       </div>,
   };

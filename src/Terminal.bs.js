@@ -7,7 +7,6 @@ var $$Array = require("bs-platform/lib/js/array.js");
 var Block = require("bs-platform/lib/js/block.js");
 var Curry = require("bs-platform/lib/js/curry.js");
 var React = require("react");
-var Caml_array = require("bs-platform/lib/js/caml_array.js");
 var ReasonReact = require("reason-react/src/ReasonReact.js");
 var Shell$Portfolio = require("./Shell.bs.js");
 var Utils$Portfolio = require("./Utils.bs.js");
@@ -25,7 +24,10 @@ var container = Css.style(/* :: */[
             ]),
         /* :: */[
           Css.margin(Css.em(1)),
-          /* [] */0
+          /* :: */[
+            Css.paddingBottom(Css.em(1)),
+            /* [] */0
+          ]
         ]
       ]
     ]);
@@ -85,7 +87,10 @@ var content = Css.style(/* :: */[
                 Css.padding(Css.em(1.0)),
                 /* :: */[
                   Css.boxSizing(Css.borderBox),
-                  /* [] */0
+                  /* :: */[
+                    Css.overflow(Css.scroll),
+                    /* [] */0
+                  ]
                 ]
               ]
             ]
@@ -116,7 +121,7 @@ var buttons = Css.style(/* :: */[
             /* :: */[
               Css.position(Css.relative),
               /* :: */[
-                Css.top(Css.em(0.5)),
+                Css.top(Css.em(0.3)),
                 /* :: */[
                   Css.left(Css.em(1)),
                   /* :: */[
@@ -127,7 +132,13 @@ var buttons = Css.style(/* :: */[
                         Css.borderColor(Css.hex("9d252b")),
                         /* :: */[
                           Css.display(Css.inlineBlock),
-                          /* [] */0
+                          /* :: */[
+                            Css.fontSize(Css.em(0.6)),
+                            /* :: */[
+                              Css.textAlign(Css.center),
+                              /* [] */0
+                            ]
+                          ]
                         ]
                       ]
                     ]
@@ -232,43 +243,70 @@ var Styles = /* module */[
 var component = ReasonReact.reducerComponent("Terminal");
 
 function make() {
-  var updateHistory = function (id, history, text) {
+  var updateHistory = function (state) {
     return List.map((function (prompt) {
-                  var match = +(prompt[/* id */1] === id);
+                  var match = +(prompt[/* id */1] === state[/* currentId */2]);
                   if (match !== 0) {
                     return /* record */[
-                            /* text */text,
-                            /* id */prompt[/* id */1]
+                            /* text */state[/* input */0],
+                            /* id */prompt[/* id */1],
+                            /* exitCode */prompt[/* exitCode */2],
+                            /* error */prompt[/* error */3]
                           ];
                   } else {
                     return prompt;
                   }
-                }), history);
+                }), state[/* history */1]);
   };
-  var handleSubmit = function (text, arg, currentState) {
+  var handleSubmit = function (text, arg, state) {
     var result = Shell$Portfolio.parseInput(text, arg);
-    var nextId = currentState[/* currentId */1] + 1 | 0;
+    var newHistory = updateHistory(state);
+    var nextId = state[/* currentId */2] + 1 | 0;
     if (result.tag) {
       return /* Update */Block.__(0, [/* record */[
+                  /* input */"",
                   /* history : :: */[
                     /* record */[
-                      /* text */result[0],
-                      /* id */nextId
+                      /* text */"",
+                      /* id */nextId + 1 | 0,
+                      /* exitCode : None */0,
+                      /* error : None */0
                     ],
-                    currentState[/* history */0]
+                    /* :: */[
+                      /* record */[
+                        /* text */"",
+                        /* id */nextId,
+                        /* exitCode : Some */[1],
+                        /* error : Some */[result[0]]
+                      ],
+                      newHistory
+                    ]
                   ],
-                  /* currentId */currentState[/* currentId */1]
+                  /* currentId */nextId + 1 | 0,
+                  /* focusedPromptRef */state[/* focusedPromptRef */3]
                 ]]);
     } else {
       return /* Update */Block.__(0, [/* record */[
+                  /* input */"",
                   /* history : :: */[
                     /* record */[
-                      /* text */result[0].join(),
-                      /* id */nextId
+                      /* text */"",
+                      /* id */nextId + 1 | 0,
+                      /* exitCode : None */0,
+                      /* error : None */0
                     ],
-                    currentState[/* history */0]
+                    /* :: */[
+                      /* record */[
+                        /* text */result[0].join(),
+                        /* id */nextId,
+                        /* exitCode : Some */[0],
+                        /* error : None */0
+                      ],
+                      newHistory
+                    ]
                   ],
-                  /* currentId */currentState[/* currentId */1]
+                  /* currentId */nextId + 1 | 0,
+                  /* focusedPromptRef */state[/* focusedPromptRef */3]
                 ]]);
     }
   };
@@ -309,77 +347,78 @@ function make() {
                                   ])
                             }, Utils$Portfolio.str("+"))), Utils$Portfolio.str("Bash")), React.createElement("div", {
                       className: content
-                    }, $$Array.of_list(List.rev(List.map((function (prompt) {
-                                    return React.createElement("div", undefined, Utils$Portfolio.str(Shell$Portfolio.showPrompt(/* () */0)), React.createElement("input", {
-                                                    className: input,
-                                                    id: String(prompt[/* id */1]),
-                                                    value: prompt[/* text */0],
-                                                    onChange: (function (evt) {
-                                                        var $$event = evt;
-                                                        var self$1 = self;
-                                                        var text = Utils$Portfolio.getText($$event);
-                                                        return Curry._1(self$1[/* send */4], /* Change */Block.__(0, [text]));
-                                                      })
-                                                  }));
-                                  }), self[/* state */2][/* history */0])))));
+                    }, $$Array.of_list(List.rev(List.map((function (param) {
+                                    var error = param[/* error */3];
+                                    return React.createElement("div", undefined, param[/* exitCode */2] ? null : Utils$Portfolio.str(Shell$Portfolio.showPrompt(/* () */0)), React.createElement("div", undefined, Utils$Portfolio.str(param[/* text */0])), error ? React.createElement("p", undefined, Utils$Portfolio.str(error[0])) : null);
+                                  }), self[/* state */2][/* history */1]))), React.createElement("input", {
+                          className: input,
+                          value: self[/* state */2][/* input */0],
+                          onChange: (function (evt) {
+                              var element = evt;
+                              var self$1 = self;
+                              var text = Utils$Portfolio.getText(element);
+                              return Curry._1(self$1[/* send */4], /* Change */Block.__(0, [text]));
+                            })
+                        })));
     });
   newrecord[/* initialState */10] = (function () {
       return /* record */[
+              /* input */"",
               /* history : :: */[
                 /* record */[
                   /* text */"",
-                  /* id */1
+                  /* id */1,
+                  /* exitCode : None */0,
+                  /* error : None */0
                 ],
                 /* [] */0
               ],
-              /* currentId */1
+              /* currentId */1,
+              /* focusedPromptRef */[/* None */0]
             ];
     });
   newrecord[/* reducer */12] = (function (action, state) {
       if (action.tag) {
-        var currentState = state;
+        var state$1 = state;
         var key = action[0];
-        console.log(currentState);
-        var currentId = currentState[/* currentId */1];
-        var history = currentState[/* history */0];
-        var arr = $$Array.of_list(history);
-        var promptText = Caml_array.caml_array_get(arr, currentId)[/* text */0];
-        var length = promptText.length;
-        if (length !== 0) {
-          var result = Utils$Portfolio.split_on_char(/* " " */32, promptText);
-          if (key !== 13) {
-            return /* NoUpdate */0;
-          } else if (result) {
-            var match = result[1];
-            var text = result[0];
-            if (match) {
-              if (match[1]) {
-                return /* NoUpdate */0;
-              } else {
-                return handleSubmit(text, match[0], currentState);
-              }
+        var currentId = state$1[/* currentId */2];
+        var result = Utils$Portfolio.split_on_char(/* " " */32, state$1[/* input */0]);
+        if (key !== 13) {
+          return /* NoUpdate */0;
+        } else if (result) {
+          var match = result[1];
+          var text = result[0];
+          if (match) {
+            if (match[1]) {
+              return /* NoUpdate */0;
             } else {
-              return handleSubmit(text, "", currentState);
+              return handleSubmit(text, match[0], state$1);
             }
           } else {
-            return /* Update */Block.__(0, [/* record */[
-                        /* history : :: */[
-                          /* record */[
-                            /* text */"",
-                            /* id */currentId + 1 | 0
-                          ],
-                          history
-                        ],
-                        /* currentId */currentState[/* currentId */1]
-                      ]]);
+            return handleSubmit(text, "", state$1);
           }
         } else {
-          return /* NoUpdate */0;
+          return /* Update */Block.__(0, [/* record */[
+                      /* input */state$1[/* input */0],
+                      /* history : :: */[
+                        /* record */[
+                          /* text */"",
+                          /* id */currentId + 1 | 0,
+                          /* exitCode : None */0,
+                          /* error : None */0
+                        ],
+                        state$1[/* history */1]
+                      ],
+                      /* currentId */currentId + 1 | 0,
+                      /* focusedPromptRef */state$1[/* focusedPromptRef */3]
+                    ]]);
         }
       } else {
         return /* Update */Block.__(0, [/* record */[
-                    /* history */updateHistory(state[/* currentId */1], state[/* history */0], action[0]),
-                    /* currentId */state[/* currentId */1]
+                    /* input */action[0],
+                    /* history */state[/* history */1],
+                    /* currentId */state[/* currentId */2],
+                    /* focusedPromptRef */state[/* focusedPromptRef */3]
                   ]]);
       }
     });

@@ -35,6 +35,8 @@ let about = [|
 type prompts = {
   text: string,
   id: int,
+  exitCode: option(int),
+  error: option(string),
 };
 
 let showPrompt = () => prompt ++ ":";

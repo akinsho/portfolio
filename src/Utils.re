@@ -9,6 +9,8 @@ let getText = (event: ReactEventRe.Form.t) => getElement(
                                                  ),
                                                )##value;
 
+let getTextFromEl = (el: Js.t('a)) => el##value;
+
 let restyle = ReactDOMRe.Style.make;
 
 /* Helper functions */
