@@ -11,7 +11,7 @@ let buttons =
     height(em(1.5)),
     width(em(1.5)),
     borderRadius(`percent(50.)),
-    border(px(1), solid, hex("000")),
+    border(px(0), solid, hex("000")),
     position(relative),
     top(em(0.3)),
     left(em(1.)),
@@ -21,6 +21,7 @@ let buttons =
     display(inlineBlock),
     fontSize(em(0.6)),
     textAlign(center),
+    padding(zero),
   ]);
 
 let minimize =

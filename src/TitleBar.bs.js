@@ -27,7 +27,7 @@ var buttons = Css.style(/* :: */[
                 50
               ]),
           /* :: */[
-            Css.border(Css.px(1), Css.solid, Css.hex("000")),
+            Css.border(Css.px(0), Css.solid, Css.hex("000")),
             /* :: */[
               Css.position(Css.relative),
               /* :: */[
@@ -46,7 +46,10 @@ var buttons = Css.style(/* :: */[
                             Css.fontSize(Css.em(0.6)),
                             /* :: */[
                               Css.textAlign(Css.center),
-                              /* [] */0
+                              /* :: */[
+                                Css.padding(Css.zero),
+                                /* [] */0
+                              ]
                             ]
                           ]
                         ]

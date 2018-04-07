@@ -52,6 +52,11 @@ let component = ReasonReact.reducerComponent("Terminal");
 let setFocusedRef = (r, {ReasonReact.state}) =>
   state.focusedPromptRef := Js.Nullable.toOption(r);
 
+let showLastHistoryItem = history => {
+  let length = List.length(history);
+  List.nth(history, length - 1);
+};
+
 let updateHistory = state =>
   List.map(
     prompt =>
@@ -73,7 +78,6 @@ let focusElement = el =>
   | None => ()
   };
 
-/* ******************************* */
 let make = _children => {
   let handleChange = (element, self: selfType) =>
     element |> getText |> (text => self.send(Change(text)));
@@ -123,6 +127,13 @@ let make = _children => {
     /* the 0-index access is to convert a string to a "char" type */
     let result = split_on_char(" ".[0], state.input);
     switch (key, result) {
+    | (38, _) =>
+      history
+      |> showLastHistoryItem
+      |> (
+        item =>
+          ReasonReact.Update({...state, input: Js.Array.join(item.text)})
+      )
     | (13, [""])
     | (13, []) =>
       ReasonReact.Update({
@@ -205,6 +216,7 @@ let make = _children => {
             value=self.state.input
             onChange=(evt => handleChange(evt, self))
             autoFocus=Js.true_
+            style=(restyle(~caretColor="#57D900", ()))
           />
         </div>
       </div>,
