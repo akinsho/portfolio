@@ -1098,7 +1098,7 @@ var Slick = /* module */[/* make */make$1];
 
 function renderText(details, className) {
   return $$Array.mapi((function (index, line) {
-                return React.createElement("span", {
+                return React.createElement("p", {
                             key: String(index),
                             className: className
                           }, line);

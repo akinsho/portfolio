@@ -10,7 +10,7 @@ var React = require("react");
 var ReasonReact = require("reason-react/src/ReasonReact.js");
 var Shell$Portfolio = require("./Shell.bs.js");
 var Utils$Portfolio = require("./Utils.bs.js");
-var CommonStyles$Portfolio = require("./CommonStyles.bs.js");
+var TitleBar$Portfolio = require("./TitleBar.bs.js");
 
 var container = Css.style(/* :: */[
       Css.height(/* `percent */[
@@ -27,41 +27,6 @@ var container = Css.style(/* :: */[
           /* :: */[
             Css.paddingBottom(Css.em(1)),
             /* [] */0
-          ]
-        ]
-      ]
-    ]);
-
-var header = Css.style(/* :: */[
-      Css.width(/* `percent */[
-            -119887163,
-            100
-          ]),
-      /* :: */[
-        Css.height(Css.em(1)),
-        /* :: */[
-          Css.textAlign(Css.center),
-          /* :: */[
-            Css.paddingTop(Css.em(0.5)),
-            /* :: */[
-              Css.paddingBottom(Css.em(0.5)),
-              /* :: */[
-                Css.color(Css.black),
-                /* :: */[
-                  Css.backgroundColor(Css.whitesmoke),
-                  /* :: */[
-                    Css.borderTopLeftRadius(Css.px(5)),
-                    /* :: */[
-                      Css.borderTopRightRadius(Css.px(5)),
-                      /* :: */[
-                        Css.position(Css.relative),
-                        /* [] */0
-                      ]
-                    ]
-                  ]
-                ]
-              ]
-            ]
           ]
         ]
       ]
@@ -99,118 +64,6 @@ var content = Css.style(/* :: */[
       ]
     ]);
 
-var buttonContainer = Css.style(/* :: */[
-      Css.left(Css.zero),
-      /* :: */[
-        Css.position(Css.absolute),
-        /* [] */0
-      ]
-    ]);
-
-var buttons = Css.style(/* :: */[
-      Css.height(Css.em(1.5)),
-      /* :: */[
-        Css.width(Css.em(1.5)),
-        /* :: */[
-          Css.borderRadius(/* `percent */[
-                -119887163,
-                50
-              ]),
-          /* :: */[
-            Css.border(Css.px(1), Css.solid, Css.hex("000")),
-            /* :: */[
-              Css.position(Css.relative),
-              /* :: */[
-                Css.top(Css.em(0.3)),
-                /* :: */[
-                  Css.left(Css.em(1)),
-                  /* :: */[
-                    Css.marginRight(Css.em(0.5)),
-                    /* :: */[
-                      Css.backgroundColor(Css.hex("ff3b47")),
-                      /* :: */[
-                        Css.borderColor(Css.hex("9d252b")),
-                        /* :: */[
-                          Css.display(Css.inlineBlock),
-                          /* :: */[
-                            Css.fontSize(Css.em(0.6)),
-                            /* :: */[
-                              Css.textAlign(Css.center),
-                              /* [] */0
-                            ]
-                          ]
-                        ]
-                      ]
-                    ]
-                  ]
-                ]
-              ]
-            ]
-          ]
-        ]
-      ]
-    ]);
-
-var minimize = Css.style(/* :: */[
-      Css.left(Css.em(2)),
-      /* :: */[
-        Css.backgroundColor(Css.hex("ffc100")),
-        /* :: */[
-          Css.borderColor(Css.hex("9d802c")),
-          /* :: */[
-            Css.color(Css.transparent),
-            /* :: */[
-              Css.hover(/* :: */[
-                    Css.color(Css.black),
-                    /* [] */0
-                  ]),
-              /* [] */0
-            ]
-          ]
-        ]
-      ]
-    ]);
-
-var zoom = Css.style(/* :: */[
-      Css.left(Css.em(2)),
-      /* :: */[
-        Css.backgroundColor(Css.hex("00d742")),
-        /* :: */[
-          Css.borderColor(Css.hex("049931")),
-          /* :: */[
-            Css.color(Css.transparent),
-            /* :: */[
-              Css.hover(/* :: */[
-                    Css.color(Css.black),
-                    /* [] */0
-                  ]),
-              /* [] */0
-            ]
-          ]
-        ]
-      ]
-    ]);
-
-var quit = Css.style(/* :: */[
-      Css.left(Css.em(2)),
-      /* :: */[
-        Css.backgroundColor(Css.hex("red")),
-        /* :: */[
-          Css.borderColor(Css.hex("049931")),
-          /* :: */[
-            Css.color(Css.transparent),
-            /* :: */[
-              Css.hover(/* :: */[
-                    Css.color(Css.black),
-                    /* [] */0
-                  ]),
-              /* [] */0
-            ]
-          ]
-        ]
-      ]
-    ]);
-
 var input = Css.style(/* :: */[
       Css.borderWidth(Css.zero),
       /* :: */[
@@ -228,131 +81,145 @@ var input = Css.style(/* :: */[
       ]
     ]);
 
+var inputContainer = Css.style(/* :: */[
+      Css.marginTop(Css.em(1)),
+      /* :: */[
+        Css.marginBottom(Css.em(1)),
+        /* [] */0
+      ]
+    ]);
+
 var Styles = /* module */[
   /* container */container,
-  /* header */header,
   /* content */content,
-  /* buttonContainer */buttonContainer,
-  /* buttons */buttons,
-  /* minimize */minimize,
-  /* zoom */zoom,
-  /* quit */quit,
-  /* input */input
+  /* input */input,
+  /* inputContainer */inputContainer
 ];
 
 var component = ReasonReact.reducerComponent("Terminal");
 
+function setFocusedRef(r, param) {
+  param[/* state */2][/* focusedPromptRef */3][0] = (r == null) ? /* None */0 : [r];
+  return /* () */0;
+}
+
+function updateHistory(state) {
+  return List.map((function (prompt) {
+                var match = +(prompt[/* id */1] === state[/* currentId */2]);
+                if (match !== 0) {
+                  return /* record */[
+                          /* text : array */[state[/* input */0]],
+                          /* id */prompt[/* id */1],
+                          /* exitCode */prompt[/* exitCode */2],
+                          /* error */prompt[/* error */3]
+                        ];
+                } else {
+                  return prompt;
+                }
+              }), state[/* history */1]);
+}
+
+function scrollIntoView(el) {
+  if (el) {
+    return Utils$Portfolio.getElement(el[0]).scrollIntoView();
+  } else {
+    return /* () */0;
+  }
+}
+
+function focusElement(el) {
+  if (el) {
+    return Utils$Portfolio.getElement(el[0]).focus();
+  } else {
+    return /* () */0;
+  }
+}
+
 function make() {
-  var updateHistory = function (state) {
-    return List.map((function (prompt) {
-                  var match = +(prompt[/* id */1] === state[/* currentId */2]);
-                  if (match !== 0) {
-                    return /* record */[
-                            /* text */state[/* input */0],
-                            /* id */prompt[/* id */1],
-                            /* exitCode */prompt[/* exitCode */2],
-                            /* error */prompt[/* error */3]
-                          ];
-                  } else {
-                    return prompt;
-                  }
-                }), state[/* history */1]);
-  };
   var handleSubmit = function (text, arg, state) {
     var result = Shell$Portfolio.parseInput(text, arg);
     var newHistory = updateHistory(state);
-    var nextId = state[/* currentId */2] + 1 | 0;
-    if (result.tag) {
-      return /* Update */Block.__(0, [/* record */[
-                  /* input */"",
-                  /* history : :: */[
-                    /* record */[
-                      /* text */"",
-                      /* id */nextId + 1 | 0,
-                      /* exitCode : None */0,
-                      /* error : None */0
-                    ],
-                    /* :: */[
-                      /* record */[
-                        /* text */"",
-                        /* id */nextId,
-                        /* exitCode : Some */[1],
-                        /* error : Some */[result[0]]
+    var outputId = state[/* currentId */2] + 1 | 0;
+    switch (result.tag | 0) {
+      case 0 : 
+          return /* Update */Block.__(0, [/* record */[
+                      /* input */"",
+                      /* history : :: */[
+                        /* record */[
+                          /* text : array */[""],
+                          /* id */outputId + 1 | 0,
+                          /* exitCode : None */0,
+                          /* error : None */0
+                        ],
+                        /* :: */[
+                          /* record */[
+                            /* text */result[0],
+                            /* id */outputId,
+                            /* exitCode : Some */[0],
+                            /* error : None */0
+                          ],
+                          newHistory
+                        ]
                       ],
-                      newHistory
-                    ]
-                  ],
-                  /* currentId */nextId + 1 | 0,
-                  /* focusedPromptRef */state[/* focusedPromptRef */3]
-                ]]);
-    } else {
-      return /* Update */Block.__(0, [/* record */[
-                  /* input */"",
-                  /* history : :: */[
-                    /* record */[
-                      /* text */"",
-                      /* id */nextId + 1 | 0,
-                      /* exitCode : None */0,
-                      /* error : None */0
-                    ],
-                    /* :: */[
-                      /* record */[
-                        /* text */result[0].join(),
-                        /* id */nextId,
-                        /* exitCode : Some */[0],
-                        /* error : None */0
+                      /* currentId */outputId + 1 | 0,
+                      /* focusedPromptRef */state[/* focusedPromptRef */3]
+                    ]]);
+      case 1 : 
+          return /* Update */Block.__(0, [/* record */[
+                      /* input */"",
+                      /* history */result[0],
+                      /* currentId */1,
+                      /* focusedPromptRef */[/* None */0]
+                    ]]);
+      case 2 : 
+          return /* Update */Block.__(0, [/* record */[
+                      /* input */"",
+                      /* history : :: */[
+                        /* record */[
+                          /* text : array */[""],
+                          /* id */outputId + 1 | 0,
+                          /* exitCode : None */0,
+                          /* error : None */0
+                        ],
+                        /* :: */[
+                          /* record */[
+                            /* text : array */[""],
+                            /* id */outputId,
+                            /* exitCode : Some */[1],
+                            /* error : Some */[result[0]]
+                          ],
+                          newHistory
+                        ]
                       ],
-                      newHistory
-                    ]
-                  ],
-                  /* currentId */nextId + 1 | 0,
-                  /* focusedPromptRef */state[/* focusedPromptRef */3]
-                ]]);
+                      /* currentId */outputId + 1 | 0,
+                      /* focusedPromptRef */state[/* focusedPromptRef */3]
+                    ]]);
+      
     }
   };
   var newrecord = component.slice();
+  newrecord[/* didUpdate */5] = (function (param) {
+      return scrollIntoView(param[/* newSelf */1][/* state */2][/* focusedPromptRef */3][0]);
+    });
   newrecord[/* render */9] = (function (self) {
       return React.createElement("div", {
                   className: container,
                   onKeyDown: (function ($$event) {
                       return Curry._1(self[/* send */4], /* KeyDown */Block.__(1, [$$event.which]));
                     })
-                }, React.createElement("header", {
-                      className: header
-                    }, React.createElement("div", {
-                          className: buttonContainer
-                        }, React.createElement("button", {
-                              className: CommonStyles$Portfolio.combineClasses(/* :: */[
-                                    quit,
-                                    /* :: */[
-                                      buttons,
-                                      /* [] */0
-                                    ]
-                                  ])
-                            }, Utils$Portfolio.str("x")), React.createElement("button", {
-                              className: CommonStyles$Portfolio.combineClasses(/* :: */[
-                                    minimize,
-                                    /* :: */[
-                                      buttons,
-                                      /* [] */0
-                                    ]
-                                  ])
-                            }, Utils$Portfolio.str("-")), React.createElement("button", {
-                              className: CommonStyles$Portfolio.combineClasses(/* :: */[
-                                    zoom,
-                                    /* :: */[
-                                      buttons,
-                                      /* [] */0
-                                    ]
-                                  ])
-                            }, Utils$Portfolio.str("+"))), Utils$Portfolio.str("Bash")), React.createElement("div", {
+                }, ReasonReact.element(/* None */0, /* None */0, TitleBar$Portfolio.make(/* array */[])), React.createElement("div", {
                       className: content
                     }, $$Array.of_list(List.rev(List.map((function (param) {
                                     var error = param[/* error */3];
-                                    return React.createElement("div", undefined, param[/* exitCode */2] ? null : Utils$Portfolio.str(Shell$Portfolio.showPrompt(/* () */0)), React.createElement("div", undefined, Utils$Portfolio.str(param[/* text */0])), error ? React.createElement("p", undefined, Utils$Portfolio.str(error[0])) : null);
+                                    return React.createElement("div", undefined, param[/* exitCode */2] ? null : Utils$Portfolio.str(Shell$Portfolio.showPrompt(/* () */0)), React.createElement("div", undefined, Utils$Portfolio.renderText(param[/* text */0], inputContainer)), error ? React.createElement("p", undefined, Utils$Portfolio.str("Error: " + error[0])) : null);
                                   }), self[/* state */2][/* history */1]))), React.createElement("input", {
+                          ref: Curry._1(self[/* handle */0], setFocusedRef),
                           className: input,
+                          autoFocus: true,
                           value: self[/* state */2][/* input */0],
+                          onBlur: (function () {
+                              return Curry._1(self[/* send */4], /* Focus */0);
+                            }),
                           onChange: (function (evt) {
                               var element = evt;
                               var self$1 = self;
@@ -366,7 +233,7 @@ function make() {
               /* input */"",
               /* history : :: */[
                 /* record */[
-                  /* text */"",
+                  /* text : array */["Find out more about me, use the 'help' command to learn more"],
                   /* id */1,
                   /* exitCode : None */0,
                   /* error : None */0
@@ -378,31 +245,41 @@ function make() {
             ];
     });
   newrecord[/* reducer */12] = (function (action, state) {
-      if (action.tag) {
+      if (typeof action === "number") {
+        return /* SideEffects */Block.__(2, [(function (param) {
+                      return focusElement(param[/* state */2][/* focusedPromptRef */3][0]);
+                    })]);
+      } else if (action.tag) {
         var state$1 = state;
         var key = action[0];
         var currentId = state$1[/* currentId */2];
         var result = Utils$Portfolio.split_on_char(/* " " */32, state$1[/* input */0]);
+        var exit = 0;
         if (key !== 13) {
           return /* NoUpdate */0;
         } else if (result) {
-          var match = result[1];
           var text = result[0];
+          var match = result[1];
           if (match) {
             if (match[1]) {
               return /* NoUpdate */0;
             } else {
               return handleSubmit(text, match[0], state$1);
             }
+          } else if (text === "") {
+            exit = 1;
           } else {
             return handleSubmit(text, "", state$1);
           }
         } else {
+          exit = 1;
+        }
+        if (exit === 1) {
           return /* Update */Block.__(0, [/* record */[
                       /* input */state$1[/* input */0],
                       /* history : :: */[
                         /* record */[
-                          /* text */"",
+                          /* text : array */[""],
                           /* id */currentId + 1 | 0,
                           /* exitCode : None */0,
                           /* error : None */0
@@ -413,6 +290,7 @@ function make() {
                       /* focusedPromptRef */state$1[/* focusedPromptRef */3]
                     ]]);
         }
+        
       } else {
         return /* Update */Block.__(0, [/* record */[
                     /* input */action[0],
@@ -427,5 +305,9 @@ function make() {
 
 exports.Styles = Styles;
 exports.component = component;
+exports.setFocusedRef = setFocusedRef;
+exports.updateHistory = updateHistory;
+exports.scrollIntoView = scrollIntoView;
+exports.focusElement = focusElement;
 exports.make = make;
 /* container Not a pure module */

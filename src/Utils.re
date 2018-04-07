@@ -94,7 +94,7 @@ let defaultFont = {| -apple-system, BlinkMacSystemFont,
 let renderText = (details: array(string), className: string) =>
   Array.mapi(
     (index, line) =>
-      <span className key=(string_of_int(index))> (str(line)) </span>,
+      <p className key=(string_of_int(index))> (str(line)) </p>,
     details,
   )
   |> ReasonReact.arrayToElement;

@@ -33,7 +33,7 @@ let about = [|
 |];
 
 type prompts = {
-  text: string,
+  text: array(string),
   id: int,
   exitCode: option(int),
   error: option(string),
@@ -47,8 +47,11 @@ let filenames = [|"about.txt"|];
 
 let files = {about: about};
 
+let history = [{text: [|""|], id: 1, exitCode: None, error: None}];
+
 type exitResult =
   | ShellSuccess(array(string))
+  | ShellReset(list(prompts))
   | ShellFailure(string);
 
 let cat = (arg: string) =>
@@ -57,9 +60,21 @@ let cat = (arg: string) =>
   | _ => ShellFailure(errorsMessages.invalid_file)
   };
 
+let helpprg = (arg: string) =>
+  switch (arg) {
+  | ""
+  | _ => [|
+      "--Commands: type a terminal command",
+      "options are: cat 'arg', ls, help, clear",
+    |]
+  };
+
 let parseInput = (input: string, arg: string) =>
   switch (input) {
   | "ls" => ShellSuccess(filenames)
   | "cat" => cat(arg)
+  | "help" => ShellSuccess(helpprg(arg))
+  | "clear"
+  | "cl" => ShellReset(history)
   | _ => ShellFailure(errorsMessages.invalid_cmd)
   };

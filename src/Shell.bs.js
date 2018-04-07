@@ -20,11 +20,37 @@ var filenames = /* array */["about.txt"];
 
 var files = /* record */[/* about */about];
 
+var history_000 = /* record */[
+  /* text : array */[""],
+  /* id */1,
+  /* exitCode : None */0,
+  /* error : None */0
+];
+
+var history = /* :: */[
+  history_000,
+  /* [] */0
+];
+
 function cat(arg) {
   if (arg === "about.txt") {
     return /* ShellSuccess */Block.__(0, [about]);
   } else {
-    return /* ShellFailure */Block.__(1, ["Sorry that file is invalid"]);
+    return /* ShellFailure */Block.__(2, ["Sorry that file is invalid"]);
+  }
+}
+
+function helpprg(arg) {
+  if (arg === "") {
+    return /* array */[
+            "--Commands: type a terminal command",
+            "options are: cat 'arg', ls, help, clear"
+          ];
+  } else {
+    return /* array */[
+            "--Commands: type a terminal command",
+            "options are: cat 'arg', ls, help, clear"
+          ];
   }
 }
 
@@ -32,10 +58,15 @@ function parseInput(input, arg) {
   switch (input) {
     case "cat" : 
         return cat(arg);
+    case "cl" : 
+    case "clear" : 
+        return /* ShellReset */Block.__(1, [history]);
+    case "help" : 
+        return /* ShellSuccess */Block.__(0, [helpprg(arg)]);
     case "ls" : 
         return /* ShellSuccess */Block.__(0, [filenames]);
     default:
-      return /* ShellFailure */Block.__(1, ["Sorry that command is invalid"]);
+      return /* ShellFailure */Block.__(2, ["Sorry that command is invalid"]);
   }
 }
 
@@ -57,6 +88,8 @@ exports.about = about;
 exports.showPrompt = showPrompt;
 exports.filenames = filenames;
 exports.files = files;
+exports.history = history;
 exports.cat = cat;
+exports.helpprg = helpprg;
 exports.parseInput = parseInput;
 /* No side effect */
