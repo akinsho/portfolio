@@ -65,7 +65,7 @@ let header =
     position(relative),
   ]);
 
-let make = (_) => {
+let make = (~shell: string, _children) => {
   ...component,
   render: (_) =>
     <header className=header>
@@ -80,6 +80,6 @@ let make = (_) => {
           (str("+"))
         </button>
       </div>
-      (str("Bash"))
+      (str(String.capitalize(shell)))
     </header>,
 };

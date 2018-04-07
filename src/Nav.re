@@ -2,6 +2,8 @@ open Utils;
 
 open Css;
 
+importCss("./css/nav.scss");
+
 let navContainer =
   style([
     zIndex(2),
@@ -48,7 +50,11 @@ let make = _children => {
     };
     <nav className=navContainer>
       <ul className=links style=(restyle(~listStyleType="none", ()))>
-        <li onClick=navigate className=listItem> (str("Home")) </li>
+        <li
+          onClick=navigate
+          className=(CommonStyles.combineClasses([listItem, "nav__link"]))>
+          (str("Home"))
+        </li>
         <li id="projects" onClick=navigate className=listItem>
           (str("Projects"))
         </li>

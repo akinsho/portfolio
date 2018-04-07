@@ -3,6 +3,7 @@
 
 var Css = require("bs-css/src/Css.js");
 var React = require("react");
+var $$String = require("bs-platform/lib/js/string.js");
 var ReasonReact = require("reason-react/src/ReasonReact.js");
 var Utils$Portfolio = require("./Utils.bs.js");
 var CommonStyles$Portfolio = require("./CommonStyles.bs.js");
@@ -159,7 +160,7 @@ var header = Css.style(/* :: */[
       ]
     ]);
 
-function make() {
+function make(shell, _) {
   var newrecord = component.slice();
   newrecord[/* render */9] = (function () {
       return React.createElement("header", {
@@ -190,7 +191,7 @@ function make() {
                                   /* [] */0
                                 ]
                               ])
-                        }, Utils$Portfolio.str("+"))), Utils$Portfolio.str("Bash"));
+                        }, Utils$Portfolio.str("+"))), Utils$Portfolio.str($$String.capitalize(shell)));
     });
   return newrecord;
 }

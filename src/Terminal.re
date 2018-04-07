@@ -30,6 +30,7 @@ module Styles = {
       color(white),
       outlineStyle(none),
     ]);
+  let prompt = style([color(deepskyblue), marginRight(em(0.2))]);
   let inputContainer = style([marginTop(em(1.)), marginBottom(em(1.))]);
 };
 
@@ -39,6 +40,7 @@ type action =
   | KeyDown(int);
 
 type state = {
+  shell: string,
   input: string,
   history: list(prompts),
   currentId: int,
@@ -57,13 +59,18 @@ let showLastHistoryItem = history => {
   List.nth(history, length - 1);
 };
 
-let updateHistory = state =>
+let savePromptText = state =>
   List.map(
     prompt =>
       prompt.id === state.currentId ?
         {...prompt, text: [|state.input|]} : prompt,
     state.history,
   );
+
+let updateHistory = (~state, ~id, prevCmdStatus) =>
+  state
+  |> savePromptText
+  |> (history => newPrompt(~history, prevCmdStatus, id));
 
 /* Side Effect Ahoy */
 let scrollIntoView = el =>
@@ -82,43 +89,31 @@ let make = _children => {
   let handleChange = (element, self: selfType) =>
     element |> getText |> (text => self.send(Change(text)));
   let handleSubmit = (text: string, arg: string, state) => {
+    let id = state.currentId + 1;
     let result = parseInput(text, arg);
-    let newHistory = updateHistory(state);
-    let outputId = state.currentId + 1;
     switch (result) {
-    | ShellReset(reset) =>
+    | ChangeShell(shell) =>
       ReasonReact.Update({
-        currentId: 1,
-        history: reset,
+        ...state,
+        shell,
         input: "",
-        focusedPromptRef: ref(None),
+        history: updateHistory(~state, ~id, ChangeShell(shell)),
       })
+    | ShellReset(reset) =>
+      ReasonReact.Update({...state, currentId: 1, history: reset, input: ""})
     | ShellSuccess(result) =>
       ReasonReact.Update({
         ...state,
-        currentId: outputId + 1,
+        currentId: id + 1,
         input: "",
-        history: [
-          {text: [|""|], id: outputId + 1, error: None, exitCode: None},
-          {text: result, error: None, id: outputId, exitCode: Some(0)},
-          ...newHistory,
-        ],
+        history: updateHistory(~state, ~id, ShellSuccess(result)),
       })
     | ShellFailure(result) =>
       ReasonReact.Update({
         ...state,
         input: "",
-        currentId: outputId + 1,
-        history: [
-          {text: [|""|], id: outputId + 1, error: None, exitCode: None},
-          {
-            text: [|""|],
-            id: outputId,
-            error: Some(result),
-            exitCode: Some(1),
-          },
-          ...newHistory,
-        ],
+        currentId: id + 1,
+        history: updateHistory(~state, ~id, ShellFailure(result)),
       })
     };
   };
@@ -152,6 +147,7 @@ let make = _children => {
   {
     ...component,
     initialState: () => {
+      shell: "bash",
       input: "",
       history: [
         {
@@ -178,21 +174,21 @@ let make = _children => {
         )
       },
     render: self =>
-      <div
-        className=Styles.container
-        onKeyDown=(
-          event => self.send(KeyDown(ReactEventRe.Keyboard.which(event)))
-        )>
-        <TitleBar />
+      <div className=Styles.container>
+        <TitleBar shell=self.state.shell />
         <div className=Styles.content>
           (
             List.map(
+              /* TODO: Use exit code to color text  */
               ({exitCode, text, error}) =>
                 <div>
                   (
                     switch (exitCode) {
-                    | Some(_exitCode) => ReasonReact.nullElement
-                    | None => str(showPrompt())
+                    | Some(_) => ReasonReact.nullElement
+                    | None =>
+                      <span className=Styles.prompt>
+                        (str(showPrompt()))
+                      </span>
                     }
                   )
                   <div> (renderText(text, Styles.inputContainer)) </div>
@@ -209,15 +205,22 @@ let make = _children => {
             |> Array.of_list
             |> ReasonReact.arrayToElement
           )
-          <input
-            ref=(self.handle(setFocusedRef))
-            onBlur=(_evt => self.send(Focus))
-            className=Styles.input
-            value=self.state.input
-            onChange=(evt => handleChange(evt, self))
-            autoFocus=Js.true_
-            style=(restyle(~caretColor="#57D900", ()))
-          />
+          <label
+            onKeyDown=(
+              event =>
+                self.send(KeyDown(ReactEventRe.Keyboard.which(event)))
+            )>
+            <span className=Styles.prompt> (str(showPrompt())) </span>
+            <input
+              ref=(self.handle(setFocusedRef))
+              onBlur=(_evt => self.send(Focus))
+              className=Styles.input
+              value=self.state.input
+              onChange=(evt => handleChange(evt, self))
+              autoFocus=Js.true_
+              style=(restyle(~caretColor="#57D900", ()))
+            />
+          </label>
         </div>
       </div>,
   };

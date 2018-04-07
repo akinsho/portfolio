@@ -3,8 +3,6 @@
 
 var Block = require("bs-platform/lib/js/block.js");
 
-var prompt = "/Users/akin_sowemimo/root";
-
 var about = /* array */[
   "I trained as a Medical Doctor at King's college london.",
   "Unfortunately after 8 years of studying, training, many an up and down\n      I realised that it wasn\'t for me and parted ways with that time of my life.\n        ",
@@ -12,8 +10,10 @@ var about = /* array */[
   "Actually the rest is me meeting a bunch of other aspiring developers, our forming a group to teach each other\n      then my finding out about founders and coders in London"
 ];
 
-function showPrompt() {
-  return "/Users/akin_sowemimo/root:";
+function showPrompt($staropt$star, $staropt$star$1, _) {
+  var user = $staropt$star ? $staropt$star[0] : "Akin_Sowemimo";
+  var dir = $staropt$star$1 ? $staropt$star$1[0] : "root";
+  return "/Users/" + (user + ("/" + (dir + ":")));
 }
 
 var filenames = /* array */["about.txt"];
@@ -36,7 +36,7 @@ function cat(arg) {
   if (arg === "about.txt") {
     return /* ShellSuccess */Block.__(0, [about]);
   } else {
-    return /* ShellFailure */Block.__(2, ["Sorry that file is invalid"]);
+    return /* ShellFailure */Block.__(3, ["Sorry that file is invalid"]);
   }
 }
 
@@ -54,10 +54,25 @@ function helpprg(arg) {
   }
 }
 
+function chsh(shell) {
+  switch (shell) {
+    case "" : 
+        return "bash";
+    case "fish" : 
+        return "fish";
+    case "zsh" : 
+        return "zsh";
+    default:
+      return "bash";
+  }
+}
+
 function parseInput(input, arg) {
   switch (input) {
     case "cat" : 
         return cat(arg);
+    case "chsh" : 
+        return /* ChangeShell */Block.__(2, [chsh(arg)]);
     case "cl" : 
     case "clear" : 
         return /* ShellReset */Block.__(1, [history]);
@@ -66,7 +81,53 @@ function parseInput(input, arg) {
     case "ls" : 
         return /* ShellSuccess */Block.__(0, [filenames]);
     default:
-      return /* ShellFailure */Block.__(2, ["Sorry that command is invalid"]);
+      return /* ShellFailure */Block.__(3, ["Sorry that command is invalid"]);
+  }
+}
+
+function newPrompt(history, prevCmdExitStatus, id) {
+  var emptyPrompt_000 = /* text : array */[""];
+  var emptyPrompt_001 = /* id */id + 1 | 0;
+  var emptyPrompt = /* record */[
+    emptyPrompt_000,
+    emptyPrompt_001,
+    /* exitCode : None */0,
+    /* error : None */0
+  ];
+  switch (prevCmdExitStatus.tag | 0) {
+    case 0 : 
+        return /* :: */[
+                /* record */[
+                  /* text */prevCmdExitStatus[0],
+                  /* id */id,
+                  /* exitCode : Some */[0],
+                  /* error : None */0
+                ],
+                /* :: */[
+                  emptyPrompt,
+                  history
+                ]
+              ];
+    case 1 : 
+    case 2 : 
+        return /* :: */[
+                emptyPrompt,
+                history
+              ];
+    case 3 : 
+        return /* :: */[
+                /* record */[
+                  /* text : array */[""],
+                  /* id */id,
+                  /* exitCode : Some */[1],
+                  /* error : Some */[prevCmdExitStatus[0]]
+                ],
+                /* :: */[
+                  emptyPrompt,
+                  history
+                ]
+              ];
+    
   }
 }
 
@@ -83,7 +144,6 @@ var commands = /* record */[
 
 exports.errorsMessages = errorsMessages;
 exports.commands = commands;
-exports.prompt = prompt;
 exports.about = about;
 exports.showPrompt = showPrompt;
 exports.filenames = filenames;
@@ -91,5 +151,7 @@ exports.files = files;
 exports.history = history;
 exports.cat = cat;
 exports.helpprg = helpprg;
+exports.chsh = chsh;
 exports.parseInput = parseInput;
+exports.newPrompt = newPrompt;
 /* No side effect */

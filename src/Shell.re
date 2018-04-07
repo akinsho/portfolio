@@ -17,8 +17,6 @@ type commandTypes = {
 
 let commands = {ls: "ls", cat: "cat"};
 
-let prompt = "/Users/akin_sowemimo/root";
-
 let about = [|
   "I trained as a Medical Doctor at King's college london.",
   {j|Unfortunately after 8 years of studying, training, many an up and down
@@ -39,7 +37,8 @@ type prompts = {
   error: option(string),
 };
 
-let showPrompt = () => prompt ++ ":";
+let showPrompt = (~user="Akin_Sowemimo", ~dir="root", ()) =>
+  "/Users/" ++ user ++ "/" ++ dir ++ ":";
 
 type fileType = {about: array(string)};
 
@@ -52,6 +51,7 @@ let history = [{text: [|""|], id: 1, exitCode: None, error: None}];
 type exitResult =
   | ShellSuccess(array(string))
   | ShellReset(list(prompts))
+  | ChangeShell(string)
   | ShellFailure(string);
 
 let cat = (arg: string) =>
@@ -69,12 +69,39 @@ let helpprg = (arg: string) =>
     |]
   };
 
+let chsh = (shell: string) =>
+  switch (shell) {
+  /* | "-h" => [|"available shells include -", " fish, zsh and bash"|] */
+  | "fish" => "fish"
+  | "zsh" => "zsh"
+  | ""
+  | _ => "bash"
+  };
+
 let parseInput = (input: string, arg: string) =>
   switch (input) {
   | "ls" => ShellSuccess(filenames)
   | "cat" => cat(arg)
   | "help" => ShellSuccess(helpprg(arg))
+  | "chsh" => ChangeShell(chsh(arg))
   | "clear"
   | "cl" => ShellReset(history)
   | _ => ShellFailure(errorsMessages.invalid_cmd)
   };
+
+let newPrompt = (~history, prevCmdExitStatus, id) => {
+  let emptyPrompt = {text: [|""|], id: id + 1, error: None, exitCode: None};
+  switch (prevCmdExitStatus) {
+  | ShellSuccess(result) => [
+      {text: result, error: None, id, exitCode: Some(0)},
+      emptyPrompt,
+      ...history,
+    ]
+  | ShellFailure(result) => [
+      {text: [|""|], id, error: Some(result), exitCode: Some(1)},
+      emptyPrompt,
+      ...history,
+    ]
+  | _ => [emptyPrompt, ...history]
+  };
+};

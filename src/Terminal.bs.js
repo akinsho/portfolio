@@ -81,6 +81,14 @@ var input = Css.style(/* :: */[
       ]
     ]);
 
+var prompt = Css.style(/* :: */[
+      Css.color(Css.deepskyblue),
+      /* :: */[
+        Css.marginRight(Css.em(0.2)),
+        /* [] */0
+      ]
+    ]);
+
 var inputContainer = Css.style(/* :: */[
       Css.marginTop(Css.em(1)),
       /* :: */[
@@ -93,13 +101,14 @@ var Styles = /* module */[
   /* container */container,
   /* content */content,
   /* input */input,
+  /* prompt */prompt,
   /* inputContainer */inputContainer
 ];
 
 var component = ReasonReact.reducerComponent("Terminal");
 
 function setFocusedRef(r, param) {
-  param[/* state */2][/* focusedPromptRef */3][0] = (r == null) ? /* None */0 : [r];
+  param[/* state */2][/* focusedPromptRef */4][0] = (r == null) ? /* None */0 : [r];
   return /* () */0;
 }
 
@@ -108,12 +117,12 @@ function showLastHistoryItem(history) {
   return List.nth(history, length - 1 | 0);
 }
 
-function updateHistory(state) {
+function savePromptText(state) {
   return List.map((function (prompt) {
-                var match = +(prompt[/* id */1] === state[/* currentId */2]);
+                var match = +(prompt[/* id */1] === state[/* currentId */3]);
                 if (match !== 0) {
                   return /* record */[
-                          /* text : array */[state[/* input */0]],
+                          /* text : array */[state[/* input */1]],
                           /* id */prompt[/* id */1],
                           /* exitCode */prompt[/* exitCode */2],
                           /* error */prompt[/* error */3]
@@ -121,7 +130,12 @@ function updateHistory(state) {
                 } else {
                   return prompt;
                 }
-              }), state[/* history */1]);
+              }), state[/* history */2]);
+}
+
+function updateHistory(state, id, prevCmdStatus) {
+  var history = savePromptText(state);
+  return Shell$Portfolio.newPrompt(history, prevCmdStatus, id);
 }
 
 function scrollIntoView(el) {
@@ -142,100 +156,85 @@ function focusElement(el) {
 
 function make() {
   var handleSubmit = function (text, arg, state) {
+    var id = state[/* currentId */3] + 1 | 0;
     var result = Shell$Portfolio.parseInput(text, arg);
-    var newHistory = updateHistory(state);
-    var outputId = state[/* currentId */2] + 1 | 0;
     switch (result.tag | 0) {
       case 0 : 
           return /* Update */Block.__(0, [/* record */[
+                      /* shell */state[/* shell */0],
                       /* input */"",
-                      /* history : :: */[
-                        /* record */[
-                          /* text : array */[""],
-                          /* id */outputId + 1 | 0,
-                          /* exitCode : None */0,
-                          /* error : None */0
-                        ],
-                        /* :: */[
-                          /* record */[
-                            /* text */result[0],
-                            /* id */outputId,
-                            /* exitCode : Some */[0],
-                            /* error : None */0
-                          ],
-                          newHistory
-                        ]
-                      ],
-                      /* currentId */outputId + 1 | 0,
-                      /* focusedPromptRef */state[/* focusedPromptRef */3]
+                      /* history */updateHistory(state, id, /* ShellSuccess */Block.__(0, [result[0]])),
+                      /* currentId */id + 1 | 0,
+                      /* focusedPromptRef */state[/* focusedPromptRef */4]
                     ]]);
       case 1 : 
           return /* Update */Block.__(0, [/* record */[
+                      /* shell */state[/* shell */0],
                       /* input */"",
                       /* history */result[0],
                       /* currentId */1,
-                      /* focusedPromptRef */[/* None */0]
+                      /* focusedPromptRef */state[/* focusedPromptRef */4]
                     ]]);
       case 2 : 
+          var shell = result[0];
           return /* Update */Block.__(0, [/* record */[
+                      /* shell */shell,
                       /* input */"",
-                      /* history : :: */[
-                        /* record */[
-                          /* text : array */[""],
-                          /* id */outputId + 1 | 0,
-                          /* exitCode : None */0,
-                          /* error : None */0
-                        ],
-                        /* :: */[
-                          /* record */[
-                            /* text : array */[""],
-                            /* id */outputId,
-                            /* exitCode : Some */[1],
-                            /* error : Some */[result[0]]
-                          ],
-                          newHistory
-                        ]
-                      ],
-                      /* currentId */outputId + 1 | 0,
-                      /* focusedPromptRef */state[/* focusedPromptRef */3]
+                      /* history */updateHistory(state, id, /* ChangeShell */Block.__(2, [shell])),
+                      /* currentId */state[/* currentId */3],
+                      /* focusedPromptRef */state[/* focusedPromptRef */4]
+                    ]]);
+      case 3 : 
+          return /* Update */Block.__(0, [/* record */[
+                      /* shell */state[/* shell */0],
+                      /* input */"",
+                      /* history */updateHistory(state, id, /* ShellFailure */Block.__(3, [result[0]])),
+                      /* currentId */id + 1 | 0,
+                      /* focusedPromptRef */state[/* focusedPromptRef */4]
                     ]]);
       
     }
   };
   var newrecord = component.slice();
   newrecord[/* didUpdate */5] = (function (param) {
-      return scrollIntoView(param[/* newSelf */1][/* state */2][/* focusedPromptRef */3][0]);
+      return scrollIntoView(param[/* newSelf */1][/* state */2][/* focusedPromptRef */4][0]);
     });
   newrecord[/* render */9] = (function (self) {
       return React.createElement("div", {
-                  className: container,
-                  onKeyDown: (function ($$event) {
-                      return Curry._1(self[/* send */4], /* KeyDown */Block.__(1, [$$event.which]));
-                    })
-                }, ReasonReact.element(/* None */0, /* None */0, TitleBar$Portfolio.make(/* array */[])), React.createElement("div", {
+                  className: container
+                }, ReasonReact.element(/* None */0, /* None */0, TitleBar$Portfolio.make(self[/* state */2][/* shell */0], /* array */[])), React.createElement("div", {
                       className: content
                     }, $$Array.of_list(List.rev(List.map((function (param) {
                                     var error = param[/* error */3];
-                                    return React.createElement("div", undefined, param[/* exitCode */2] ? null : Utils$Portfolio.str(Shell$Portfolio.showPrompt(/* () */0)), React.createElement("div", undefined, Utils$Portfolio.renderText(param[/* text */0], inputContainer)), error ? React.createElement("p", undefined, Utils$Portfolio.str("Error: " + error[0])) : null);
-                                  }), self[/* state */2][/* history */1]))), React.createElement("input", {
-                          ref: Curry._1(self[/* handle */0], setFocusedRef),
-                          className: input,
-                          style: Utils$Portfolio.restyle(/* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* Some */["#57D900"], /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* () */0),
-                          autoFocus: true,
-                          value: self[/* state */2][/* input */0],
-                          onBlur: (function () {
-                              return Curry._1(self[/* send */4], /* Focus */0);
-                            }),
-                          onChange: (function (evt) {
-                              var element = evt;
-                              var self$1 = self;
-                              var text = Utils$Portfolio.getText(element);
-                              return Curry._1(self$1[/* send */4], /* Change */Block.__(0, [text]));
+                                    return React.createElement("div", undefined, param[/* exitCode */2] ? null : React.createElement("span", {
+                                                      className: prompt
+                                                    }, Utils$Portfolio.str(Shell$Portfolio.showPrompt(/* None */0, /* None */0, /* () */0))), React.createElement("div", undefined, Utils$Portfolio.renderText(param[/* text */0], inputContainer)), error ? React.createElement("p", undefined, Utils$Portfolio.str("Error: " + error[0])) : null);
+                                  }), self[/* state */2][/* history */2]))), React.createElement("label", {
+                          onKeyDown: (function ($$event) {
+                              return Curry._1(self[/* send */4], /* KeyDown */Block.__(1, [$$event.which]));
                             })
-                        })));
+                        }, React.createElement("span", {
+                              className: prompt
+                            }, Utils$Portfolio.str(Shell$Portfolio.showPrompt(/* None */0, /* None */0, /* () */0))), React.createElement("input", {
+                              ref: Curry._1(self[/* handle */0], setFocusedRef),
+                              className: input,
+                              style: Utils$Portfolio.restyle(/* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* Some */["#57D900"], /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* () */0),
+                              autoFocus: true,
+                              value: self[/* state */2][/* input */1],
+                              onBlur: (function () {
+                                  return Curry._1(self[/* send */4], /* Focus */0);
+                                }),
+                              onChange: (function (evt) {
+                                  var element = evt;
+                                  var self$1 = self;
+                                  var text = Utils$Portfolio.getText(element);
+                                  return Curry._1(self$1[/* send */4], /* Change */Block.__(0, [text]));
+                                })
+                            }))));
     });
   newrecord[/* initialState */10] = (function () {
       return /* record */[
+              /* shell */"bash",
               /* input */"",
               /* history : :: */[
                 /* record */[
@@ -253,14 +252,14 @@ function make() {
   newrecord[/* reducer */12] = (function (action, state) {
       if (typeof action === "number") {
         return /* SideEffects */Block.__(2, [(function (param) {
-                      return focusElement(param[/* state */2][/* focusedPromptRef */3][0]);
+                      return focusElement(param[/* state */2][/* focusedPromptRef */4][0]);
                     })]);
       } else if (action.tag) {
         var state$1 = state;
         var key = action[0];
-        var currentId = state$1[/* currentId */2];
-        var history = state$1[/* history */1];
-        var result = Utils$Portfolio.split_on_char(/* " " */32, state$1[/* input */0]);
+        var currentId = state$1[/* currentId */3];
+        var history = state$1[/* history */2];
+        var result = Utils$Portfolio.split_on_char(/* " " */32, state$1[/* input */1]);
         var exit = 0;
         if (key !== 13) {
           if (key !== 38) {
@@ -268,10 +267,11 @@ function make() {
           } else {
             var item = showLastHistoryItem(history);
             return /* Update */Block.__(0, [/* record */[
+                        /* shell */state$1[/* shell */0],
                         /* input */item[/* text */0].join(),
-                        /* history */state$1[/* history */1],
-                        /* currentId */state$1[/* currentId */2],
-                        /* focusedPromptRef */state$1[/* focusedPromptRef */3]
+                        /* history */state$1[/* history */2],
+                        /* currentId */state$1[/* currentId */3],
+                        /* focusedPromptRef */state$1[/* focusedPromptRef */4]
                       ]]);
           }
         } else if (result) {
@@ -293,7 +293,8 @@ function make() {
         }
         if (exit === 1) {
           return /* Update */Block.__(0, [/* record */[
-                      /* input */state$1[/* input */0],
+                      /* shell */state$1[/* shell */0],
+                      /* input */state$1[/* input */1],
                       /* history : :: */[
                         /* record */[
                           /* text : array */[""],
@@ -304,16 +305,17 @@ function make() {
                         history
                       ],
                       /* currentId */currentId + 1 | 0,
-                      /* focusedPromptRef */state$1[/* focusedPromptRef */3]
+                      /* focusedPromptRef */state$1[/* focusedPromptRef */4]
                     ]]);
         }
         
       } else {
         return /* Update */Block.__(0, [/* record */[
+                    /* shell */state[/* shell */0],
                     /* input */action[0],
-                    /* history */state[/* history */1],
-                    /* currentId */state[/* currentId */2],
-                    /* focusedPromptRef */state[/* focusedPromptRef */3]
+                    /* history */state[/* history */2],
+                    /* currentId */state[/* currentId */3],
+                    /* focusedPromptRef */state[/* focusedPromptRef */4]
                   ]]);
       }
     });
@@ -324,6 +326,7 @@ exports.Styles = Styles;
 exports.component = component;
 exports.setFocusedRef = setFocusedRef;
 exports.showLastHistoryItem = showLastHistoryItem;
+exports.savePromptText = savePromptText;
 exports.updateHistory = updateHistory;
 exports.scrollIntoView = scrollIntoView;
 exports.focusElement = focusElement;
