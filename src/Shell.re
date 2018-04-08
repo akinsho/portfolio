@@ -34,19 +34,23 @@ type prompts = {
   text: array(string),
   id: int,
   exitCode: option(int),
+  cmd: string,
   error: option(string),
 };
 
 let showPrompt = (~user="Akin_Sowemimo", ~dir="root", ()) =>
   "/Users/" ++ user ++ "/" ++ dir ++ ":";
 
-type fileType = {about: array(string)};
+type fileType = {
+  about: array(string),
+  comingSoon: array(string),
+};
 
-let filenames = [|"about.txt"|];
+let filenames = [|"about.txt", "coming_soon.txt"|];
 
-let files = {about: about};
+let files = {about, comingSoon: [|"coming soon"|]};
 
-let history = [{text: [|""|], id: 1, exitCode: None, error: None}];
+let history = [{text: [|""|], id: 1, cmd: "", exitCode: None, error: None}];
 
 type exitResult =
   | ShellSuccess(array(string))
@@ -57,6 +61,7 @@ type exitResult =
 let cat = (arg: string) =>
   switch (arg) {
   | "about.txt" => ShellSuccess(files.about)
+  | "coming_soon.txt" => ShellSuccess(files.comingSoon)
   | _ => ShellFailure(errorsMessages.invalid_file)
   };
 
@@ -89,17 +94,21 @@ let parseInput = (input: string, arg: string) =>
   | _ => ShellFailure(errorsMessages.invalid_cmd)
   };
 
-let newPrompt = (~history, prevCmdExitStatus, id) => {
-  let emptyPrompt = {text: [|""|], id: id + 1, error: None, exitCode: None};
+let newPrompt = (~history, prevCmdExitStatus, id, cmd) => {
+  let emptyPrompt = {
+    text: [|""|],
+    id: id + 1,
+    cmd: "",
+    error: None,
+    exitCode: None,
+  };
   switch (prevCmdExitStatus) {
   | ShellSuccess(result) => [
-      {text: result, error: None, id, exitCode: Some(0)},
-      emptyPrompt,
+      {text: result, error: None, id, exitCode: Some(0), cmd},
       ...history,
     ]
   | ShellFailure(result) => [
-      {text: [|""|], id, error: Some(result), exitCode: Some(1)},
-      emptyPrompt,
+      {text: [|""|], id, error: Some(result), exitCode: Some(1), cmd},
       ...history,
     ]
   | _ => [emptyPrompt, ...history]

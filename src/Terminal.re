@@ -10,6 +10,7 @@ module Styles = {
       width(`percent(50.)),
       margin(em(1.)),
       paddingBottom(em(1.)),
+      boxShadow(~x=px(-2), ~y=px(-2), ~blur=px(5), rgba(0, 0, 0, 0.5)),
     ]);
   let content =
     style([
@@ -62,15 +63,24 @@ let showLastHistoryItem = history => {
 let savePromptText = state =>
   List.map(
     prompt =>
-      prompt.id === state.currentId ?
-        {...prompt, text: [|state.input|]} : prompt,
+      prompt.id === state.currentId ? {...prompt, cmd: state.input} : prompt,
     state.history,
   );
 
-let updateHistory = (~state, ~id, prevCmdStatus) =>
+let updateHistory = (~state, ~id, prevCmdStatus, cmd) =>
   state
   |> savePromptText
-  |> (history => newPrompt(~history, prevCmdStatus, id));
+  |> (history => newPrompt(~history, prevCmdStatus, id, cmd));
+
+let showHelp = history =>
+  List.length(history) >= 1 ?
+    ReasonReact.nullElement :
+    str(
+      {|So, I'm a terminal nerd..
+        if you wanna to know a little bit more about me..
+          try some commands out,
+          if you're stuck try the "help" command|},
+    );
 
 /* Side Effect Ahoy */
 let scrollIntoView = el =>
@@ -89,6 +99,7 @@ let make = _children => {
   let handleChange = (element, self: selfType) =>
     element |> getText |> (text => self.send(Change(text)));
   let handleSubmit = (text: string, arg: string, state) => {
+    let cmd = text ++ " " ++ arg;
     let id = state.currentId + 1;
     let result = parseInput(text, arg);
     switch (result) {
@@ -97,7 +108,7 @@ let make = _children => {
         ...state,
         shell,
         input: "",
-        history: updateHistory(~state, ~id, ChangeShell(shell)),
+        history: updateHistory(~state, ~id, ChangeShell(shell), cmd),
       })
     | ShellReset(reset) =>
       ReasonReact.Update({...state, currentId: 1, history: reset, input: ""})
@@ -106,18 +117,18 @@ let make = _children => {
         ...state,
         currentId: id + 1,
         input: "",
-        history: updateHistory(~state, ~id, ShellSuccess(result)),
+        history: updateHistory(~state, ~id, ShellSuccess(result), cmd),
       })
     | ShellFailure(result) =>
       ReasonReact.Update({
         ...state,
         input: "",
         currentId: id + 1,
-        history: updateHistory(~state, ~id, ShellFailure(result)),
+        history: updateHistory(~state, ~id, ShellFailure(result), cmd),
       })
     };
   };
-  let handleKeyInput = (state: state, key: int) => {
+  let handleKeyInput = (state, key: int) => {
     let {currentId, history} = state;
     /* the 0-index access is to convert a string to a "char" type */
     let result = split_on_char(" ".[0], state.input);
@@ -135,7 +146,13 @@ let make = _children => {
         ...state,
         currentId: currentId + 1,
         history: [
-          {text: [|""|], id: currentId + 1, error: None, exitCode: None},
+          {
+            text: [|""|],
+            id: currentId + 1,
+            error: None,
+            exitCode: None,
+            cmd: "",
+          },
           ...history,
         ],
       })
@@ -149,16 +166,7 @@ let make = _children => {
     initialState: () => {
       shell: "bash",
       input: "",
-      history: [
-        {
-          text: [|
-            "Find out more about me, use the 'help' command to learn more",
-          |],
-          id: 1,
-          error: None,
-          exitCode: None,
-        },
-      ],
+      history: [],
       currentId: 1,
       focusedPromptRef: ref(None),
     },
@@ -176,21 +184,15 @@ let make = _children => {
     render: self =>
       <div className=Styles.container>
         <TitleBar shell=self.state.shell />
+        /* Render Prompt then input then output */
         <div className=Styles.content>
+          <p> (showHelp(self.state.history)) </p>
           (
             List.map(
               /* TODO: Use exit code to color text  */
-              ({exitCode, text, error}) =>
+              ({text, error}) =>
                 <div>
-                  (
-                    switch (exitCode) {
-                    | Some(_) => ReasonReact.nullElement
-                    | None =>
-                      <span className=Styles.prompt>
-                        (str(showPrompt()))
-                      </span>
-                    }
-                  )
+                  <span className=Styles.prompt> (str(showPrompt())) </span>
                   <div> (renderText(text, Styles.inputContainer)) </div>
                   (
                     switch (error) {

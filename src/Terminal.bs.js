@@ -26,7 +26,10 @@ var container = Css.style(/* :: */[
           Css.margin(Css.em(1)),
           /* :: */[
             Css.paddingBottom(Css.em(1)),
-            /* [] */0
+            /* :: */[
+              Css.boxShadow(/* Some */[Css.px(-2)], /* Some */[Css.px(-2)], /* Some */[Css.px(5)], /* None */0, /* None */0, Css.rgba(0, 0, 0, 0.5)),
+              /* [] */0
+            ]
           ]
         ]
       ]
@@ -122,10 +125,11 @@ function savePromptText(state) {
                 var match = +(prompt[/* id */1] === state[/* currentId */3]);
                 if (match !== 0) {
                   return /* record */[
-                          /* text : array */[state[/* input */1]],
+                          /* text */prompt[/* text */0],
                           /* id */prompt[/* id */1],
                           /* exitCode */prompt[/* exitCode */2],
-                          /* error */prompt[/* error */3]
+                          /* cmd */state[/* input */1],
+                          /* error */prompt[/* error */4]
                         ];
                 } else {
                   return prompt;
@@ -133,9 +137,18 @@ function savePromptText(state) {
               }), state[/* history */2]);
 }
 
-function updateHistory(state, id, prevCmdStatus) {
+function updateHistory(state, id, prevCmdStatus, cmd) {
   var history = savePromptText(state);
-  return Shell$Portfolio.newPrompt(history, prevCmdStatus, id);
+  return Shell$Portfolio.newPrompt(history, prevCmdStatus, id, cmd);
+}
+
+function showHelp(history) {
+  var match = +(List.length(history) >= 1);
+  if (match !== 0) {
+    return null;
+  } else {
+    return Utils$Portfolio.str("So, I'm a terminal nerd..\n        if you wanna to know a little bit more about me..\n          try some commands out,\n          if you're stuck try the \"help\" command");
+  }
 }
 
 function scrollIntoView(el) {
@@ -156,6 +169,7 @@ function focusElement(el) {
 
 function make() {
   var handleSubmit = function (text, arg, state) {
+    var cmd = text + (" " + arg);
     var id = state[/* currentId */3] + 1 | 0;
     var result = Shell$Portfolio.parseInput(text, arg);
     switch (result.tag | 0) {
@@ -163,7 +177,7 @@ function make() {
           return /* Update */Block.__(0, [/* record */[
                       /* shell */state[/* shell */0],
                       /* input */"",
-                      /* history */updateHistory(state, id, /* ShellSuccess */Block.__(0, [result[0]])),
+                      /* history */updateHistory(state, id, /* ShellSuccess */Block.__(0, [result[0]]), cmd),
                       /* currentId */id + 1 | 0,
                       /* focusedPromptRef */state[/* focusedPromptRef */4]
                     ]]);
@@ -180,7 +194,7 @@ function make() {
           return /* Update */Block.__(0, [/* record */[
                       /* shell */shell,
                       /* input */"",
-                      /* history */updateHistory(state, id, /* ChangeShell */Block.__(2, [shell])),
+                      /* history */updateHistory(state, id, /* ChangeShell */Block.__(2, [shell]), cmd),
                       /* currentId */state[/* currentId */3],
                       /* focusedPromptRef */state[/* focusedPromptRef */4]
                     ]]);
@@ -188,7 +202,7 @@ function make() {
           return /* Update */Block.__(0, [/* record */[
                       /* shell */state[/* shell */0],
                       /* input */"",
-                      /* history */updateHistory(state, id, /* ShellFailure */Block.__(3, [result[0]])),
+                      /* history */updateHistory(state, id, /* ShellFailure */Block.__(3, [result[0]]), cmd),
                       /* currentId */id + 1 | 0,
                       /* focusedPromptRef */state[/* focusedPromptRef */4]
                     ]]);
@@ -204,11 +218,11 @@ function make() {
                   className: container
                 }, ReasonReact.element(/* None */0, /* None */0, TitleBar$Portfolio.make(self[/* state */2][/* shell */0], /* array */[])), React.createElement("div", {
                       className: content
-                    }, $$Array.of_list(List.rev(List.map((function (param) {
-                                    var error = param[/* error */3];
-                                    return React.createElement("div", undefined, param[/* exitCode */2] ? null : React.createElement("span", {
-                                                      className: prompt
-                                                    }, Utils$Portfolio.str(Shell$Portfolio.showPrompt(/* None */0, /* None */0, /* () */0))), React.createElement("div", undefined, Utils$Portfolio.renderText(param[/* text */0], inputContainer)), error ? React.createElement("p", undefined, Utils$Portfolio.str("Error: " + error[0])) : null);
+                    }, React.createElement("p", undefined, showHelp(self[/* state */2][/* history */2])), $$Array.of_list(List.rev(List.map((function (param) {
+                                    var error = param[/* error */4];
+                                    return React.createElement("div", undefined, React.createElement("span", {
+                                                    className: prompt
+                                                  }, Utils$Portfolio.str(Shell$Portfolio.showPrompt(/* None */0, /* None */0, /* () */0))), React.createElement("div", undefined, Utils$Portfolio.renderText(param[/* text */0], inputContainer)), error ? React.createElement("p", undefined, Utils$Portfolio.str("Error: " + error[0])) : null);
                                   }), self[/* state */2][/* history */2]))), React.createElement("label", {
                           onKeyDown: (function ($$event) {
                               return Curry._1(self[/* send */4], /* KeyDown */Block.__(1, [$$event.which]));
@@ -236,15 +250,7 @@ function make() {
       return /* record */[
               /* shell */"bash",
               /* input */"",
-              /* history : :: */[
-                /* record */[
-                  /* text : array */["Find out more about me, use the 'help' command to learn more"],
-                  /* id */1,
-                  /* exitCode : None */0,
-                  /* error : None */0
-                ],
-                /* [] */0
-              ],
+              /* history : [] */0,
               /* currentId */1,
               /* focusedPromptRef */[/* None */0]
             ];
@@ -300,6 +306,7 @@ function make() {
                           /* text : array */[""],
                           /* id */currentId + 1 | 0,
                           /* exitCode : None */0,
+                          /* cmd */"",
                           /* error : None */0
                         ],
                         history
@@ -328,6 +335,7 @@ exports.setFocusedRef = setFocusedRef;
 exports.showLastHistoryItem = showLastHistoryItem;
 exports.savePromptText = savePromptText;
 exports.updateHistory = updateHistory;
+exports.showHelp = showHelp;
 exports.scrollIntoView = scrollIntoView;
 exports.focusElement = focusElement;
 exports.make = make;

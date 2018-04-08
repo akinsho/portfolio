@@ -16,14 +16,23 @@ function showPrompt($staropt$star, $staropt$star$1, _) {
   return "/Users/" + (user + ("/" + (dir + ":")));
 }
 
-var filenames = /* array */["about.txt"];
+var filenames = /* array */[
+  "about.txt",
+  "coming_soon.txt"
+];
 
-var files = /* record */[/* about */about];
+var files_001 = /* comingSoon : array */["coming soon"];
+
+var files = /* record */[
+  /* about */about,
+  files_001
+];
 
 var history_000 = /* record */[
   /* text : array */[""],
   /* id */1,
   /* exitCode : None */0,
+  /* cmd */"",
   /* error : None */0
 ];
 
@@ -33,10 +42,13 @@ var history = /* :: */[
 ];
 
 function cat(arg) {
-  if (arg === "about.txt") {
-    return /* ShellSuccess */Block.__(0, [about]);
-  } else {
-    return /* ShellFailure */Block.__(3, ["Sorry that file is invalid"]);
+  switch (arg) {
+    case "about.txt" : 
+        return /* ShellSuccess */Block.__(0, [about]);
+    case "coming_soon.txt" : 
+        return /* ShellSuccess */Block.__(0, [files_001]);
+    default:
+      return /* ShellFailure */Block.__(3, ["Sorry that file is invalid"]);
   }
 }
 
@@ -85,13 +97,14 @@ function parseInput(input, arg) {
   }
 }
 
-function newPrompt(history, prevCmdExitStatus, id) {
+function newPrompt(history, prevCmdExitStatus, id, cmd) {
   var emptyPrompt_000 = /* text : array */[""];
   var emptyPrompt_001 = /* id */id + 1 | 0;
   var emptyPrompt = /* record */[
     emptyPrompt_000,
     emptyPrompt_001,
     /* exitCode : None */0,
+    /* cmd */"",
     /* error : None */0
   ];
   switch (prevCmdExitStatus.tag | 0) {
@@ -101,12 +114,10 @@ function newPrompt(history, prevCmdExitStatus, id) {
                   /* text */prevCmdExitStatus[0],
                   /* id */id,
                   /* exitCode : Some */[0],
+                  /* cmd */cmd,
                   /* error : None */0
                 ],
-                /* :: */[
-                  emptyPrompt,
-                  history
-                ]
+                history
               ];
     case 1 : 
     case 2 : 
@@ -120,12 +131,10 @@ function newPrompt(history, prevCmdExitStatus, id) {
                   /* text : array */[""],
                   /* id */id,
                   /* exitCode : Some */[1],
+                  /* cmd */cmd,
                   /* error : Some */[prevCmdExitStatus[0]]
                 ],
-                /* :: */[
-                  emptyPrompt,
-                  history
-                ]
+                history
               ];
     
   }
