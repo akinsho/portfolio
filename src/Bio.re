@@ -42,7 +42,7 @@ let aboutMe = {
         details,
       )
       |> Array.of_list
-      |> ReasonReact.arrayToElement
+      |> ReasonReact.array
     )
   </article>;
 };

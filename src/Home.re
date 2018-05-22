@@ -64,7 +64,7 @@ let renderBio = () => {
     bio,
   )
   |> Array.of_list
-  |> ReasonReact.arrayToElement;
+  |> ReasonReact.array;
 };
 
 let make = _children => {

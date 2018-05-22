@@ -11,11 +11,9 @@ let make = (~before, ~after, children) => {
     | Style(a) => ReasonReact.Update(a)
     },
   initialState: () => before,
-  didMount: _self =>
-    ReasonReact.SideEffects(
-      self =>
+  didMount: self =>
         ignore(Js.Global.setTimeout(() => self.send(Style(after)), 0)),
-    ),
   render: ({state}) =>
-    <div style=state> (ReasonReact.arrayToElement(children)) </div>,
+    <div style=state> (ReasonReact.array(children)) </div>,
 };
+

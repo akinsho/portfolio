@@ -108,7 +108,7 @@ module Card = {
             <p className=contentBody> (joinText(body)) </p>
           </div>
         </div>
-        (ReasonReact.arrayToElement(children))
+        (ReasonReact.array(children))
       </article>,
   };
 };

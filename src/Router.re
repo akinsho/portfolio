@@ -68,9 +68,9 @@ let make = _children => {
       ReasonReact.Router.unwatchUrl,
     ),
   ],
-  didMount: (_) => {
+  didMount: (self) => {
     let url = ReasonReact.Router.dangerouslyGetInitialUrl();
-    ReasonReact.SideEffects(self => route(url, self));
+    ignore(route(url, self));
   },
   render: ({state}) =>
     <div className=Styles.container style=(restyle(~textRendering="optimizeLegibility", ()))>

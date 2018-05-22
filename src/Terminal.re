@@ -74,7 +74,7 @@ let updateHistory = (~state, ~id, prevCmdStatus, cmd) =>
 
 let showHelp = history =>
   List.length(history) >= 1 ?
-    ReasonReact.nullElement :
+    ReasonReact.null :
     str(
       {|So, I'm a terminal nerd..
         if you wanna to know a little bit more about me..
@@ -197,7 +197,7 @@ let make = _children => {
                   (
                     switch (error) {
                     | Some(error) => <p> (str("Error: " ++ error)) </p>
-                    | None => ReasonReact.nullElement
+                    | None => ReasonReact.null
                     }
                   )
                 </div>,
@@ -205,7 +205,7 @@ let make = _children => {
             )
             |> List.rev
             |> Array.of_list
-            |> ReasonReact.arrayToElement
+            |> ReasonReact.array
           )
           <label
             onKeyDown=(
@@ -219,7 +219,7 @@ let make = _children => {
               className=Styles.input
               value=self.state.input
               onChange=(evt => handleChange(evt, self))
-              autoFocus=Js.true_
+              autoFocus=true
               style=(restyle(~caretColor="#57D900", ()))
             />
           </label>

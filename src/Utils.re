@@ -1,5 +1,5 @@
 /* Aliases for long function names */
-let str = ReasonReact.stringToElement;
+let str = ReasonReact.string;
 
 let getElement = ReactDOMRe.domElementToObj;
 
@@ -97,7 +97,7 @@ let renderText = (details: array(string), className: string) =>
       <p className key=(string_of_int(index))> (str(line)) </p>,
     details,
   )
-  |> ReasonReact.arrayToElement;
+  |> ReasonReact.array;
 
 let split_on_char = (sep, s) => {
   let r = ref([]);
