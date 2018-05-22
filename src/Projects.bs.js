@@ -299,14 +299,6 @@ var medspaceDetails = /* array */[
   "We worked closely with a psychiatrist and a therapist to collate a list of common medications and explain what these\n  were and how they worked in an approachable fashion\n  "
 ];
 
-var settings = /* record */[
-  /* dots */true,
-  /* infinite */true,
-  /* speed */500,
-  /* slidesToShow */1,
-  /* slidesToScroll */1
-];
-
 function make$1() {
   return /* record */[
           /* debugName */component[/* debugName */0],
@@ -329,9 +321,9 @@ function make$1() {
                                       /* [] */0
                                     ]
                                   ])
-                            }, Utils$Portfolio.str("Projects")), ReasonReact.element(/* None */0, /* None */0, Utils$Portfolio.Slick[/* make */0](settings, /* array */[React.createElement("section", {
-                                        className: cards
-                                      }, ReasonReact.element(/* None */0, /* None */0, make("Onivim", onivim, oniDetails, "A Modal Editor for the Modern age", "onivim editor logo", /* array */[])), ReasonReact.element(/* None */0, /* None */0, make("Human Phenotype Ontology", hpo, phenotypeDetails, "A data visualization of the human phenotype ontology", "HPO logo", /* array */[])), ReasonReact.element(/* None */0, /* None */0, make("Medspace", medspace, medspaceDetails, "A web app aimed at helping children understand their medication", "GIF demoing medspace", /* array */[])))])));
+                            }, Utils$Portfolio.str("Projects")), React.createElement("section", {
+                              className: cards
+                            }, ReasonReact.element(/* None */0, /* None */0, make("Onivim", onivim, oniDetails, "A Modal Editor for the Modern age", "onivim editor logo", /* array */[])), ReasonReact.element(/* None */0, /* None */0, make("Human Phenotype Ontology", hpo, phenotypeDetails, "A data visualization of the human phenotype ontology", "HPO logo", /* array */[])), ReasonReact.element(/* None */0, /* None */0, make("Medspace", medspace, medspaceDetails, "A web app aimed at helping children understand their medication", "GIF demoing medspace", /* array */[]))));
             }),
           /* initialState */component[/* initialState */10],
           /* retainedProps */component[/* retainedProps */11],
@@ -340,6 +332,14 @@ function make$1() {
           /* jsElementWrapped */component[/* jsElementWrapped */14]
         ];
 }
+
+var settings = /* record */[
+  /* dots */true,
+  /* infinite */true,
+  /* speed */500,
+  /* slidesToShow */1,
+  /* slidesToScroll */1
+];
 
 exports.hpo = hpo;
 exports.medspace = medspace;

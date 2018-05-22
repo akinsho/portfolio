@@ -10,7 +10,10 @@
         "start": "parcel index.html",
         "clean": "bsb -clean-world",
         "make": "bsb -make-world",
-        "build": "parcel build index.html --public-url ./"
+        "prebuild": "rm -rf ./dist",
+        "build": "parcel build index.html --public-url ./",
+        "predeploy": "cp ./CNAME ./dist",
+        "deploy": "cd ./dist && surge"
     },
     "dependencies": {
         "@fortawesome/fontawesome": "^1.1.4",
@@ -26,6 +29,7 @@
     "devDependencies": {
         "bsb-js": "^1.0.2",
         "node-sass": "^4.8.3",
-        "parcel-bundler": "^1.6.2"
+        "parcel-bundler": "^1.6.2",
+        "surge": "^0.20.1"
     }
 }
