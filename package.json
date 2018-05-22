@@ -1,6 +1,6 @@
 {
     "name": "portfolio",
-    "version": "1.0.0",
+    "version": "1.0.1",
     "description": "Personal Portfolio of Akin Sowemimo",
     "main": "index.js",
     "author": "Akin Sowemimo",
@@ -10,7 +10,7 @@
         "start": "parcel index.html",
         "clean": "bsb -clean-world",
         "make": "bsb -make-world",
-        "build": "parcel build"
+        "build": "parcel build index.html --public-url ./"
     },
     "dependencies": {
         "@fortawesome/fontawesome": "^1.1.4",

@@ -61,9 +61,9 @@ module Card = {
   let contentBody =
     style(
       [],
-        /* textOverflow(ellipsis),
-           whiteSpace(nowrap),
-           overflow(hidden), */
+      /* textOverflow(ellipsis),
+         whiteSpace(nowrap),
+         overflow(hidden), */
     );
   let details =
     style([
@@ -155,30 +155,28 @@ let make = _children => {
       <h1 className=(combineClasses([pageTitle, Styles.title]))>
         (str("Projects"))
       </h1>
-      <Slick settings>
-        <section className=Styles.cards>
-          <Card
-            title="Onivim"
-            header="A Modal Editor for the Modern age"
-            body=oniDetails
-            img=onivim
-            alt="onivim editor logo"
-          />
-          <Card
-            title="Human Phenotype Ontology"
-            body=phenotypeDetails
-            header="A data visualization of the human phenotype ontology"
-            img=hpo
-            alt="HPO logo"
-          />
-          <Card
-            title="Medspace"
-            img=medspace
-            body=medspaceDetails
-            header="A web app aimed at helping children understand their medication"
-            alt="GIF demoing medspace"
-          />
-        </section>
-      </Slick>
+      <section className=Styles.cards>
+        <Card
+          title="Onivim"
+          header="A Modal Editor for the Modern age"
+          body=oniDetails
+          img=onivim
+          alt="onivim editor logo"
+        />
+        <Card
+          title="Human Phenotype Ontology"
+          body=phenotypeDetails
+          header="A data visualization of the human phenotype ontology"
+          img=hpo
+          alt="HPO logo"
+        />
+        <Card
+          title="Medspace"
+          img=medspace
+          body=medspaceDetails
+          header="A web app aimed at helping children understand their medication"
+          alt="GIF demoing medspace"
+        />
+      </section>
     </div>,
 };
